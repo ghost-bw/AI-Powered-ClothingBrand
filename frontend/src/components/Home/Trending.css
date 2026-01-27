@@ -1,0 +1,3 @@
+.ColleCard::-webkit-scrollbar{
+    display: none;
+}

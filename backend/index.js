@@ -1,37 +1,51 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import cors from "cors";
 
 import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
+
+
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
-// Middleware
-app.use(express.json());
+/* ================= MIDDLEWARE ================= */
+app.use(express.json());               // 🔥 REQUIRED for req.body
+app.use(express.urlencoded({ extended: true }));
 
-// DB
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => {
-    console.error("DB connection failed", err);
-    process.exit(1);
-  });
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
-// Routes
+/* ================= ROUTES ================= */
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/admin", adminRoutes);
 
+/* ================= HEALTH CHECK ================= */
 app.get("/", (req, res) => {
-  res.send("Server running");
+  res.send("Graphura Backend is running 🚀");
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+/* ================= DATABASE ================= */
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB Connected");
+    app.listen(PORT, () =>
+      console.log(`Server running on port ${PORT}`)
+    );
+  })
+  .catch((err) => {
+    console.error("MongoDB connection failed", err);
+  });

@@ -1,10 +1,18 @@
 import express from "express";
-import { register, login } from "../controllers/auth.controller.js";
+import { signup, login } from "../controllers/auth.controller.js";
+import { protect } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/register", register);  // ✅ use directly
-router.post("/login", login);        // ✅ use directly
+router.post("/signup", signup);
+router.post("/login", login);
+
+// Example protected route
+router.get("/profile", protect, (req, res) => {
+  res.json({
+    message: "User profile",
+    user: req.user
+  });
+});
 
 export default router;
-

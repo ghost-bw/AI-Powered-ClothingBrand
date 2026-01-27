@@ -40,40 +40,44 @@ console.log("REQ.FILES:", JSON.stringify(req.files, null, 2));
 
 
 export const getProducts = async (req, res) => {
-  const {
-    keyword,
-    category,
-    minPrice,
-    maxPrice,
-    sort
-  } = req.query;
+  try {
+    const {
+      keyword,
+      category,
+      minPrice,
+      maxPrice,
+      sort
+    } = req.query;
 
-  let filter = {};
+    let filter = {};
 
-  // 🔍 Search
-  if (keyword) {
-    filter.$text = { $search: keyword };
+    // 🔍 Search
+    if (keyword) {
+      filter.$text = { $search: keyword };
+    }
+
+    // 📦 Category
+    if (category) {
+      filter.category = category;
+    }
+
+    // 💰 Price
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    }
+
+    let query = Product.find(filter).populate("category");
+
+    // 🔃 Sorting
+    if (sort === "price_low") query.sort({ price: 1 });
+    if (sort === "price_high") query.sort({ price: -1 });
+    if (sort === "newest") query.sort({ createdAt: -1 });
+
+    const products = await query;
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-
-  // 📦 Category filter
-  if (category) {
-    filter.category = category;
-  }
-
-  // 💰 Price filter
-  if (minPrice || maxPrice) {
-    filter.price = {};
-    if (minPrice) filter.price.$gte = minPrice;
-    if (maxPrice) filter.price.$lte = maxPrice;
-  }
-
-  let query = Product.find(filter).populate("category");
-
-  // 🔃 Sorting
-  if (sort === "price_low") query = query.sort({ price: 1 });
-  if (sort === "price_high") query = query.sort({ price: -1 });
-  if (sort === "newest") query = query.sort({ createdAt: -1 });
-
-  const products = await query;
-  res.json(products);
 };

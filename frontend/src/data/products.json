@@ -1,0 +1,452 @@
+
+{
+  "1": {
+    "id": 1,
+    "title": "The Ethereal Silk Wrap Dress",
+    "description": "A timeless handcrafted dress inspired by Indian heritage, crafted from premium mulberry silk with traditional block printing techniques.",
+    "price": 14500,
+    "originalPrice": 18900,
+    "discount": 23,
+    "category": "Ethically Sourced Silk",
+    "images": [
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800&auto=format&fit=crop"
+    ],
+    "variants": [
+      { "size": "XS", "inStock": true, "sku": "SILK-XS-001" },
+      { "size": "S", "inStock": true, "sku": "SILK-S-001" },
+      { "size": "M", "inStock": true, "sku": "SILK-M-001" },
+      { "size": "L", "inStock": false, "sku": "SILK-L-001" },
+      { "size": "XL", "inStock": true, "sku": "SILK-XL-001" }
+    ],
+    "colors": [
+      { "id": 1, "name": "Midnight Blue", "value": "#1e3a8a", "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop" },
+      { "id": 2, "name": "Forest Green", "value": "#166534", "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop" },
+      { "id": 3, "name": "Ruby Red", "value": "#991b1b", "image": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&auto=format&fit=crop" }
+    ],
+    "details": {
+      "fabric": "100% Mulberry Silk",
+      "care": "Dry clean only. Store in a cool, dry place.",
+      "origin": "Handcrafted in Jaipur, India",
+      "delivery": "Free shipping on orders above ₹3000. Delivery in 5-7 business days.",
+      "return": "Easy 14-day return policy",
+      "material": "Pure Silk",
+      "weight": "450g",
+      "dimensions": "Length: 145cm"
+    },
+    "rating": 4.9,
+    "reviews": 24,
+    "sku": "GRP-SILK-001",
+    "stock": 15
+  },
+  "2": {
+    "id": 2,
+    "title": "Hand-Loomed Khadi Tunic",
+    "description": "Lightweight and breathable, this tunic is made from hand-spun cotton, perfect for summer elegance.",
+    "price": 4200,
+    "originalPrice": 6000,
+    "discount": 30,
+    "category": "Sustainable Cotton",
+    "images": ["https://images.unsplash.com/photo-1582533561751-ef6f6ab93a2e?w=800&auto=format&fit=crop"],
+    "variants": [
+      { "size": "S", "inStock": true, "sku": "KHD-S-002" },
+      { "size": "M", "inStock": true, "sku": "KHD-M-002" },
+      { "size": "L", "inStock": true, "sku": "KHD-L-002" }
+    ],
+    "colors": [{ "id": 4, "name": "Ivory", "value": "#fffff0", "image": "https://images.unsplash.com/photo-1582533561751-ef6f6ab93a2e?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "100% Khadi Cotton",
+      "care": "Hand wash cold",
+      "origin": "Woven in West Bengal",
+      "delivery": "Standard delivery",
+      "return": "7-day return",
+      "material": "Cotton",
+      "weight": "300g",
+      "dimensions": "Standard"
+    },
+    "rating": 4.7,
+    "reviews": 18,
+    "sku": "GRP-KHD-002",
+    "stock": 25
+  },
+  "3": {
+    "id": 3,
+    "title": "Indigo Mud-Resist Jacket",
+    "description": "A statement piece featuring Dabu printing with natural indigo dyes.",
+    "price": 8900,
+    "originalPrice": 9500,
+    "discount": 6,
+    "category": "Artisanal Outerwear",
+    "images": ["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop"],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "IND-M-003" },
+      { "size": "L", "inStock": true, "sku": "IND-L-003" }
+    ],
+    "colors": [{ "id": 5, "name": "Indigo", "value": "#00416a", "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "Organic Cotton",
+      "care": "Wash separately",
+      "origin": "Rajasthan",
+      "delivery": "Free shipping",
+      "return": "14-day return",
+      "material": "Organic Cotton",
+      "weight": "800g",
+      "dimensions": "Length: 75cm"
+    },
+    "rating": 4.8,
+    "reviews": 42,
+    "sku": "GRP-IND-003",
+    "stock": 8
+  },
+  "4": {
+    "id": 4,
+    "title": "Pashmina Wool Scarf",
+    "description": "Unmatched warmth and softness from the high altitudes of Ladakh.",
+    "price": 12000,
+    "originalPrice": 15000,
+    "discount": 20,
+    "category": "Luxury Woolens",
+    "images": ["https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=800&auto=format&fit=crop"],
+    "variants": [{ "size": "Free", "inStock": true, "sku": "PASH-FS-004" }],
+    "colors": [{ "id": 6, "name": "Camel", "value": "#c19a6b", "image": "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "100% Pashmina",
+      "care": "Professional dry clean",
+      "origin": "Kashmir",
+      "delivery": "Express delivery",
+      "return": "Non-returnable",
+      "material": "Wool",
+      "weight": "150g",
+      "dimensions": "200x70cm"
+    },
+    "rating": 5.0,
+    "reviews": 56,
+    "sku": "GRP-PASH-004",
+    "stock": 5
+  },
+  "5": {
+    "id": 5,
+    "title": "Linen Blend Wide-Leg Trousers",
+    "description": "Relaxed fit trousers designed for comfort and chic office wear.",
+    "price": 5500,
+    "originalPrice": 5500,
+    "discount": 0,
+    "category": "Linen Collection",
+    "images": ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop"],
+    "variants": [
+      { "size": "S", "inStock": true, "sku": "LIN-S-005" },
+      { "size": "M", "inStock": false, "sku": "LIN-M-005" },
+      { "size": "L", "inStock": true, "sku": "LIN-L-005" }
+    ],
+    "colors": [{ "id": 7, "name": "Slate Grey", "value": "#708090", "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "70% Linen, 30% Cotton",
+      "care": "Machine wash delicate",
+      "origin": "Tamil Nadu",
+      "delivery": "Free delivery",
+      "return": "14-day return",
+      "material": "Linen",
+      "weight": "500g",
+      "dimensions": "Waist: 28-34in"
+    },
+    "rating": 4.5,
+    "reviews": 31,
+    "sku": "GRP-LIN-005",
+    "stock": 20
+  },
+  "6": {
+    "id": 6,
+    "title": "Hand-Embroidered Chikan Kurta",
+    "description": "Intricate Lucknawi thread work on fine georgette fabric.",
+    "price": 7200,
+    "originalPrice": 8500,
+    "discount": 15,
+    "category": "Artisanal Embroidery",
+    "images": ["https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=800&auto=format&fit=crop"],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "CHK-M-006" },
+      { "size": "XL", "inStock": true, "sku": "CHK-XL-006" }
+    ],
+    "colors": [{ "id": 8, "name": "Peach Blossom", "value": "#ffdab9", "image": "../assets/collections/Noor-e-Chikankari.webp" }],
+    "details": {
+      "fabric": "Fine Georgette",
+      "care": "Gentle hand wash",
+      "origin": "Lucknow",
+      "delivery": "Standard",
+      "return": "14-day return",
+      "material": "Synthetic",
+      "weight": "400g",
+      "dimensions": "Standard"
+    },
+    "rating": 4.6,
+    "reviews": 12,
+    "sku": "GRP-CHK-006",
+    "stock": 10
+  },
+  "7": {
+    "id": 7,
+    "title": "Organic Bamboo Loungewear Set",
+    "description": "Ultra-soft, eco-friendly set for maximum home comfort.",
+    "price": 3800,
+    "originalPrice": 4200,
+    "discount": 10,
+    "category": "Sustainable Loungewear",
+    "images": ["https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=800&auto=format&fit=crop"],
+    "variants": [
+      { "size": "S", "inStock": true, "sku": "BAM-S-007" },
+      { "size": "L", "inStock": true, "sku": "BAM-L-007" }
+    ],
+    "colors": [{ "id": 9, "name": "Sage", "value": "#9c9f84", "image": "https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "Bamboo Fiber",
+      "care": "Tumble dry low",
+      "origin": "Maharashtra",
+      "delivery": "Standard",
+      "return": "30-day return",
+      "material": "Bamboo",
+      "weight": "600g",
+      "dimensions": "Loose Fit"
+    },
+    "rating": 4.9,
+    "reviews": 88,
+    "sku": "GRP-BAM-007",
+    "stock": 50
+  },
+  "8": {
+    "id": 8,
+    "title": "Hand-Painted Kalamkari Saree",
+    "description": "A heritage drape featuring pen-drawn mythological motifs.",
+    "price": 22000,
+    "originalPrice": 28000,
+    "discount": 21,
+    "category": "Heritage Sarees",
+    "images": ["https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop"],
+    "variants": [{ "size": "Free", "inStock": true, "sku": "KAL-FS-008" }],
+    "colors": [{ "id": 10, "name": "Terracotta", "value": "#e2725b", "image": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "Chanderi Silk",
+      "care": "Dry clean only",
+      "origin": "Andhra Pradesh",
+      "delivery": "Insured shipping",
+      "return": "No return",
+      "material": "Silk/Cotton",
+      "weight": "900g",
+      "dimensions": "5.5 meters"
+    },
+    "rating": 5.0,
+    "reviews": 7,
+    "sku": "GRP-KAL-008",
+    "stock": 3
+  },
+  "9": {
+    "id": 9,
+    "title": "Modern Jute Tote Bag",
+    "description": "Structured tote bag with leather accents for the conscious traveler.",
+    "price": 2500,
+    "originalPrice": 2500,
+    "discount": 0,
+    "category": "Eco-Accessories",
+    "images": ["https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&auto=format&fit=crop"],
+    "variants": [{ "size": "OS", "inStock": true, "sku": "JUT-OS-009" }],
+    "colors": [{ "id": 11, "name": "Natural Jute", "value": "#c2b280", "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "Golden Jute & Vegan Leather",
+      "care": "Wipe clean",
+      "origin": "Kolkata",
+      "delivery": "Express",
+      "return": "14-day return",
+      "material": "Jute",
+      "weight": "1.2kg",
+      "dimensions": "40x30x10cm"
+    },
+    "rating": 4.4,
+    "reviews": 112,
+    "sku": "GRP-JUT-009",
+    "stock": 100
+  },
+  "10": {
+    "id": 10,
+    "title": "Hand-Knit Woolen Cardigan",
+    "description": "Chunky knit sweater crafted by mountain artisans.",
+    "price": 6800,
+    "originalPrice": 8000,
+    "discount": 15,
+    "category": "Winter Wear",
+    "images": ["https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&auto=format&fit=crop"],
+    "variants": [{ "size": "M", "inStock": true, "sku": "WOL-M-010" }],
+    "colors": [{ "id": 12, "name": "Cream", "value": "#fdf5e6", "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "Sheep Wool",
+      "care": "Hand wash only",
+      "origin": "Himachal Pradesh",
+      "delivery": "Standard",
+      "return": "7-day return",
+      "material": "Wool",
+      "weight": "1.1kg",
+      "dimensions": "Relaxed"
+    },
+    "rating": 4.8,
+    "reviews": 29,
+    "sku": "GRP-WOL-010",
+    "stock": 12
+  },
+  "11": {
+    "id": 11,
+    "title": "A-Line Hemp Skirt",
+    "description": "Durable and sustainable hemp skirt with a flattering silhouette.",
+    "price": 4900,
+    "originalPrice": 5800,
+    "discount": 15,
+    "category": "Hemp Apparel",
+    "images": ["https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800&auto=format&fit=crop"],
+    "variants": [
+      { "size": "S", "inStock": true, "sku": "HEMP-S-011" },
+      { "size": "M", "inStock": true, "sku": "HEMP-M-011" }
+    ],
+    "colors": [{ "id": 13, "name": "Olive", "value": "#556b2f", "image": "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "100% Hemp",
+      "care": "Machine wash cold",
+      "origin": "Uttarakhand",
+      "delivery": "Standard",
+      "return": "14-day return",
+      "material": "Hemp",
+      "weight": "400g",
+      "dimensions": "Mid-length"
+    },
+    "rating": 4.6,
+    "reviews": 15,
+    "sku": "GRP-HMP-011",
+    "stock": 18
+  },
+  "12": {
+    "id": 12,
+    "title": "Recycled Polyester Active Leggings",
+    "description": "High-performance leggings made from plastic waste salvaged from oceans.",
+    "price": 3200,
+    "originalPrice": 3200,
+    "discount": 0,
+    "category": "Sustainable Activewear",
+    "images": ["https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&auto=format&fit=crop"],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [{ "id": 14, "name": "Onyx", "value": "#000000", "image": "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&auto=format&fit=crop" }],
+    "details": {
+      "fabric": "80% Recycled PET, 20% Elastane",
+      "care": "Cold wash",
+      "origin": "Gujarat",
+      "delivery": "Standard",
+      "return": "30-day return",
+      "material": "Recycled Plastic",
+      "weight": "250g",
+      "dimensions": "High-waist"
+    },
+    "rating": 4.7,
+    "reviews": 210,
+    "sku": "GRP-REC-012",
+    "stock": 75
+  },
+  "13": {
+    "id": 13,
+    "title": "Hand-Painted Kalamkari Saree",
+    "category": "HERITAGE SAREE",
+    "description": "Traditional hand-painted Kalamkari saree",
+    "price": 3500,
+    "discount": 15,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop"],
+    "inStock": true
+  },
+  "14": {
+    "id": 14,
+    "title": "Linen Kurta Set",
+    "category": "LINEN COLLECTION",
+    "description": "Premium linen kurta set",
+    "price": 3200,
+    "discount": 10,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w-800&auto=format&fit=crop"],
+    "inStock": true
+  },
+  "15": {
+    "id": 15,
+    "title": "Woolen Shawl",
+    "category": "LUXURY WOOLENS",
+    "description": "Luxury woolen shawl",
+    "price": 4200,
+    "discount": 20,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1574201633182-8afb8b3a6e5a?w=800&auto=format&fit=crop"],
+    "inStock": true
+  },
+  "16": {
+    "id": 16,
+    "title": "Cotton Lounge Set",
+    "category": "SUSTAINABLE LOUNGEWEAR",
+    "description": "Sustainable cotton lounge set",
+    "price": 2800,
+    "discount": 12,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=800&auto=format&fit=crop"],
+    "inStock": true
+  },
+  "17": {
+    "id": 17,
+    "title": "Silk Banarasi Saree",
+    "category": "HERITAGE SAREE",
+    "description": "Traditional silk Banarasi saree",
+    "price": 8500,
+    "discount": 18,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1565791380717-9d3a5d1c2435?w=800&auto=format&fit=crop"],
+    "inStock": true
+  },
+  "18": {
+    "id": 18,
+    "title": "Embroidered Linen Dress",
+    "category": "LINEN COLLECTION",
+    "description": "Elegant embroidered linen dress",
+    "price": 4500,
+    "discount": 15,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&auto=format&fit=crop"],
+    "inStock": true
+  },
+  "19": {
+    "id": 19,
+    "title": "Cashmere Wool Sweater",
+    "category": "LUXURY WOOLENS",
+    "description": "Premium cashmere wool sweater",
+    "price": 5500,
+    "discount": 25,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=800&auto=format&fit=crop"],
+    "inStock": true
+  },
+  "20": {
+    "id": 20,
+    "title": "Bamboo Fiber Lounge",
+    "category": "SUSTAINABLE LOUNGEWEAR",
+    "description": "Eco-friendly bamboo fiber lounge wear",
+    "price": 3800,
+    "discount": 10,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=800&auto=format&fit=crop"],
+    "inStock": true
+  },
+  "21": {
+    "id": 21,
+    "title": "Chanderi Silk Saree",
+    "category": "HERITAGE SAREE",
+    "description": "Lightweight Chanderi silk saree",
+    "price": 6200,
+    "discount": 12,
+    "rating": 4.5,
+    "images": ["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop"],
+    "inStock": true
+  }
+}

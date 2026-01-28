@@ -1,83 +1,102 @@
-import slugify from "slugify";
 import Product from "../models/product.model.js";
 
+/* ================================
+   ADD PRODUCT (ADMIN ONLY)
+================================ */
+// import Product from "../models/Product.model.js";
 
-
-
-export const createProduct = async (req, res) => {
+export const addProduct = async (req, res) => {
   try {
-    const { name, description, price, discountPrice, category, sizes, colors, stock } = req.body;
-
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "Images are required" });
-    }
-
-    const images = req.files.map(file => file.path);
+    const images = req.files?.map((file) => `/uploads/${file.filename}`) || [];
 
     const product = await Product.create({
-      name,
-      slug: slugify(name),
-      description,
-      price,
-      discountPrice,
-      category,
-      sizes,
-      colors,
-      stock,
-      images
+      ...req.body,
+      images,               // store uploaded images here
+      createdBy: req.user._id, // admin id
     });
-console.log("REQ.BODY:", req.body);
-console.log("REQ.FILES:", JSON.stringify(req.files, null, 2));
 
-    res.status(201).json({ product, images });
-
+    res.status(201).json({
+      success: true,
+      product,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
 
-
-export const getProducts = async (req, res) => {
+/* ================================
+   UPDATE PRODUCT (ADMIN ONLY)
+================================ */
+export const updateProduct = async (req, res) => {
   try {
-    const {
-      keyword,
-      category,
-      minPrice,
-      maxPrice,
-      sort
-    } = req.query;
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
 
-    let filter = {};
-
-    // 🔍 Search
-    if (keyword) {
-      filter.$text = { $search: keyword };
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
     }
 
-    // 📦 Category
-    if (category) {
-      filter.category = category;
-    }
+    res.json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
-    // 💰 Price
-    if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = Number(minPrice);
-      if (maxPrice) filter.price.$lte = Number(maxPrice);
-    }
+/* ================================
+   DELETE PRODUCT (SOFT DELETE)
+================================ */
+export const deleteProduct = async (req, res) => {
+  try {
+    await Product.findByIdAndUpdate(req.params.id, {
+      isDeleted: true,
+    });
 
-    let query = Product.find(filter).populate("category");
+    res.json({
+      success: true,
+      message: "Product deleted",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
-    // 🔃 Sorting
-    if (sort === "price_low") query.sort({ price: 1 });
-    if (sort === "price_high") query.sort({ price: -1 });
-    if (sort === "newest") query.sort({ createdAt: -1 });
+/* ================================
+   ADMIN PRODUCT TABLE
+================================ */
+export const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find({
+      isDeleted: false,
+    }).sort({ createdAt: -1 });
 
-    const products = await query;
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.json({
+      success: true,
+      count: products.length,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };

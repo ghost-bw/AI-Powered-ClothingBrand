@@ -1,35 +1,71 @@
+// src/models/Product.model.js
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
-
-    description: { type: String, required: true },
-
-    price: { type: Number, required: true },
-    discountPrice: { type: Number },
-
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true
+    /* ===== USER VISIBLE ===== */
+    name: {
+      type: String,
+      required: true,
+      trim: true,
     },
 
-    sizes: [String],        // ["S", "M", "L", "XL"]
-    colors: [String],       // ["Black", "White"]
+    description: {
+      type: String,
+    },
 
-    stock: { type: Number, default: 0 },
+    category: {
+      type: String,
+      required: true,
+      enum: ["Shirts", "Ethnic Wear", "Outerwear", "Accessories"],
+    },
 
-    images: [String],       // Cloudinary URLs 
+    price: {
+      type: Number,
+      required: true,
+    },
 
-    isFeatured: { type: Boolean, default: false },
-    isTrending: { type: Boolean, default: false }
+    discountPrice: {
+      type: Number,
+    },
+
+    images: {
+      type: [String], // Cloudinary / S3 URLs
+      required: true,
+    },
+
+    stock: {
+      type: Number,
+      required: true,
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+
+    /* ===== ADMIN / BACKEND ONLY ===== */
+    totalSold: {
+      type: Number,
+      default: 0,
+    },
+
+    revenue: {
+      type: Number,
+      default: 0,
+    },
+
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );
-
-//  Text search support
-productSchema.index({ name: "text", description: "text" });
 
 export default mongoose.model("Product", productSchema);

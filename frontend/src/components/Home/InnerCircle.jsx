@@ -3,7 +3,7 @@ import React from "react";
 const InnerCircle = () => {
   return (
     <section className="px-4 py-14">
-      <div className="max-w-[90rem] mx-auto bg-[#f3e4cf] rounded-2xl px-6 sm:px-12 py-12 text-center">
+      <div className="max-w-[90rem mx-auto bg-[#f3e4cf] rounded-2xl px-6 sm:px-12 py-12 text-center">
 
 
         {/* Heading */}
@@ -23,7 +23,7 @@ const InnerCircle = () => {
           <input
             type="email"
             placeholder="Your email address"
-            className="w-full sm:w-[380px] px-6 py-3 rounded-full text-sm bg-white border border-indigo-500 outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full sm:w-380px px-6 py-3 rounded-full text-sm bg-white border border-indigo-500 outline-none focus:ring-2 focus:ring-indigo-400"
           />
 
           <button className="px-8 py-3 rounded-full bg-indigo-600 text-white text-sm font-semibold tracking-wide hover:bg-indigo-700 transition">

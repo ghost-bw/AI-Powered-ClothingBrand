@@ -13,6 +13,18 @@ const Cart = () => {
   const [gstRate] = useState(0.12);
   const [recommendedItems, setRecommendedItems] = useState([]);
   const navigate = useNavigate();
+  const handleAddToCart = () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/user/login");
+    return;
+  }
+
+  // user is logged in → proceed
+  addToCart(product);
+};
+
 
   // Fetch recommended items from products.json (excluding items already in cart)
   useEffect(() => {

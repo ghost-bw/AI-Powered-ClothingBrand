@@ -10,6 +10,8 @@ import CollectionsPage from "./pages/user/Collections";
 import UserSignup from "./pages/user/UserSignup";
 import UserLogin from "./pages/user/UserLogin";
 import UserDashboard from "./pages/user/UserDashboard";
+import AddCategory from "./pages/admin/AddCategory";
+import NotFound from "./pages/NotFound";
 
 // Admin pages
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -20,6 +22,7 @@ import Dashboard from "./pages/admin/Dashboard";
 // Layout components
 import Navbar from "./components/Home/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AddProduct from "./pages/admin/AddProduct";
 
 const App = () => {
   return (
@@ -61,6 +64,27 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+  path="/admin/products/add"
+  element={
+    <ProtectedRoute role="admin">
+      <AddProduct />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/admin/categories/add"
+  element={
+    <ProtectedRoute role="admin">
+      <AddCategory />
+    </ProtectedRoute>
+  }
+/>
+import NotFound from "./pages/NotFound";
+
+
+<Route path="*" element={<NotFound />} />
+
         </Routes>
       </ShopProvider>
     </BrowserRouter>

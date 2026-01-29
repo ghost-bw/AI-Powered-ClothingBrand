@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import API from "../../api/axios";
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -73,9 +75,32 @@ const UserLogin = () => {
             Sign Up
           </span>
         </p>
-      </div>
+
+    
+<GoogleLogin
+  onSuccess={async (credentialResponse) => {
+    try {
+      const res = await API.post("/auth/google", {
+        token: credentialResponse.credential,
+      });
+
+      localStorage.setItem("token", res.data.token);
+
+      // 🔥 React router redirect
+      navigate("/");
+
+    } catch (err) {
+      console.error(err);
+      alert("Google login failed");
+    }
+  }}
+  onError={() => alert("Google Login Failed")}
+/>
+  </div>
     </div>
   );
 };
+
+
 
 export default UserLogin;

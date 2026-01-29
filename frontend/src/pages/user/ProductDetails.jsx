@@ -1,108 +1,167 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import API from "../../api/axios";
+// ProductDetails.jsx
+import { useState,useEffect } from "react";
+import { useParams,useNavigate } from "react-router-dom";
+import { Heart,ShoppingCart,Share2,ChevronLeft,ChevronRight,ArrowLeft,Check,Truck,RefreshCw,Shield,Package,X,ZoomIn } from "lucide-react";
 import Navbar from "../../components/Home/Navbar";
 import Footer from "../../components/Home/Footer";
-import ProductSkeleton from "../../components/ProductSkeleton";
-import { Heart, ShoppingCart, Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import SectionAccordion from "../../components/SectionAccordion";
+import ProductSkeleton from "../../components/ProductSkeleton";
+import { useShop } from "../../context/ShopContext";
+import API from "../../api/axios";
 
-const ProductDetails = () => {
-  const [product, setProduct] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [showSizeGuide, setShowSizeGuide] = useState(false);
+function ProductDetails(){
 
-  const { id } = useParams();
-  const navigate = useNavigate();
+const {id}=useParams();
+const navigate=useNavigate();
+const {addToCart,toggleWishlist,wishlist,cart}=useShop();
 
-  useEffect(() => {
-    const loadProduct = async () => {
-      setLoading(true);
-      try {
-        const { data } = await api.get(`/products/${id}`);
-        setProduct(data);
-        setSelectedColor(data.colors?.[0] || null);
-        setSelectedImage(0);
+const [product,setProduct]=useState(null);
+const [related,setRelated]=useState([]);
+const [selectedColor,setSelectedColor]=useState(null);
+const [selectedImage,setSelectedImage]=useState(0);
+const [selectedSize,setSelectedSize]=useState("");
+const [quantity,setQuantity]=useState(1);
+const [loading,setLoading]=useState(true);
+const [isZoomed,setIsZoomed]=useState(false);
+const [zoomPosition,setZoomPosition]=useState({x:0,y:0});
 
-        const relatedRes = await api.get("/products");
-        setRelatedProducts(
-          relatedRes.data.filter(p => p._id !== data._id).slice(0, 4)
-        );
-      } catch (err) {
-        console.error(err);
-        navigate("/404");
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(()=>{
+ load();
+},[id]);
 
-    loadProduct();
-  }, [id, navigate]);
+const load=async()=>{
+ setLoading(true);
+ const res=await API.get(`/products/${id}`);
+ const prod=res.data;
+ setProduct(prod);
+ setSelectedColor(prod.colors?.[0]);
+ const rel = await API.get("/products");
 
-  if (loading) return <ProductSkeleton />;
-  if (!product) return <p className="text-center py-20">Product not found</p>;
+const relProducts = Array.isArray(rel.data)
+ ? rel.data
+ : rel.data.products;
 
-  const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
+setRelated(relProducts.filter(p=>p._id!==prod._id).slice(0,4));
 
-  return (
-    <>
-      <Navbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 grid lg:grid-cols-2 gap-8 lg:gap-12">
-        <div className="lg:sticky lg:top-24 self-start">
-          <div className="l-1xl relative rounded-2xl overflow-hidden">
-            <div className="relative pt-[100%] overflow-hidden bg-gray-50">
-              <img
-                src={product.images[selectedImage]}
-                alt={product.title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-
-            {product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-3 mt-4">
-                {product.images.map((img, index) => (
-                  <button key={index} onClick={() => setSelectedImage(index)}>
-                    <img src={img} alt="" className="w-full h-24 object-cover rounded-lg" />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <p className="text-xs uppercase tracking-wider text-gray-500">{product.category?.name}</p>
-          <h1 className="text-3xl md:text-4xl font-bold mt-2">{product.title}</h1>
-          <div className="flex items-center gap-4 mt-3">
-            <span className="text-2xl font-bold">{formatPrice(product.price)}</span>
-            {product.originalPrice && product.originalPrice > product.price && (
-              <span className="ml-3 text-gray-500 line-through">{formatPrice(product.originalPrice)}</span>
-            )}
-            <span className="text-sm text-gray-500">SKU: {product.sku}</span>
-          </div>
-
-          <p className="text-gray-600 leading-relaxed">{product.description}</p>
-
-          <SectionAccordion title="Product Details" defaultOpen>
-            <ul className="space-y-2 text-gray-600">
-              {product.details.fabric && <li><strong>Fabric:</strong> {product.details.fabric}</li>}
-              {product.details.material && <li><strong>Material:</strong> {product.details.material}</li>}
-              {product.details.care && <li><strong>Care:</strong> {product.details.care}</li>}
-              {product.details.weight && <li><strong>Weight:</strong> {product.details.weight}</li>}
-              {product.details.dimensions && <li><strong>Dimensions:</strong> {product.details.dimensions}</li>}
-              {product.details.origin && <li><strong>Origin:</strong> {product.details.origin}</li>}
-            </ul>
-          </SectionAccordion>
-        </div>
-      </div>
-      <Footer />
-    </>
-  );
+ setLoading(false);
 };
+
+if(loading) return <ProductSkeleton/>;
+
+const images=selectedColor?.images||[];
+
+const isInWishlist=wishlist.some(i=>i.id===product._id);
+const isInCart=cart.some(i=>i.id===product._id && i.color===selectedColor?.name);
+
+const handleZoom=e=>{
+ const r=e.currentTarget.getBoundingClientRect();
+ setZoomPosition({
+  x:((e.clientX-r.left)/r.width)*100,
+  y:((e.clientY-r.top)/r.height)*100
+ });
+ setIsZoomed(true);
+};
+
+const handleAddToCart=()=>{
+ if(!selectedSize) return alert("Select size");
+
+ addToCart({
+  id:product._id,
+  name:product.name,
+  price:product.discountPrice||product.price,
+  image:images[0],
+  size:selectedSize,
+  color:selectedColor.name,
+  quantity
+ });
+};
+
+return(
+<>
+<Navbar/>
+
+<div className="max-w-7xl mx-auto px-4 py-8 grid lg:grid-cols-2 gap-12">
+
+{/* IMAGE */}
+<div>
+<div className="relative overflow-hidden rounded-xl">
+<img
+src={images[selectedImage]}
+className={`w-full h-full object-cover ${isZoomed?"scale-150":"hover:scale-105"}`}
+style={{transformOrigin:`${zoomPosition.x}% ${zoomPosition.y}%`}}
+onMouseMove={handleZoom}
+/>
+
+{images.length>1&&(
+<>
+<button onClick={()=>setSelectedImage((selectedImage-1+images.length)%images.length)} className="absolute left-3 top-1/2 bg-white p-2 rounded-full"><ChevronLeft/></button>
+<button onClick={()=>setSelectedImage((selectedImage+1)%images.length)} className="absolute right-3 top-1/2 bg-white p-2 rounded-full"><ChevronRight/></button>
+</>
+)}
+</div>
+
+<div className="grid grid-cols-4 gap-2 mt-4">
+{images.map((img,i)=>(
+<img key={i} src={img} onClick={()=>setSelectedImage(i)} className={`cursor-pointer border ${i===selectedImage?"border-black":"border-gray-200"}`}/>
+))}
+</div>
+</div>
+
+{/* INFO */}
+<div className="space-y-4">
+
+<button onClick={()=>navigate("/collections")} className="flex items-center gap-2 text-sm"><ArrowLeft/>Back</button>
+
+<h1 className="text-3xl font-bold">{product.name}</h1>
+
+<p className="text-xl font-semibold">₹{product.discountPrice||product.price}</p>
+
+<p className="text-gray-600">{product.description}</p>
+
+{/* COLORS */}
+<div>
+<h3>Color</h3>
+<div className="flex gap-3 mt-2">
+{product.colors.map(c=>(
+<button
+key={c._id}
+onClick={()=>{setSelectedColor(c);setSelectedImage(0)}}
+className={`w-10 h-10 rounded-full border ${selectedColor?._id===c._id?"ring-2 ring-black":""}`}
+style={{background:c.hex}}
+/>
+))}
+</div>
+</div>
+
+{/* SIZES */}
+<div>
+<h3>Size</h3>
+<div className="flex gap-3 mt-2">
+{product.sizes.map(s=>(
+<button key={s} onClick={()=>setSelectedSize(s)} className={`border px-4 py-2 ${selectedSize===s?"bg-black text-white":""}`}>{s}</button>
+))}
+</div>
+</div>
+
+{/* QTY */}
+<div className="flex items-center gap-4">
+<button onClick={()=>setQuantity(q=>Math.max(1,q-1))}>-</button>
+<span>{quantity}</span>
+<button onClick={()=>setQuantity(q=>q+1)}>+</button>
+</div>
+
+<button onClick={handleAddToCart} className="bg-black text-white w-full py-3">Add To Cart</button>
+
+<button onClick={()=>toggleWishlist(product)} className="border w-full py-3">
+{isInWishlist?"In Wishlist":"Add Wishlist"}
+</button>
+
+</div>
+</div>
+
+<Footer/>
+</>
+);
+}
 
 export default ProductDetails;

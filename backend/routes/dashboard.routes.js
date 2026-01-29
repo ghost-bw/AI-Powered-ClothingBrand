@@ -15,5 +15,6 @@ router.use(protect, isAdmin);
 router.get("/stats", getDashboardStats);
 router.get("/revenue", getMonthlyRevenue);
 router.get("/category-sales", getCategorySales);
+router.get("/", protect, isAdmin, getDashboardStats);
 
 export default router;

@@ -63,20 +63,20 @@ const AdminLogin = () => {
           <p className="text-sm text-gray-500 mt-1">Sign in to continue</p>
 
           {/* Tabs */}
-          <div className="mt-6 flex bg-[#F1F2F4] rounded-full p-1 text-sm">
-            <button
+          {/* <div className="mt-6 flex bg-[#F1F2F4] rounded-full p-1 text-sm"> */}
+            {/* <button
               onClick={() => navigate("/admin/login")}
               className="flex-1 bg-white rounded-full py-2 shadow text-[#2F2C79]"
             >
               Password
-            </button>
-            <button
+            </button> */}
+            {/* <button
               onClick={() => navigate("/admin/otp")}
               className="flex-1 text-gray-500 hover:text-black"
             >
               OTP Login
-            </button>
-          </div>
+            </button> */}
+          {/* </div> */}
 
           {/* LOGIN FORM */}
           <form onSubmit={handleLogin} className="mt-6 space-y-4">
@@ -105,7 +105,7 @@ const AdminLogin = () => {
           </form>
 
           {/* Social Login */}
-          <div className="my-6 text-center text-xs text-gray-400">OR CONTINUE WITH</div>
+          {/* <div className="my-6 text-center text-xs text-gray-400">OR CONTINUE WITH</div>
           <div className="flex gap-3">
             <button onClick={handleSocialLogin} className="flex-1 border rounded-lg py-2">
               Google
@@ -113,9 +113,9 @@ const AdminLogin = () => {
             <button onClick={handleSocialLogin} className="flex-1 border rounded-lg py-2">
               Apple
             </button>
-          </div>
+          </div> */}
 
-          <p className="text-xs text-center mt-6 text-gray-500">
+          {/* <p className="text-xs text-center mt-6 text-gray-500">
             Don’t have an account?{" "}
             <span
               onClick={() => navigate("/admin/signup")}
@@ -123,7 +123,7 @@ const AdminLogin = () => {
             >
               Sign Up
             </span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

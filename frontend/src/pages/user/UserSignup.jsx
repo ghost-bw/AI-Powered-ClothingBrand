@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import API from "../../api/axios";
 
 const UserSignup = () => {
   const navigate = useNavigate();
@@ -73,6 +75,21 @@ const UserSignup = () => {
             className="border px-4 py-2 w-full rounded"
             required
           />
+          <GoogleLogin
+    onSuccess={async (credentialResponse) => {
+      try {
+        const res = await API.post("/auth/google", {
+          token: credentialResponse.credential,
+        });
+
+        localStorage.setItem("token", res.data.token);
+        navigate("/");
+      } catch (err) {
+        alert("Google signup failed");
+      }
+    }}
+    onError={() => alert("Google signup failed")}
+  />
           <button
             type="submit"
             disabled={loading}

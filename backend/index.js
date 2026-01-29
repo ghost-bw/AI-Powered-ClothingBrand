@@ -9,6 +9,8 @@ import categoryRoutes from "./routes/category.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 // import productRoutes from "./routes/admin.product.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
+import cartRoutes from "./routes/cart.routes.js";
+import userRoutes from "./routes/auth.routes.js";
 
 
 
@@ -32,9 +34,12 @@ app.use(
 app.use("/api/auth", authRoutes);
 // app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("/api/admin", adminRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/admin/dashboard", dashboardRoutes);
+app.use("/api/cart",cartRoutes);
+
 
 /* ================= HEALTH CHECK ================= */
 app.get("/", (req, res) => {

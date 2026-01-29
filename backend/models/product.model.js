@@ -1,71 +1,62 @@
-// src/models/Product.model.js
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema(
-  {
-    /* ===== USER VISIBLE ===== */
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+const productSchema = new mongoose.Schema({
 
-    description: {
-      type: String,
-    },
+ id:Number,
+ name:String,
+ slug:String,
+ isDeleted:{type:Boolean,default:false},
 
-    category: {
-      type: String,
-      required: true,
-      enum: ["Shirts", "Ethnic Wear", "Outerwear", "Accessories"],
-    },
+ category:{
+   type:mongoose.Schema.Types.ObjectId,
+   ref:"Category"
+ },
 
-    price: {
-      type: Number,
-      required: true,
-    },
+ description:String,
 
-    discountPrice: {
-      type: Number,
-    },
+ price:Number,
+ discountPercent:Number,
+ discountPrice:Number,
 
-    images: {
-      type: [String], // Cloudinary / S3 URLs
-      required: true,
-    },
+ stock:Number,
+ sku:String,
 
-    stock: {
-      type: Number,
-      required: true,
-    },
+ isActive:{type:Boolean,default:true},
+ totalSold:{type:Number,default:0},
 
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+ sizes:[String],
 
-    /* ===== ADMIN / BACKEND ONLY ===== */
-    totalSold: {
-      type: Number,
-      default: 0,
-    },
+ collections:[String],
 
-    revenue: {
-      type: Number,
-      default: 0,
-    },
+ isTrending:{type:Boolean,default:false},
+ isBrandStory:{type:Boolean,default:false},
 
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
+ details:{
+  fabric:String,
+  material:String,
+  care:String,
+  weight:String,
+  dimensions:String,
+  origin:String
+ },
 
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  },
-  { timestamps: true }
-);
+ // ⭐ Color + Images
+ colors:[
+ {
+  name:String,
+  hex:String,
+  images:[String]   // <=== THIS WAS MISSING
+ }
+]
+,
+
+ location:{
+  city:String,
+  state:String,
+  pincode:String
+ }
+
+},{timestamps:true});
 
 export default mongoose.model("Product", productSchema);
+

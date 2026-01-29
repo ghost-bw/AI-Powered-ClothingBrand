@@ -18,6 +18,9 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminSignup from "./pages/admin/AdminSignup";
 import AdminOtp from "./pages/admin/AdminOtp";
 import Dashboard from "./pages/admin/Dashboard";
+import AdminCollections from "./pages/admin/AdminCollections";
+import EditProduct from "./pages/admin/EditProduct";
+
 
 // Layout components
 import Navbar from "./components/Home/Navbar";
@@ -84,6 +87,9 @@ import NotFound from "./pages/NotFound";
 
 
 <Route path="*" element={<NotFound />} />
+<Route path="/admin/products" element={<AdminCollections />} />
+<Route path="/admin/products/edit/:id" element={<EditProduct />} />
+
 
         </Routes>
       </ShopProvider>

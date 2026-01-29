@@ -2,6 +2,8 @@ import User from "../models/user.model.js";
 import { hashPassword, comparePassword } from "../utils/hash.js";
 import { generateToken } from "../utils/jwt.js";
 import { z } from "zod";
+import jwt from "jsonwebtoken";
+
 
 /**
  * =========================
@@ -113,4 +115,53 @@ export const login = async (req, res) => {
       error: error.message,
     });
   }
+};
+export const getMe = async (req, res) => {
+  try {
+    res.json(req.user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+import { OAuth2Client } from "google-auth-library";
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleLogin = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    const { email, name, picture } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        avatar: picture,
+        password: "google",
+      });
+    }
+
+    const jwtToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({ token: jwtToken });
+
+  } catch (err) {
+  console.error("GOOGLE LOGIN ERROR FULL:", err);
+  res.status(400).json({ error: err.message, stack: err.stack });
+}
+
 };

@@ -1,165 +1,125 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useShop } from '../../context/ShopContext';
-import { Trash2, Heart, Plus, Minus } from 'lucide-react';
-import productsData from '../../data/products.json';
+import React,{useState,useEffect} from "react";
+import {Link,useNavigate} from "react-router-dom";
+import API from "../../api/axios";
+import {Trash2,Heart,Plus,Minus} from "lucide-react";
 
-const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, addToCart, cartTotal, cartCount, toggleWishlist, wishlist } = useShop();
-  const [promoCode, setPromoCode] = useState('');
-  const [discount, setDiscount] = useState(0);
-  const [freeShippingThreshold] = useState(7000);
-  const [shippingCost] = useState(150);
-  const [gstRate] = useState(0.12);
-  const [recommendedItems, setRecommendedItems] = useState([]);
-  const navigate = useNavigate();
-  const handleAddToCart = () => {
-  const token = localStorage.getItem("token");
+const Cart=()=>{
 
-  if (!token) {
-    navigate("/user/login");
-    return;
-  }
+const [cart,setCart]=useState([]);
+const [wishlist,setWishlist]=useState([]);
+const [recommendedItems,setRecommendedItems]=useState([]);
 
-  // user is logged in → proceed
-  addToCart(product);
+const [promoCode,setPromoCode]=useState("");
+const [discount,setDiscount]=useState(0);
+
+const freeShippingThreshold=7000;
+const shippingCost=150;
+const gstRate=0.12;
+
+const navigate=useNavigate();
+
+/* ================= LOAD CART ================= */
+useEffect(()=>{
+ loadCart();
+ loadWishlist();
+ loadRecommended();
+},[]);
+
+const loadCart=async()=>{
+ const res=await API.get("/users/me");
+ setCart(res.data.cart||[]);
 };
 
+const loadWishlist=async()=>{
+ const res=await API.get("/users/me");
+ setWishlist(res.data.wishlist||[]);
+};
 
-  // Fetch recommended items from products.json (excluding items already in cart)
-  useEffect(() => {
-    const getRecommendedItems = () => {
-      const cartProductIds = cart.map(item => item.id);
-      
-      // Get products that are not in cart, limit to 4
-      const recommended = Object.values(productsData)
-        .filter(product => !cartProductIds.includes(product.id))
-        .slice(0, 4)
-        .map(product => ({
-          id: product.id,
-          category: product.category,
-          name: product.title,
-          price: product.price,
-          originalPrice: product.originalPrice,
-          discount: product.discount,
-          image: product.images[0],
-          rating: product.rating,
-          description: product.description
-        }));
-      
-      // If we don't have enough recommendations, add some placeholders
-      if (recommended.length < 4) {
-        const placeholderItems = [
-          {
-            id: 101,
-            category: 'Footwear',
-            name: 'Artisanal Leather Loafers',
-            price: 3450,
-            image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400'
-          },
-          {
-            id: 102,
-            category: 'Watches',
-            name: 'Minimalist Chronograph',
-            price: 7999,
-            image: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400'
-          },
-          {
-            id: 103,
-            category: 'Basics',
-            name: 'Supima Cotton Tee',
-            price: 1250,
-            image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400'
-          },
-          {
-            id: 104,
-            category: 'Shirts',
-            name: 'Crushed Linen Shirt',
-            price: 2899,
-            image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400'
-          }
-        ].slice(0, 4 - recommended.length);
-        
-        setRecommendedItems([...recommended, ...placeholderItems]);
-      } else {
-        setRecommendedItems(recommended);
-      }
-    };
-    
-    getRecommendedItems();
-  }, [cart]);
+/* ================= RECOMMENDED ================= */
+const loadRecommended=async()=>{
+ const res=await API.get("/products");
+ setRecommendedItems(res.data.products?.slice(0,4)||[]);
+};
 
-  const subtotal = cartTotal;
-  const estimatedShipping = subtotal >= freeShippingThreshold ? 0 : shippingCost;
-  const gst = (subtotal + estimatedShipping) * gstRate;
-  const totalAmount = subtotal + estimatedShipping + gst - discount;
+/* ================= CART TOTAL ================= */
+const cartTotal=cart.reduce((a,b)=>a+(b.product.price*b.quantity),0);
 
-  // Calculate free shipping progress
-  const freeShippingProgress = Math.min((subtotal / freeShippingThreshold) * 100, 100);
-  const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
+/* ================= REMOVE ================= */
+const removeFromCart=async(id)=>{
+ await API.delete(`/cart/${id}`);
+ loadCart();
+};
 
-  // Handle quantity change
-  const handleQuantityChange = (item, change) => {
-    const newQuantity = item.quantity + change;
-    if (newQuantity >= 1) {
-      updateQuantity(item.id, item.size, item.color, newQuantity);
-    }
-  };
+/* ================= UPDATE QTY ================= */
+const updateQuantity=async(id,qty)=>{
+ await API.put(`/cart/${id}`,{quantity:qty});
+ loadCart();
+};
 
-  // Handle promo code
-  const handleApplyPromo = () => {
-    if (promoCode.trim() === '') return;
-    
-    const validPromoCodes = {
-      'WELCOME15': 0.15,
-      'SAVE10': 0.10,
-      'FASHION20': 0.20
-    };
-    
-    if (validPromoCodes[promoCode.toUpperCase()]) {
-      const discountRate = validPromoCodes[promoCode.toUpperCase()];
-      const discountAmount = subtotal * discountRate;
-      setDiscount(discountAmount);
-      alert(`Promo code applied! You saved ₹${discountAmount.toFixed(2)}`);
-    } else {
-      alert('Invalid promo code. Please try again.');
-    }
-  };
+/* ================= ADD RECOMMENDED ================= */
+const addRecommendedItem=async(item)=>{
 
-  // Handle checkout
-  const handleCheckout = () => {
-    if (cart.length === 0) {
-      alert('Your cart is empty!');
-      return;
-    }
-    navigate('/checkout');
-  };
+ await API.post("/cart",{
+  product:item._id,
+  quantity:1,
+  size:"M",
+  color:"Default"
+ });
 
-  // Add recommended item to cart
-  const addRecommendedItem = (item) => {
-    const cartItem = {
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      image: item.image,
-      size: 'M',
-      color: 'Default',
-      quantity: 1
-    };
-    
-    addToCart(cartItem);
-    alert(`${item.name} added to cart!`);
-  };
+ loadCart();
+};
 
-  // Navigate to product detail page
-  const goToProductDetail = (productId, e) => {
-    e.stopPropagation();
-    navigate(`/product/${productId}`);
-  };
+/* ================= WISHLIST ================= */
+const toggleWishlist=async(id)=>{
+ await API.post(`/cart/wishlist/${id}`);
+ loadWishlist();
+};
 
-  const isInWishlist = (productId) => {
-    return wishlist.some(item => item.id === productId);
-  };
+// const subtotal=cartTotal;
+// const estimatedShipping=subtotal>=freeShippingThreshold?0:shippingCost;
+// const gst=(subtotal+estimatedShipping)*gstRate;
+// const totalAmount=subtotal+estimatedShipping+gst-discount;
+
+/* ================= PROMO ================= */
+const handleApplyPromo=()=>{
+
+ const codes={
+  WELCOME15:0.15,
+  SAVE10:0.10,
+  FASHION20:0.20
+ };
+
+ if(codes[promoCode]){
+  setDiscount(subtotal*codes[promoCode]);
+ }else alert("Invalid Code");
+};
+
+const handleCheckout=()=>{
+ if(!cart.length)return alert("Cart Empty");
+ navigate("/checkout");
+};
+
+const cartCount = cart.reduce((a,b)=>a + b.quantity,0);
+
+const subtotal = cart.reduce(
+  (a,b)=>a + (b.product.price * b.quantity),
+  0
+);
+
+const estimatedShipping =
+  subtotal >= freeShippingThreshold ? 0 : shippingCost;
+
+const gst = (subtotal + estimatedShipping) * gstRate;
+
+const totalAmount = subtotal + estimatedShipping + gst - discount;
+
+const freeShippingProgress = Math.min(
+  (subtotal / freeShippingThreshold) * 100,
+  100
+);
+
+const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -204,8 +164,7 @@ const Cart = () => {
                 <div className="text-5xl mb-4">🛒</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h3>
                 <p className="text-gray-600 mb-6">Looks like you haven't added anything to your cart yet.</p>
-                <Link 
-                  to="/collections"
+                <Link to="/collections"
                   className="inline-block bg-black text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
                 >
                   Start Shopping

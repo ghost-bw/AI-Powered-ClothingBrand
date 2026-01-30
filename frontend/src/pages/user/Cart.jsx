@@ -4,6 +4,10 @@ import API from "../../api/axios";
 import {Trash2,Heart,Plus,Minus} from "lucide-react";
 
 const Cart=()=>{
+  const isInWishlist = (id) => {
+ return wishlist.some(item => item._id === id);
+};
+
 
 const [cart,setCart]=useState([]);
 const [wishlist,setWishlist]=useState([]);
@@ -11,6 +15,10 @@ const [recommendedItems,setRecommendedItems]=useState([]);
 
 const [promoCode,setPromoCode]=useState("");
 const [discount,setDiscount]=useState(0);
+const [loadingCart,setLoadingCart]=useState(true);
+const [loading, setLoading] = useState(true);
+
+
 
 const freeShippingThreshold=7000;
 const shippingCost=150;
@@ -20,20 +28,52 @@ const navigate=useNavigate();
 
 /* ================= LOAD CART ================= */
 useEffect(()=>{
- loadCart();
- loadWishlist();
- loadRecommended();
+
+ const init = async ()=>{
+  await loadCart();
+  await loadWishlist();
+  await loadRecommended();
+  setLoading(false);
+ };
+
+ init();
+
 },[]);
 
-const loadCart=async()=>{
- const res=await API.get("/users/me");
- setCart(res.data.cart||[]);
+
+const loadCart = async () => {
+ try {
+  const res = await API.get("/users/me", {
+   headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+   }
+  });
+
+  // console.log("ME:", res.data);
+
+  setCart(res.data?.cart || []);
+
+ } catch (err) {
+  console.log(err.response?.data || err.message);
+ }
 };
 
-const loadWishlist=async()=>{
- const res=await API.get("/users/me");
- setWishlist(res.data.wishlist||[]);
+const loadWishlist = async () => {
+ try {
+  const res = await API.get("/users/me", {
+   headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+   }
+  });
+
+  setWishlist(res.data?.wishlist || []);
+
+ } catch (err) {
+  console.log(err.response?.data || err.message);
+ }
 };
+
+
 
 /* ================= RECOMMENDED ================= */
 const loadRecommended=async()=>{
@@ -42,7 +82,7 @@ const loadRecommended=async()=>{
 };
 
 /* ================= CART TOTAL ================= */
-const cartTotal=cart.reduce((a,b)=>a+(b.product.price*b.quantity),0);
+const cartTotal=cart.reduce((a,b)=>a+(b.price*b.quantity),0);
 
 /* ================= REMOVE ================= */
 const removeFromCart=async(id)=>{
@@ -94,15 +134,18 @@ const handleApplyPromo=()=>{
  }else alert("Invalid Code");
 };
 
-const handleCheckout=()=>{
- if(!cart.length)return alert("Cart Empty");
+const handleCheckout = () => {
+ console.log("CHECKOUT CLICKED");
+ console.log("cart before nav:", cart);
  navigate("/checkout");
 };
+
+
 
 const cartCount = cart.reduce((a,b)=>a + b.quantity,0);
 
 const subtotal = cart.reduce(
-  (a,b)=>a + (b.product.price * b.quantity),
+  (a,b)=>a + (b.price * b.quantity),
   0
 );
 
@@ -119,6 +162,16 @@ const freeShippingProgress = Math.min(
 );
 
 const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
+const handleQuantityChange = async (item, delta) => {
+ const newQty = item.quantity + delta;
+ if (newQty < 1) return;
+
+ await API.put(`/cart/${item._id}`, {
+  quantity: newQty
+ });
+
+ loadCart();
+};
 
 
   return (
@@ -173,7 +226,7 @@ const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
             ) : (
               <div className="space-y-6">
                 {cart.map((item) => (
-                  <div key={`${item.id}-${item.size}-${item.color}`} className="bg-white rounded-lg shadow-sm p-6">
+                  <div key={`${item._id}-${item.size}-${item.color}`} className="bg-white rounded-lg shadow-sm p-6">
                     <div className="flex flex-col md:flex-row gap-6">
                       {/* Product Image */}
                       <div className="md:w-1/4">
@@ -197,7 +250,8 @@ const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
                               Size: {item.size} | Color: {item.color}
                             </p>
                             <p className="text-xl font-bold text-gray-900">
-                              ₹{item.price.toLocaleString()}
+                              {(item.product?.price ?? 0).toLocaleString()}
+
                             </p>
                           </div>
                           
@@ -228,25 +282,25 @@ const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
                           <button
                             onClick={() => {
                               const wishlistItem = {
-                                id: item.id,
+                                id: item._id,
                                 name: item.name,
                                 price: item.price,
                                 image: item.image,
                                 category: item.category || 'General'
                               };
-                              toggleWishlist(wishlistItem);
+                              toggleWishlist(item._id);
                             }}
                             className={`px-4 py-2 text-sm font-medium rounded-md border flex items-center gap-2 ${
-                              isInWishlist(item.id)
+                              isInWishlist(item._id)
                                 ? 'bg-red-50 text-red-600 border-red-200' 
                                 : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                             }`}
                           >
-                            <Heart size={16} className={isInWishlist(item.id) ? 'fill-red-600' : ''} />
-                            {isInWishlist(item.id) ? 'SAVED' : 'SAVE FOR LATER'}
+                            <Heart size={16} className={isInWishlist(item._id) ? 'fill-red-600' : ''} />
+                            {isInWishlist(item._id) ? 'SAVED' : 'SAVE FOR LATER'}
                           </button>
                           <button
-                            onClick={() => removeFromCart(item.id, item.size, item.color)}
+                            onClick={() => removeFromCart(item._id)}
                             className="px-4 py-2 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-md hover:bg-red-50 flex items-center gap-2"
                           >
                             <Trash2 size={16} />
@@ -390,9 +444,9 @@ const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
                   <div className="space-y-4">
                     {recommendedItems.map((item) => (
                       <div 
-                        key={item.id} 
+                        key={item._id} 
                         className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-md transition-colors cursor-pointer"
-                        onClick={(e) => goToProductDetail(item.id, e)}
+                        onClick={(e) => goToProductDetail(item._id, e)}
                       >
                         <div className="flex items-center">
                           <div className="w-16 h-16 bg-gray-100 rounded-md mr-3 overflow-hidden">
@@ -406,7 +460,8 @@ const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
                             <h4 className="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors">
                               {item.name}
                             </h4>
-                            <p className="text-xs text-gray-500">{item.category}</p>
+                          <p className="text-xs text-gray-500">{item.category?.name || ""}</p>
+
                             <div className="flex items-center gap-2">
                               <p className="text-sm font-bold text-gray-900">₹{item.price.toLocaleString()}</p>
                               {item.originalPrice && item.originalPrice > item.price && (

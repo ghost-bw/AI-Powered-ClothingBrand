@@ -1,12 +1,18 @@
 import express from "express";
-import {protect} from "../middlewares/auth.middleware.js";
-import {addToCart,removeFromCart,updateCart,toggleWishlist} from "../controllers/cart.controller.js";
+import protect from "../middlewares/auth.middleware.js";
+
+import {
+ addToCart,
+ updateCart,
+ removeFromCart,
+ toggleWishlist
+} from "../controllers/cart.controller.js";
 
 const router=express.Router();
 
 router.post("/",protect,addToCart);
-router.delete("/:id",protect,removeFromCart);
 router.put("/:id",protect,updateCart);
-router.post("/wishlist/:productId",protect,toggleWishlist);
+router.delete("/:id",protect,removeFromCart);
+router.post("/wishlist/:id",protect,toggleWishlist);
 
 export default router;

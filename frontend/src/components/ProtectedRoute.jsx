@@ -1,19 +1,29 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
-const ProtectedRoute = ({ children, role }) => {
-  const token = localStorage.getItem("token");
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("token"); // FIXED
+console.log("ProtectedRoute token:", token);
 
   if (!token) {
-    // Redirect based on role
-    return <Navigate to={role === "admin" ? "/admin/login" : "/user/login"} />;
+    return <Navigate to="/user/login" />;
   }
 
-  // Optional: decode token to check role
-  // const decoded = jwtDecode(token);
-  // if (role && decoded.role !== role) return <Navigate to="/user/login" />;
+  try {
+    const decoded = jwtDecode(token);
 
-  return children;
+    /* TOKEN EXPIRED CHECK */
+    if (decoded.exp * 1000 < Date.now()) {
+      localStorage.clear();
+      return <Navigate to="/user/login" />;
+    }
+
+    return children;
+  } catch (error) {
+    localStorage.clear();
+    return <Navigate to="/user/login" />;
+  }
 };
 
 export default ProtectedRoute;

@@ -62,19 +62,36 @@ const handleZoom=e=>{
  setIsZoomed(true);
 };
 
-const handleAddToCart=()=>{
- if(!selectedSize) return alert("Select size");
+const handleAddToCart = async () => {
+ try {
 
- addToCart({
-  id:product._id,
-  name:product.name,
-  price:product.discountPrice||product.price,
-  image:images[0],
-  size:selectedSize,
-  color:selectedColor.name,
-  quantity
- });
+  if(!localStorage.getItem("token")){
+   window.location.href="/user/login";
+   return;
+  }
+
+  if (!selectedSize) return alert("Select size");
+
+  await API.post("/cart", {
+    product: product._id,
+    name: product.name,
+    price: product.discountPrice || product.price,
+    image: product.colors[0]?.images[0],
+    size: selectedSize,
+    color: selectedColor?.name,
+    quantity
+  });
+
+  navigate("/cart");
+
+ } catch (err) {
+  console.error(err.response?.data || err.message);
+  alert(err.response?.data?.message || "Something went wrong");
+ }
 };
+
+
+
 
 return(
 <>
@@ -150,7 +167,13 @@ style={{background:c.hex}}
 <button onClick={()=>setQuantity(q=>q+1)}>+</button>
 </div>
 
-<button onClick={handleAddToCart} className="bg-black text-white w-full py-3">Add To Cart</button>
+<button
+ onClick={handleAddToCart}
+ className="bg-black text-white w-full py-3"
+>
+ Add To Cart
+</button>
+
 
 <button onClick={()=>toggleWishlist(product)} className="border w-full py-3">
 {isInWishlist?"In Wishlist":"Add Wishlist"}

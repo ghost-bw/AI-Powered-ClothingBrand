@@ -1,38 +1,52 @@
-// src/models/Order.model.js
 import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema({
+ user:{
+  type:mongoose.Schema.Types.ObjectId,
+  ref:"User",
+  required:true
+ },
+
+ items:[
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+   product:{ type:mongoose.Schema.Types.ObjectId, ref:"Product" },
+   name:String,
+   price:Number,
+   image:String,
+   size:String,
+   color:String,
+   quantity:Number
+  }
+ ],
 
-    items: [
-      {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-        },
-        name: String,
-        category: String,
-        price: Number,
-        quantity: Number,
-      },
-    ],
+ shipping:{
+  fullName:String,
+  email:String,
+  address:String,
+  city:String,
+  state:String,
+  zip:String,
+  phone:String
+ },
 
-    totalAmount: {
-      type: Number,
-      required: true,
-    },
+ paymentMethod:String,
 
-    paymentStatus: {
-      type: String,
-      enum: ["PENDING", "PAID"],
-      default: "PAID",
-    },
-  },
-  { timestamps: true }
-);
+ subtotal:Number,
+ shippingCost:Number,
+ gst:Number,
+ discount:Number,
+ total:Number,
 
-export default mongoose.model("Order", orderSchema);
+ status:{
+  type:String,
+  default:"Processing"
+ },
+
+ createdAt:{
+  type:Date,
+  default:Date.now
+ }
+
+});
+
+export default mongoose.model("Order",orderSchema);

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ShopProvider } from "./context/ShopContext";
+// import { ShopProvider } from "./context/ShopContext";
 
 // User pages/components
 import Home from "./pages/user/Home";
@@ -26,11 +26,19 @@ import EditProduct from "./pages/admin/EditProduct";
 import Navbar from "./components/Home/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddProduct from "./pages/admin/AddProduct";
+import DashboardLayout from "./pages/dashboard/DashboardLayout";
+import Profile from "./pages/dashboard/Profile";
+import Orders from "./pages/dashboard/Orders";
+import OrderDetails from "./pages/dashboard/OrderDetails";
+import OrderHistory from "./pages/dashboard/OrderHistory";
+import TrackOrder from "./pages/dashboard/TrackOrder";
+import Address from "./pages/dashboard/Address";
+import Invoices from "./pages/dashboard/Invoices";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <ShopProvider>
+ 
         <Routes>
           {/* User Routes */}
           <Route path="/" element={<Home />} />
@@ -43,15 +51,23 @@ const App = () => {
           <Route path="/user/signup" element={<UserSignup />} />
           <Route path="/user/login" element={<UserLogin />} />
 
-          {/* Protected User Dashboard */}
           <Route
-            path="/user/dashboard"
-            element={
-              <ProtectedRoute role="user">
-                <UserDashboard />
-              </ProtectedRoute>
-            }
-          />
+  path="/user/dashboard"
+  element={
+    <ProtectedRoute>
+      <DashboardLayout />
+    </ProtectedRoute>
+  }
+>
+  <Route index element={<Profile />} />
+  <Route path="me" element={<Profile />} />
+  <Route path="orders" element={<Orders />} />
+  <Route path="orders/:id" element={<OrderDetails />} />
+  <Route path="track-order" element={<TrackOrder />} />
+  <Route path="address" element={<Address />} />
+  <Route path="invoices" element={<Invoices />} />
+</Route>
+
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -64,6 +80,15 @@ const App = () => {
             element={
               <ProtectedRoute role="admin">
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+           <Route
+            path="/user/dashboard"
+            element={
+              <ProtectedRoute role="user">
+                <DashboardLayout />
               </ProtectedRoute>
             }
           />
@@ -83,7 +108,7 @@ const App = () => {
     </ProtectedRoute>
   }
 />
-import NotFound from "./pages/NotFound";
+
 
 
 <Route path="*" element={<NotFound />} />
@@ -92,7 +117,7 @@ import NotFound from "./pages/NotFound";
 
 
         </Routes>
-      </ShopProvider>
+      
     </BrowserRouter>
   );
 };

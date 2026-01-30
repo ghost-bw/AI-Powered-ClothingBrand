@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return navigate("/user/login");
-
-    // Fetch user data from backend
-    fetch("/api/auth/profile", {   // <-- fixed route
-      headers: { Authorization: `Bearer ${token}` },
+  axios
+    .get("http://localhost:4000/api/user/dashboard/me", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Unauthorized");
-        return res.json();
-      })
-      .then((data) => setUserData(data.user)) // data.user contains the actual user
-      .catch(() => {
-        localStorage.removeItem("token");
-        navigate("/user/login");
-      });
-  }, [navigate]);
+    .then((res) => {
+      setUserData(res.data.user);
+    })
+    .catch(() => {
+      localStorage.removeItem("token");
+      navigate("/user/login");
+    });
+}, [navigate]);
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");

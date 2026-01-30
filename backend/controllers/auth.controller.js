@@ -42,7 +42,7 @@ export const signup = async (req, res) => {
 
     // Generate JWT
     const token = generateToken({
-      id: user._id,
+      _id: user._id,
       role: user.role,
     });
 
@@ -94,7 +94,7 @@ export const login = async (req, res) => {
 
     // Generate JWT
     const token = generateToken({
-      id: user._id,
+      _id: user._id,
       role: user.role,
     });
 
@@ -116,12 +116,13 @@ export const login = async (req, res) => {
     });
   }
 };
-export const getMe = async (req, res) => {
-  try {
-    res.json(req.user);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+
+export const getMe = async (req,res)=>{
+ const user = await User.findById(req.user._id)
+  .populate("cart.product")
+  .populate("wishlist");
+
+ res.json(user);
 };
 
 import { OAuth2Client } from "google-auth-library";
@@ -152,7 +153,7 @@ export const googleLogin = async (req, res) => {
     }
 
     const jwtToken = jwt.sign(
-      { id: user._id },
+      { _id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );

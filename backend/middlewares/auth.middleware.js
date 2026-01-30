@@ -1,20 +1,41 @@
 import jwt from "jsonwebtoken";
+import User from "../models/user.model.js";
+
 console.log("Auth middleware loaded");
 
-export const protect = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+ const protect = async (req, res, next) => {
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided" });
+ console.log("---- PROTECT MIDDLEWARE HIT ----");
+
+ const authHeader = req.headers.authorization;
+
+ if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  return res.status(401).json({ message: "No token provided" });
+ }
+
+ const token = authHeader.split(" ")[1];
+
+ try {
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  // 🔥 LOAD REAL USER FROM DB
+  const user = await User.findById(decoded._id).select("-password");
+
+  if (!user) {
+   return res.status(401).json({ message: "User not found in database" });
   }
 
-  const token = authHeader.split(" ")[1];
+  req.user = user;   // FULL MONGO USER DOCUMENT
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // { userId, role }
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "Invalid or expired token" });
-  }
+  console.log("REQ.USER FINAL:", req.user._id.toString());
+
+  next();
+
+ } catch (error) {
+  console.log("JWT ERROR:", error.message);
+  return res.status(401).json({ message: "Invalid or expired token" });
+ }
 };
+
+export default protect;

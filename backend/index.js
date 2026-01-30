@@ -11,6 +11,9 @@ import adminRoutes from "./routes/admin.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import userRoutes from "./routes/auth.routes.js";
+import orderRoutes from "./routes/order.routes.js";
+import userdashboardRoutes from "./routes/userdashboard.routes.js";
+
 
 
 
@@ -39,6 +42,12 @@ app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/dashboard", dashboardRoutes);
 app.use("/api/cart",cartRoutes);
+app.use("/api/orders",orderRoutes);
+app.use("/api/user/dashboard",userdashboardRoutes);
+
+
+
+
 
 
 /* ================= HEALTH CHECK ================= */

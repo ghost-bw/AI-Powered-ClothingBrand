@@ -10,6 +10,7 @@ import {
 import {
   getInvoices,
   downloadInvoice,
+  updateProfile
 } from "../controllers/userdashboard.controller.js";
 
 
@@ -17,7 +18,9 @@ const router = express.Router();
 
 router.get("/invoices", protect, getInvoices);
 router.get("/invoices/:id/download", protect, downloadInvoice);
+router.get("/orders/my", protect, getMyOrders);
 router.get("/orders/:id", protect, getOrderDetails);
+router.put("/profile", protect, updateProfile);
 
 
 
@@ -34,9 +37,11 @@ router.delete("/addresses/:id", protect, deleteAddress);
 
 /* PROFILE */
 router.get("/me", protect, getMe);
+router.put("/profile", protect, updateProfile);
+
 
 /* ORDERS */
-router.get("/orders", protect, getMyOrders);
+// router.get("/orders", protect, getMyOrders);
 
 /* NOTIFICATIONS (optional) */
 router.get("/notifications", protect, (req, res) => {

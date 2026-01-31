@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import API from "../../api/axios";
 
-const UserLogin = () => {
+export default function UserLogin() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,7 +24,6 @@ const UserLogin = () => {
       const data = await res.json();
 
       if (res.ok) {
-        // Save JWT token
         localStorage.setItem("token", data.token);
         navigate("/");
       } else {
@@ -38,69 +38,84 @@ const UserLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FAFAF7]">
-      <div className="p-8 bg-white shadow rounded-xl w-full max-w-md">
-        <h2 className="text-xl mb-4 font-semibold">User Login</h2>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border px-4 py-2 w-full rounded"
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border px-4 py-2 w-full rounded"
-            required
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#2F2C79] text-white py-2 rounded"
-          >
-            {loading ? "Signing in..." : "Login"}
-          </button>
-        </form>
-        <p className="text-xs text-gray-500 mt-4 text-center">
-          Don’t have an account?{" "}
-          <span
-            className="text-[#2F2C79] cursor-pointer"
-            onClick={() => navigate("/user/signup")}
-          >
-            Sign Up
-          </span>
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-200 px-4">
+      <div className="w-full max-w-4xl flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-2xl bg-white">
 
-    
-<GoogleLogin
-  onSuccess={async (credentialResponse) => {
-    try {
-      const res = await API.post("/auth/google", {
-        token: credentialResponse.credential,
-      });
+        {/* LEFT - FORM */}
+        <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+            Login
+          </h2>
 
-      localStorage.setItem("token", res.data.token);
+          <form onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mb-4 px-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+              required
+            />
 
-      // 🔥 React router redirect
-      navigate("/");
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mb-6 px-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+              required
+            />
 
-    } catch (err) {
-      console.error(err);
-      alert("Google login failed");
-    }
-  }}
-  onError={() => alert("Google Login Failed")}
-/>
-  </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-gray-800 text-white py-2 rounded w-full hover:bg-gray-700 transition"
+            >
+              {loading ? "Signing in..." : "Login"}
+            </button>
+          </form>
+
+          <div className="mt-4 flex justify-center">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                try {
+                  const res = await API.post("/auth/google", {
+                    token: credentialResponse.credential,
+                  });
+
+                  localStorage.setItem("token", res.data.token);
+                  navigate("/");
+                } catch (err) {
+                  console.error(err);
+                  alert("Google login failed");
+                }
+              }}
+              onError={() => alert("Google Login Failed")}
+            />
+          </div>
+
+          <p className="text-sm mt-4 text-center text-gray-600">
+            Don’t have an account?{" "}
+            <span
+              className="text-gray-900 font-medium cursor-pointer"
+              onClick={() => navigate("/user/signup")}
+            >
+              Sign up
+            </span>
+          </p>
+        </div>
+
+        {/* RIGHT - INFO */}
+        <div className="w-full md:w-1/2 bg-gray-800 text-white flex flex-col justify-center items-center text-center p-8 md:p-10">
+          <h2 className="text-3xl font-bold mb-4">
+            Welcome Back
+          </h2>
+          <p className="text-sm opacity-90 leading-relaxed">
+            Login to access your dashboard and manage your account.
+          </p>
+        </div>
+
+      </div>
     </div>
   );
-};
-
-
-
-export default UserLogin;
+}

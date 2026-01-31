@@ -54,7 +54,7 @@ const DashboardNavbar = () => {
             {openMenu && (
               <div className="absolute right-0 mt-2 w-44 bg-white border rounded-lg shadow-lg overflow-hidden">
                 <button
-                  onClick={() => navigate("/dashboard/profile")}
+                  onClick={() => navigate("/dashboard/")}
                   className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full text-sm"
                 >
                   <User size={16} /> My Profile

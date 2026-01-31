@@ -4,8 +4,10 @@ import axios from "axios";
 import { FiEdit, FiPlus, FiX, FiLock } from "react-icons/fi";
 
 export default function Profile() {
-  const { user, orders } = useOutletContext();
+  const { user } = useOutletContext();
   const token = localStorage.getItem("token");
+
+  const [orders, setOrders] = useState([]);
 
   const [editOpen, setEditOpen] = useState(false);
   const [cardOpen, setCardOpen] = useState(false);
@@ -29,45 +31,73 @@ export default function Profile() {
 
   useEffect(() => {
     if (user) {
-      setProfile({
+      const data = {
         name: user.name || "",
         email: user.email || "",
         phone: user.phone || "",
         location: user.location || "",
-      });
+      };
 
-      setTempProfile({
-        name: user.name || "",
-        email: user.email || "",
-        phone: user.phone || "",
-        location: user.location || "",
-      });
+      setProfile(data);
+      setTempProfile(data);
     }
   }, [user]);
 
-  /* REAL STATS */
+  /* LOAD ORDERS */
 
-  const totalOrders = orders?.length || 0;
-  const delivered = orders?.filter(o => o.status === "Delivered").length || 0;
-  const inTransit = orders?.filter(o => o.status === "In Transit").length || 0;
-  const cancelled = orders?.filter(o => o.status === "Cancelled").length || 0;
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/api/user/dashboard/orders/my", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setOrders(res.data))
+      .catch(() => setOrders([]));
+  }, []);
+
+  /* STATS */
+
+  const totalOrders = orders.length;
+  const delivered = orders.filter(o => o.status === "Delivered").length;
+  const inTransit = orders.filter(o => o.status === "Shipped").length;
+  const cancelled = orders.filter(o => o.status === "Cancelled").length;
 
   /* SAVE PROFILE */
 
-  const handleSaveProfile = () => {
-    axios.put(
-      "http://localhost:4000/api/user/dashboard/me",
-      tempProfile,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    ).then(() => {
-      setProfile(tempProfile);
-      setEditOpen(false);
-    });
-  };
+  const handleSaveProfile = async () => {
+ try {
+
+  // console.log("SAVING PROFILE:", tempProfile);
+
+  const res = await axios.put(
+    "http://localhost:4000/api/user/dashboard/profile",
+    tempProfile,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+  });
+
+  // console.log("SERVER RESPONSE:", res.data);
+
+  setProfile({
+   name: res.data.user.name || "",
+   email: res.data.user.email || "",
+   phone: res.data.user.phone || "",
+   location: res.data.user.location || "",
+  });
+
+  setTempProfile({
+   name: res.data.user.name || "",
+   email: res.data.user.email || "",
+   phone: res.data.user.phone || "",
+   location: res.data.user.location || "",
+  });
+
+  setEditOpen(false);
+
+ } catch (err) {
+  console.log("SAVE ERROR:", err.response?.data || err.message);
+ }
+};
+
 
   const handleAddCard = () => {
     if (!newCard.number || !newCard.expiry) return;
@@ -124,7 +154,7 @@ export default function Profile() {
         ))}
       </div>
 
-      {/* PERSONAL INFO */}
+      {/* PERSONAL + SECURITY */}
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-white border rounded-xl p-6 space-y-2">
           <h3 className="font-semibold">Personal Information</h3>
@@ -168,45 +198,40 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* MODALS remain same */}
+      {/* MODALS */}
 
       {editOpen && (
         <Modal title="Edit Profile" onClose={() => setEditOpen(false)}>
-          <Input label="Name" value={tempProfile.name}
-            onChange={(e)=>setTempProfile({...tempProfile,name:e.target.value})}/>
-          <Input label="Email" value={tempProfile.email}
-            onChange={(e)=>setTempProfile({...tempProfile,email:e.target.value})}/>
-          <Input label="Phone" value={tempProfile.phone}
-            onChange={(e)=>setTempProfile({...tempProfile,phone:e.target.value})}/>
-          <Input label="Location" value={tempProfile.location}
-            onChange={(e)=>setTempProfile({...tempProfile,location:e.target.value})}/>
+          <Input label="Name" value={tempProfile.name} onChange={e=>setTempProfile({...tempProfile,name:e.target.value})}/>
+          <Input label="Email" value={tempProfile.email} onChange={e=>setTempProfile({...tempProfile,email:e.target.value})}/>
+          <Input label="Phone" value={tempProfile.phone} onChange={e=>setTempProfile({...tempProfile,phone:e.target.value})}/>
+          <Input label="Location" value={tempProfile.location} onChange={e=>setTempProfile({...tempProfile,location:e.target.value})}/>
           <ModalFooter onCancel={()=>setEditOpen(false)} onSave={handleSaveProfile}/>
         </Modal>
       )}
 
       {cardOpen && (
         <Modal title="Add New Card" onClose={() => setCardOpen(false)}>
-          <Input label="Card Number" value={newCard.number}
-            onChange={(e)=>setNewCard({...newCard,number:e.target.value})}/>
-          <Input label="Expiry" value={newCard.expiry}
-            onChange={(e)=>setNewCard({...newCard,expiry:e.target.value})}/>
+          <Input label="Card Number" value={newCard.number} onChange={e=>setNewCard({...newCard,number:e.target.value})}/>
+          <Input label="Expiry" value={newCard.expiry} onChange={e=>setNewCard({...newCard,expiry:e.target.value})}/>
           <ModalFooter onCancel={()=>setCardOpen(false)} onSave={handleAddCard}/>
         </Modal>
       )}
 
       {passwordOpen && (
         <Modal title="Change Password" onClose={() => setPasswordOpen(false)}>
-          <Input label="Current Password" type="password" />
-          <Input label="New Password" type="password" />
-          <Input label="Confirm Password" type="password" />
+          <Input label="Current Password" type="password"/>
+          <Input label="New Password" type="password"/>
+          <Input label="Confirm Password" type="password"/>
           <ModalFooter onCancel={()=>setPasswordOpen(false)} onSave={()=>setPasswordOpen(false)}/>
         </Modal>
       )}
+
     </div>
   );
 }
 
-/* UI helpers unchanged */
+/* UI helpers */
 
 const Modal = ({ title, children, onClose }) => (
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
@@ -220,12 +245,18 @@ const Modal = ({ title, children, onClose }) => (
   </div>
 );
 
-const Input = ({ label, ...props }) => (
-  <div>
-    <label className="text-sm text-gray-600">{label}</label>
-    <input {...props} className="w-full border rounded-lg px-3 py-2 mt-1"/>
-  </div>
+const Input = ({ label, value = "", onChange, type = "text" }) => (
+ <div>
+  <label className="text-sm text-gray-600">{label}</label>
+  <input
+   value={value}
+   onChange={onChange}
+   type={type}
+   className="w-full border rounded-lg px-3 py-2 mt-1"
+  />
+ </div>
 );
+
 
 const ModalFooter = ({ onCancel, onSave }) => (
   <div className="flex justify-end gap-3 pt-4">

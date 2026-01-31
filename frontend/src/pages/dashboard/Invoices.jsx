@@ -1,35 +1,61 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import API from "axios";
+import API from "../../api/axios";
+
 
 export default function Invoices() {
   const [invoices, setInvoices] = useState([]);
   const token = localStorage.getItem("token");
 
+  const fetchInvoices = async () => {
+    try {
+      const res = await API.get(
+        "http://localhost:4000/api/user/dashboard/invoices",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log("INVOICES:", res.data);
+
+      setInvoices(res.data.invoices || []);
+    } catch (err) {
+      console.error("INVOICE ERROR:", err.response?.data || err);
+      setInvoices([]);
+    }
+  };
+
   useEffect(() => {
     fetchInvoices();
   }, []);
 
-  const fetchInvoices = async () => {
-    const res = await axios.get(
-      "http://localhost:4000/api/user/dashboard/invoices",
+ const handleDownload = async (id) => {
+  try {
+    const res = await API.get(
+      `/user/dashboard/invoices/${id}/download`,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        responseType: "blob",
       }
     );
 
-    setInvoices(res.data.invoices);
-  };
+    const blob = new Blob([res.data], { type: "application/pdf" }); // 🔥 FORCE PDF
 
-  const handleDownload = async (id) => {
-    window.open(
-      `http://localhost:4000/api/user/dashboard/invoices/${id}/download`,
-      "_blank"
-    );
-  };
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `invoice-${id}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (err) {
+    console.error(err);
+    alert("Invoice download failed");
+  }
+};
 
   return (
     <div className="space-y-6">
-      {/* HEADER */}
+
       <div>
         <h2 className="text-xl font-semibold">Invoices</h2>
         <p className="text-sm text-gray-500">
@@ -37,15 +63,14 @@ export default function Invoices() {
         </p>
       </div>
 
-      {/* DESKTOP TABLE */}
       <div className="hidden md:block bg-white border rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b">
-            <tr className="text-left">
-              <th className="p-4">Invoice ID</th>
-              <th className="p-4">Order ID</th>
-              <th className="p-4">Date</th>
-              <th className="p-4">Amount</th>
+            <tr>
+              <th className="p-4 text-left">Invoice ID</th>
+              <th className="p-4 text-left">Order ID</th>
+              <th className="p-4 text-left">Date</th>
+              <th className="p-4 text-left">Amount</th>
               <th className="p-4 text-right">Action</th>
             </tr>
           </thead>
@@ -53,16 +78,11 @@ export default function Invoices() {
           <tbody>
             {invoices.map((inv) => (
               <tr key={inv._id} className="border-b last:border-none">
-                <td className="p-4 font-medium">
-                  INV-{inv._id.slice(-5)}
-                </td>
-
+                <td className="p-4 font-medium">INV-{inv._id.slice(-5)}</td>
                 <td className="p-4">{inv.orderId}</td>
-
                 <td className="p-4">
                   {new Date(inv.createdAt).toLocaleDateString()}
                 </td>
-
                 <td className="p-4 font-semibold">₹{inv.amount}</td>
 
                 <td className="p-4 text-right">
@@ -87,13 +107,9 @@ export default function Invoices() {
         </table>
       </div>
 
-      {/* MOBILE CARDS */}
       <div className="md:hidden space-y-4">
         {invoices.map((inv) => (
-          <div
-            key={inv._id}
-            className="bg-white border rounded-xl p-4 space-y-3"
-          >
+          <div key={inv._id} className="bg-white border rounded-xl p-4 space-y-3">
             <div className="flex justify-between">
               <span className="text-xs text-gray-500">Invoice ID</span>
               <span className="font-medium">INV-{inv._id.slice(-5)}</span>
@@ -106,9 +122,7 @@ export default function Invoices() {
 
             <div className="flex justify-between">
               <span className="text-xs text-gray-500">Date</span>
-              <span>
-                {new Date(inv.createdAt).toLocaleDateString()}
-              </span>
+              <span>{new Date(inv.createdAt).toLocaleDateString()}</span>
             </div>
 
             <div className="flex justify-between">

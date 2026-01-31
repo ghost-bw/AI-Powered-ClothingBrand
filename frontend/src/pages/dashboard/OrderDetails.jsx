@@ -42,11 +42,7 @@ const OrderDetails = () => {
         <div className="space-y-6">
           <TimelineItem icon={<FaBox />} title="Packed" active />
           <TimelineItem icon={<FaTruck />} title="Shipped" active />
-          <TimelineItem
-            icon={<FaMapMarkerAlt />}
-            title={order.status}
-            current
-          />
+          <TimelineItem icon={<FaMapMarkerAlt />} title={order.status} current />
           <TimelineItem icon={<FaHome />} title="Delivered" />
         </div>
       </div>
@@ -56,7 +52,7 @@ const OrderDetails = () => {
 
         <InfoCard
           title="Delivery Address"
-          value={`${order.address?.name}, ${order.address?.address}`}
+          value={`${order?.shipping?.fullName}, ${order?.shipping?.address}, ${order?.shipping?.city}, ${order?.shipping?.state}`}
         />
 
         <InfoCard
@@ -92,14 +88,15 @@ const OrderDetails = () => {
           >
             <div className="flex items-center gap-4">
               <img
-                src={item.product.images[0]}
-                className="w-20 h-20 object-cover rounded-lg border"
+                src={item.image}
+                alt={item.name}
+                className="w-20 h-20 object-cover rounded-lg"
               />
 
               <div>
-                <h3 className="font-medium">{item.product.name}</h3>
+                <h3 className="font-medium">{item.product?.name || item.name}</h3>
                 <p className="text-sm text-gray-500">
-                  Qty: {item.qty}
+                  Qty: {item.quantity}
                 </p>
               </div>
             </div>
@@ -110,20 +107,29 @@ const OrderDetails = () => {
 
         {/* PRICE SUMMARY */}
         <div className="border-t mt-6 pt-4 space-y-2 text-sm">
+
           <div className="flex justify-between">
             <span>Subtotal</span>
-            <span>₹{order.total}</span>
+            <span>₹{order.subtotal}</span>
+          </div>
+
+          <div className="flex justify-between">
+            <span>GST</span>
+            <span>₹{order.gst}</span>
           </div>
 
           <div className="flex justify-between">
             <span>Shipping</span>
-            <span className="text-green-600">FREE</span>
+            <span className="text-green-600">
+              ₹{order.shippingCost || 0}
+            </span>
           </div>
 
           <div className="flex justify-between font-semibold text-base">
             <span>Total</span>
             <span>₹{order.total}</span>
           </div>
+
         </div>
 
       </div>

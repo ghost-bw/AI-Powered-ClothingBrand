@@ -6,6 +6,8 @@ import Category from "../models/category.model.js";
 /* ================= DASHBOARD STATS ================= */
 
 export const getDashboardStats = async (req, res) => {
+  console.log("🔥 ADMIN DASHBOARD API HIT");
+
   try {
     const totalSales = await Order.aggregate([
       { $group: { _id: null, revenue: { $sum: "$totalAmount" } } },

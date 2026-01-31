@@ -1,3 +1,7 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import API from "../../api/axios";
+
 import {
   FaCheckCircle,
   FaBox,
@@ -8,59 +12,134 @@ import {
 } from "react-icons/fa";
 
 export default function TrackOrder() {
-  const order = {
-    id: "ORD12345",
-    placedOn: "26 Jan 2026",
-    expectedDelivery: "31 Jan 2026",
-    courier: "Akhil Logistics",
-    trackingId: "AKL-998877",
-    address: "Ashirwad Kumar, Delhi, India",
-    items: [
-      {
-        name: "Premium Black Hoodie",
-        qty: 1,
-        price: 2499,
-        image:
-          "https://tse1.mm.bing.net/th/id/OIP.NwIspE8XpblVsI9ThrT4JwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
-      },
-    ],
+  const { orderId } = useParams();
+  const navigate = useNavigate();
+
+  const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    if (orderId) fetchSingleOrder();
+    else fetchAllOrders();
+  }, [orderId]);
+
+ const fetchAllOrders = async () => {
+  try {
+    const res = await API.get("/user/dashboard/orders/my");
+
+    console.log("RAW RESPONSE:", res.data);
+
+    // Support every possible backend structure
+    const ordersArray =
+      res.data.orders ||
+      res.data.data ||
+      res.data.result ||
+      res.data;
+
+    console.log("PARSED ORDERS:", ordersArray);
+
+    setOrders(Array.isArray(ordersArray) ? ordersArray : []);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+  const fetchSingleOrder = async () => {
+    try {
+      const res = await API.get(`/user/dashboard/orders/${orderId}`);
+      setOrder(res.data.order || null);
+    } catch (err) {
+      console.error(err);
+      setOrder(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  if (loading) return <p>Loading...</p>;
+
+  /* ================= SHOW ALL ORDERS ================= */
+
+  if (!orderId) {
+    return (
+      <div className="space-y-6">
+
+        <h2 className="text-xl font-semibold">Track Your Orders</h2>
+
+        {orders.length === 0 && <p>No orders found.</p>}
+
+        {orders.map(o => (
+          <div
+            key={o._id}
+            className="bg-white border rounded-xl p-5 flex justify-between items-center"
+          >
+            <div>
+              <p className="font-medium">Order #{o._id.slice(-6)}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(o.createdAt).toLocaleDateString()}
+              </p>
+              <p className="font-semibold mt-1">₹{o.total}</p>
+            </div>
+
+            <button
+              onClick={() => navigate(`/user/dashboard/track-order/${o._id}`)}
+              className="bg-black text-white px-4 py-2 rounded-lg text-sm"
+            >
+              Track
+            </button>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  /* ================= SINGLE ORDER TRACK ================= */
+
+ {if (orderId && !order) return <p>Order not found.</p>;
+
+
+
   const steps = [
+    { label: "Order Confirmed", done: true, icon: <FaCheckCircle /> },
+    { label: "Packed", done: order?.status !== "Pending", icon: <FaBox /> },
     {
-      label: "Order Confirmed",
-      date: "26 Jan 2026",
-      done: true,
-      icon: <FaCheckCircle />,
+      label: "Shipped",
+      done: ["Shipped", "OutForDelivery", "Delivered"].includes(order?.status),
+      icon: <FaTruck />,
     },
-    { label: "Packed", date: "27 Jan 2026", done: true, icon: <FaBox /> },
-    { label: "Shipped", date: "28 Jan 2026", done: true, icon: <FaTruck /> },
     {
       label: "Out for Delivery",
-      date: "31 Jan 2026",
-      current: true,
+      current: order?.status === "OutForDelivery",
       icon: <FaMapMarkerAlt />,
     },
-    { label: "Delivered", date: "Expected 31 Jan 2026", icon: <FaHome /> },
+    {
+      label: "Delivered",
+      done: order?.status === "Delivered",
+      icon: <FaHome />,
+    },
   ];
 
   return (
     <div className="space-y-6">
-      {/* ORDER SUMMARY */}
+
+      <button
+        onClick={() => navigate("/user/dashboard/track-order")}
+        className="text-sm text-blue-600"
+      >
+        ← Back to Orders
+      </button>
+
       <div className="bg-white rounded-xl border p-5">
-        <h2 className="text-xl font-semibold">Track Your Order</h2>
-        <div className="mt-2 text-sm text-gray-600 flex flex-wrap gap-4">
-          <span>
-            Order ID: <b>#{order.id}</b>
-          </span>
-          <span>Placed on: {order.placedOn}</span>
-          <span className="text-green-600 font-medium">
-            Expected Delivery: {order.expectedDelivery}
-          </span>
-        </div>
+        <h2 className="text-xl font-semibold">Tracking Order</h2>
+        <p className="text-sm text-gray-600 mt-1">Order ID: {order._id}</p>
       </div>
 
-      {/* TRACKING TIMELINE */}
       <div className="bg-white rounded-xl border p-6">
         <h3 className="font-semibold mb-6">Order Status</h3>
 
@@ -68,10 +147,11 @@ export default function TrackOrder() {
           <div className="absolute left-4 top-0 bottom-0 w-[2px] bg-gray-200"></div>
 
           <div className="space-y-8">
-            {steps.map((step, index) => (
-              <div key={index} className="flex gap-4 items-start">
+            {steps.map((step, i) => (
+              <div key={i} className="flex gap-4">
+
                 <div
-                  className={`w-8 h-8 flex items-center justify-center rounded-full z-10
+                  className={`w-8 h-8 flex items-center justify-center rounded-full
                   ${
                     step.done
                       ? "bg-green-500 text-white"
@@ -83,79 +163,19 @@ export default function TrackOrder() {
                   {step.icon}
                 </div>
 
-                <div>
-                  <p
-                    className={`font-medium ${
-                      step.current ? "text-blue-600" : ""
-                    }`}
-                  >
-                    {step.label}
-                  </p>
-                  <p className="text-sm text-gray-500">{step.date}</p>
-
-                  {step.current && (
-                    <span className="inline-block mt-1 text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
-                      Current Status
-                    </span>
-                  )}
-                </div>
+                <p className="font-medium">{step.label}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* DETAILS GRID */}
-      <div className="grid md:grid-cols-3 gap-6">
-        {/* ADDRESS */}
-        <div className="bg-white rounded-xl border p-5">
-          <h4 className="font-semibold mb-2">Delivery Address</h4>
-          <p className="text-sm text-gray-600">{order.address}</p>
-        </div>
-
-        {/* COURIER */}
-        <div className="bg-white rounded-xl border p-5">
-          <h4 className="font-semibold mb-2">Courier Partner</h4>
-          <p className="text-sm">{order.courier}</p>
-          <p className="text-xs text-gray-500 mt-1">
-            Tracking ID: {order.trackingId}
-          </p>
-        </div>
-
-        {/* HELP */}
-        <div className="bg-green-600 text-white rounded-xl p-5 flex flex-col justify-between">
-          <div>
-            <h4 className="font-semibold">Need Help?</h4>
-            <p className="text-sm opacity-90 mt-1">
-              Contact our support team for delivery issues
-            </p>
-          </div>
-
-          <button className="mt-4 bg-white text-green-600 text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2">
-            <FaPhoneAlt /> Contact Support
-          </button>
-        </div>
-      </div>
-
-      {/* ORDER ITEMS */}
-      <div className="bg-white rounded-xl border p-6">
-        <h3 className="font-semibold mb-4">Ordered Items</h3>
-
-        {order.items.map((item, index) => (
-          <div key={index} className="flex gap-4 items-center">
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-20 h-20 object-cover rounded-lg border"
-            />
-            <div className="flex-1">
-              <p className="font-medium">{item.name}</p>
-              <p className="text-sm text-gray-500">Qty: {item.qty}</p>
-            </div>
-            <p className="font-semibold">₹{item.price}</p>
-          </div>
-        ))}
+      <div className="bg-white rounded-xl border p-5">
+        <h4 className="font-semibold mb-2">Delivery Address</h4>
+        <p className="text-sm text-gray-600">
+          {order.shipping?.address}, {order.shipping?.city}
+        </p>
       </div>
     </div>
   );
-}
+}}

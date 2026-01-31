@@ -6,6 +6,7 @@ import API from "../../api/axios";
 const UserSignup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -39,74 +40,100 @@ const UserSignup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FAFAF7]">
-      <div className="p-8 bg-white shadow rounded-xl w-full max-w-md">
-        <h2 className="text-xl mb-4 font-semibold">Create Account</h2>
-        <form onSubmit={handleSignup} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="border px-4 py-2 w-full rounded"
-            required
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border px-4 py-2 w-full rounded"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="border px-4 py-2 w-full rounded"
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border px-4 py-2 w-full rounded"
-            required
-          />
-          <GoogleLogin
-    onSuccess={async (credentialResponse) => {
-      try {
-        const res = await API.post("/auth/google", {
-          token: credentialResponse.credential,
-        });
+    <div className="min-h-screen flex items-center justify-center bg-gray-200 px-4">
+      <div className="w-full max-w-4xl flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-2xl bg-white">
 
-        localStorage.setItem("token", res.data.token);
-        navigate("/");
-      } catch (err) {
-        alert("Google signup failed");
-      }
-    }}
-    onError={() => alert("Google signup failed")}
-  />
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#2F2C79] text-white py-2 rounded"
-          >
-            {loading ? "Signing up..." : "Sign Up"}
-          </button>
-        </form>
-        <p className="text-xs text-gray-500 mt-4 text-center">
-          Already have an account?{" "}
-          <span
-            className="text-[#2F2C79] cursor-pointer"
-            onClick={() => navigate("/user/login")}
-          >
-            Login
-          </span>
-        </p>
+        {/* LEFT - INFO */}
+        <div className="w-full md:w-1/2 bg-gray-800 text-white flex flex-col justify-center items-center text-center p-8 md:p-10">
+          <h2 className="text-3xl font-bold mb-4">
+            Welcome!
+          </h2>
+          <p className="text-sm opacity-90 leading-relaxed">
+            Create your account and start your journey with us.
+          </p>
+        </div>
+
+        {/* RIGHT - FORM */}
+        <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+            Sign Up
+          </h2>
+
+          <form onSubmit={handleSignup}>
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mb-4 px-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+              required
+            />
+
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mb-4 px-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="mb-4 px-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+              required
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mb-6 px-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+              required
+            />
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-gray-800 text-white py-2 rounded w-full hover:bg-gray-700 transition"
+            >
+              {loading ? "Signing up..." : "Register"}
+            </button>
+          </form>
+
+          <div className="mt-4 flex justify-center">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                try {
+                  const res = await API.post("/auth/google", {
+                    token: credentialResponse.credential,
+                  });
+
+                  localStorage.setItem("token", res.data.token);
+                  navigate("/");
+                } catch (err) {
+                  alert("Google signup failed");
+                }
+              }}
+              onError={() => alert("Google signup failed")}
+            />
+          </div>
+
+          <p className="text-sm mt-4 text-center text-gray-600">
+            Already have an account?{" "}
+            <span
+              className="text-gray-900 font-medium cursor-pointer"
+              onClick={() => navigate("/user/login")}
+            >
+              Login
+            </span>
+          </p>
+        </div>
+
       </div>
     </div>
   );

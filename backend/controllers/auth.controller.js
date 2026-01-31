@@ -3,6 +3,25 @@ import { hashPassword, comparePassword } from "../utils/hash.js";
 import { generateToken } from "../utils/jwt.js";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
+export const updateProfile = async (req, res) => {
+ try {
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  user.name = req.body.name || user.name;
+  user.email = req.body.email || user.email;
+  user.phone = req.body.phone || user.phone;
+
+  await user.save();
+
+  res.json({ success: true, user });
+
+ } catch (err) {
+  res.status(500).json({ message: err.message });
+ }
+};
 
 
 /**
@@ -42,7 +61,7 @@ export const signup = async (req, res) => {
 
     // Generate JWT
     const token = generateToken({
-      _id: user._id,
+      id: user._id,
       role: user.role,
     });
 
@@ -118,7 +137,7 @@ export const login = async (req, res) => {
 };
 
 export const getMe = async (req,res)=>{
- const user = await User.findById(req.user._id)
+ const user = await User.findById(req.user.id)
   .populate("cart.product")
   .populate("wishlist");
 
@@ -153,7 +172,7 @@ export const googleLogin = async (req, res) => {
     }
 
     const jwtToken = jwt.sign(
-      { _id: user._id },
+      { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );

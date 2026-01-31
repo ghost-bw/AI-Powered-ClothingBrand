@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route ,Navigate} from "react-router-dom";
 // import { ShopProvider } from "./context/ShopContext";
 
 // User pages/components
@@ -34,6 +34,7 @@ import OrderHistory from "./pages/dashboard/OrderHistory";
 import TrackOrder from "./pages/dashboard/TrackOrder";
 import Address from "./pages/dashboard/Address";
 import Invoices from "./pages/dashboard/Invoices";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 const App = () => {
   return (
@@ -61,9 +62,12 @@ const App = () => {
 >
   <Route index element={<Profile />} />
   <Route path="me" element={<Profile />} />
-  <Route path="orders" element={<Orders />} />
+  <Route path="orders/my" element={<Orders />} />
   <Route path="orders/:id" element={<OrderDetails />} />
-  <Route path="track-order" element={<TrackOrder />} />
+ <Route path="track-order" element={<TrackOrder />} />
+<Route path="track-order/:orderId" element={<TrackOrder />} />
+
+
   <Route path="address" element={<Address />} />
   <Route path="invoices" element={<Invoices />} />
 </Route>
@@ -73,14 +77,16 @@ const App = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/signup" element={<AdminSignup />} />
           <Route path="/admin/otp" element={<AdminOtp />} />
+          <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
+
 
           {/* Protected Admin Dashboard */}
           <Route
             path="/admin/dashboard"
             element={
-              <ProtectedRoute role="admin">
+              <AdminProtectedRoute role="admin">
                 <Dashboard />
-              </ProtectedRoute>
+              </AdminProtectedRoute>
             }
           />
 
@@ -95,17 +101,17 @@ const App = () => {
           <Route
   path="/admin/products/add"
   element={
-    <ProtectedRoute role="admin">
+    <AdminProtectedRoute role="admin">
       <AddProduct />
-    </ProtectedRoute>
+    </AdminProtectedRoute>
   }
 />
 <Route
   path="/admin/categories/add"
   element={
-    <ProtectedRoute role="admin">
+    <AdminProtectedRoute role="admin">
       <AddCategory />
-    </ProtectedRoute>
+    </AdminProtectedRoute>
   }
 />
 

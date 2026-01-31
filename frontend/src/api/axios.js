@@ -4,15 +4,17 @@ const API = axios.create({
   baseURL: "http://localhost:4000/api",
 });
 
-// Attach JWT token
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const userToken = localStorage.getItem("token");
+    const adminToken = localStorage.getItem("admin_token");
+
+    const token = adminToken || userToken;
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // IMPORTANT: do NOT force Content-Type
     return config;
   },
   (error) => Promise.reject(error)
@@ -37,6 +39,7 @@ export const getUserProfile = async () => {
 
 export const logoutUser = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("admin_token");
 };
 
 export default API;

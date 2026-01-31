@@ -145,6 +145,8 @@ const CheckoutPage = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
+  const [orderSuccess, setOrderSuccess] = useState(null);
+
   const [shippingInfo, setShippingInfo] = useState({
     fullName: "",
     email: "",
@@ -299,32 +301,36 @@ useEffect(()=>{
   };
 
   const handlePlaceOrder = async (e) => {
- e.preventDefault();
+  e.preventDefault();
 
- try {
+  try {
+    const res = await API.post(
+      "/orders",
+      {
+        shipping: shippingInfo,
+        payment: paymentMethod,
+        subtotal,
+        shippingCost: estimatedShipping,
+        gst,
+        discount,
+        total,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
 
- const res = await API.post("/orders", {
-   shipping: shippingInfo,
-   payment: paymentMethod,
-   subtotal,
-   shippingCost: estimatedShipping,
-   gst,
-   discount,
-   total
- }, {
-   headers: {
-     Authorization: `Bearer ${localStorage.getItem("token")}`
-   }
- });
+    if (res.data.success) {
+      setOrderSuccess(res.data.order);   // 🔥 SAVE ORDER
+      setCurrentStep(3);
+    }
+  } catch (err) {
+    alert(err.response?.data?.message || "Order failed");
+  }
+};
 
- if(res.data.success){
-  //  alert(res.data.message);
-   setCurrentStep(3);
- }
-
-} catch (err) {
- alert(err.response?.data?.message || "Order failed");
-}}
 
 
 
@@ -795,9 +801,10 @@ useEffect(()=>{
                     Order Placed Successfully 🎉
                   </h2>
                   
-                  <div className="bg-green-50 text-green-700 px-4 py-2 rounded-lg inline-block mb-4">
-                    <span className="font-semibold">Order ID:</span> ORD{Date.now()}
-                  </div>
+                 <div className="bg-green-50 text-green-700 px-4 py-2 rounded-lg inline-block mb-4">
+  <span className="font-semibold">Order ID:</span> {orderSuccess?._id}
+</div>
+
 
                   <p className="text-gray-600 mb-6">
                     Thank you for shopping with us. Your order has been
@@ -824,12 +831,14 @@ useEffect(()=>{
                     >
                       Continue Shopping
                     </button>
-                    <button
-                      onClick={() => navigate('/orders')}
-                      className="bg-white text-green-600 border border-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transition"
-                    >
-                      View Order Details
-                    </button>
+                   <button
+                       disabled={!orderSuccess}
+                  onClick={() => navigate(`/user/dashboard/orders/${orderSuccess._id}`)}
+                 className="bg-white text-green-600 border border-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transition"
+>
+  View Order Details
+</button>
+
                   </div>
                 </div>
               </div>

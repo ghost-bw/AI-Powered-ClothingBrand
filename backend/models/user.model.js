@@ -12,6 +12,11 @@ const cartSchema = new mongoose.Schema({
 
   size: String,
   color: String,
+  
+  location: {
+ type: String,
+ default: ""
+},
 
   quantity: {
     type: Number,
@@ -35,6 +40,10 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   phone: String,
   password: String,
+   location:{
+  type:String,
+  default:""
+ },
 
   role: {
     type: String,

@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import Admin from "../models/admin.model.js";
 
 console.log("Auth middleware loaded");
 
@@ -20,13 +21,17 @@ console.log("Auth middleware loaded");
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
   // 🔥 LOAD REAL USER FROM DB
-  const user = await User.findById(decoded._id).select("-password");
+const user = await User.findById(decoded._id || decoded.id).select("-password");
+let account =
+  (await User.findById(decoded._id || decoded.id).select("-password")) ||
+  (await Admin.findById(decoded.id).select("-password"));
 
-  if (!user) {
-   return res.status(401).json({ message: "User not found in database" });
-  }
+if (!account) {
+  return res.status(401).json({ message: "Account not found" });
+}
 
-  req.user = user;   // FULL MONGO USER DOCUMENT
+req.user = account;
+// FULL MONGO USER DOCUMENT
 
   console.log("REQ.USER FINAL:", req.user._id.toString());
 

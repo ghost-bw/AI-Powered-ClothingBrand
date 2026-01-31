@@ -24,7 +24,7 @@ const DashboardLayout = () => {
   /* FETCH LOGGED USER */
 
  useEffect(() => {
-  if (!token) return navigate("/login");
+  if (!token) return navigate("/user/login");
 
   axios
     .get("http://localhost:4000/api/user/dashboard/me", {
@@ -35,9 +35,10 @@ const DashboardLayout = () => {
     .then((res) => {
       setUser(res.data.user);
     })
-    .catch(() => {
-      localStorage.clear();
-      navigate("/login");
+    .catch((err) => {
+      console.error("ME ERROR:", err.response?.data || err);
+      localStorage.removeItem("token");
+      navigate("/user/login");
     });
 
   axios
@@ -49,15 +50,14 @@ const DashboardLayout = () => {
     .then((res) => setNotifications(res.data.notifications))
     .catch(() => setNotifications([]));
 
-    /* MY ORDERS */
-
   axios
-    .get("http://localhost:4000/api/user/dashboard/orders", {
+    .get("http://localhost:4000/api/user/dashboard/orders/my", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    .then((res) => setOrders(res.data.orders));
+    .then((res) => setOrders(res.data.orders))
+    .catch(() => setOrders([]));
 }, []);
 
 
@@ -80,7 +80,7 @@ const DashboardLayout = () => {
 
           <nav className="space-y-2 text-sm">
             <SidebarLink to="me" title="My Profile" close={() => setSidebarOpen(false)} />
-            <SidebarLink to="orders" title="Orders" close={() => setSidebarOpen(false)} />
+            <SidebarLink to="orders/my" title="Orders" close={() => setSidebarOpen(false)} />
             <SidebarLink to="track-order" title="Track Order" close={() => setSidebarOpen(false)} />
             <SidebarLink to="address" title="Addresses" close={() => setSidebarOpen(false)} />
             <SidebarLink to="invoices" title="Invoices" close={() => setSidebarOpen(false)} />
@@ -155,7 +155,7 @@ const DashboardLayout = () => {
         </header>
 
         <main className="flex-1 p-6 overflow-y-auto">
-        <Outlet context={{ user }} />
+        <Outlet context={{ user,orders }} />
 
         </main>
 

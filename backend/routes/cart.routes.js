@@ -9,6 +9,7 @@ import {
 } from "../controllers/cart.controller.js";
 
 const router=express.Router();
+console.log("🔥 CART ROUTES FILE LOADED");
 
 router.post("/",protect,addToCart);
 router.put("/:id",protect,updateCart);

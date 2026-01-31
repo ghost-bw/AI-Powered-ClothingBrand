@@ -61,6 +61,7 @@ const handleSubmit = async (e) => {
       weight: formData.weight,
       dimensions: formData.dimensions,
       origin: formData.origin,
+      stock:formData.origin
     })
   );
 
@@ -163,7 +164,7 @@ return (
 <input name="weight" placeholder="Weight" onChange={handleChange} className="border p-3 rounded"/>
 <input name="dimensions" placeholder="Dimensions" onChange={handleChange} className="border p-3 rounded"/>
 <input name="origin" placeholder="Origin" onChange={handleChange} className="border p-3 rounded"/>
-
+<input name="stock" placeholder="stock" onChange={handleChange} className="border p-3 rounded"/>
 </div>
 
 {/* COLLECTIONS */}

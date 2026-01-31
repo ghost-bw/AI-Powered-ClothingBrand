@@ -16,14 +16,23 @@ const Dashboard = () => {
     loadStats();
   }, []);
 
-  const loadStats = async () => {
-    try {
-      const res = await API.get("/admin/dashboard");
-      setStats(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+ const loadStats = async () => {
+  //  console.log("ADMIN TOKEN:", localStorage.getItem("admin_token"));
+  try {
+    const token = localStorage.getItem("admin_token");
+
+    const res = await API.get("/admin/dashboard", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setStats(res.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">

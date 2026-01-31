@@ -32,7 +32,7 @@ const EditProduct = () => {
 
   // Load product
   useEffect(() => {
-    API.get("/").then(res => {
+    API.get("/products").then(res => {
       const product = res.data.products.find(p => p._id === id);
 
       if (product) {

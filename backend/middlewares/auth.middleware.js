@@ -33,7 +33,7 @@ if (!account) {
 req.user = account;
 // FULL MONGO USER DOCUMENT
 
-  console.log("REQ.USER FINAL:", req.user._id.toString());
+  // console.log("REQ.USER FINAL:", req.user._id.toString());
 
   next();
 

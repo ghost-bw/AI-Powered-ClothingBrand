@@ -1,17 +1,18 @@
 import { useState } from "react";
 
-const AddCategory = () => {
+const AddCategory = ({ refresh }) => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
+console.log("TOKEN =>", localStorage.getItem("admin_token"));
 
-    const res = await fetch("/api/categories", {
+    const res = await fetch("http://localhost:4000/api/categories", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("admin_token")}`
       },
       body: JSON.stringify({ name })
     });
@@ -21,6 +22,7 @@ const AddCategory = () => {
     if (res.ok) {
       setMessage("Category added successfully");
       setName("");
+      refresh(); // 🔥 THIS updates dashboard
     } else {
       setMessage(data.message);
     }

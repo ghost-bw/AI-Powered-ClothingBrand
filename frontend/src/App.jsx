@@ -18,8 +18,10 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminSignup from "./pages/admin/AdminSignup";
 import AdminOtp from "./pages/admin/AdminOtp";
 import Dashboard from "./pages/admin/Dashboard";
-import AdminCollections from "./pages/admin/AdminCollections";
+// import AdminCollections from "./pages/admin/AdminCollections";
 import EditProduct from "./pages/admin/EditProduct";
+import ProductManagement from "./pages/admin/ProductManagement";
+
 
 
 // Layout components
@@ -35,6 +37,11 @@ import TrackOrder from "./pages/dashboard/TrackOrder";
 import Address from "./pages/dashboard/Address";
 import Invoices from "./pages/dashboard/Invoices";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import Analytics from "./pages/admin/admindashboard/Analytics";
+// import Dashboard from "./pages/admin/Dashboard";
+
+
+
 
 const App = () => {
   return (
@@ -82,13 +89,22 @@ const App = () => {
 
           {/* Protected Admin Dashboard */}
           <Route
-            path="/admin/dashboard"
+            path="/admin/analytics"
             element={
               <AdminProtectedRoute role="admin">
-                <Dashboard />
+                <Analytics />
               </AdminProtectedRoute>
             }
           />
+         <Route
+                path="/admin/dashboard"
+                element={
+                  <AdminProtectedRoute role="admin">
+                    <Dashboard />
+                  </AdminProtectedRoute>
+                }
+              />
+
 
            <Route
             path="/user/dashboard"
@@ -118,7 +134,7 @@ const App = () => {
 
 
 <Route path="*" element={<NotFound />} />
-<Route path="/admin/products" element={<AdminCollections />} />
+<Route path="/admin/products" element={<ProductManagement />} />
 <Route path="/admin/products/edit/:id" element={<EditProduct />} />
 
 

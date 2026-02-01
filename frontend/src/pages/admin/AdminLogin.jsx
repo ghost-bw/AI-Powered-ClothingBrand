@@ -25,8 +25,9 @@ const AdminLogin = () => {
 
         if (res.data.token) {
           localStorage.setItem("admin_token", res.data.token);
-        
-        localStorage.setItem("graphura_admin", "true");
+          // console.log("SAVED TOKEN:", localStorage.getItem("admin_token"));
+
+          localStorage.setItem("graphura_admin", "true");
         navigate("/admin/dashboard");
       } else {
         setError(res.data.message || "Login failed");

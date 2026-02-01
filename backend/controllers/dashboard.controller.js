@@ -6,11 +6,14 @@ import Category from "../models/category.model.js";
 /* ================= DASHBOARD STATS ================= */
 
 export const getDashboardStats = async (req, res) => {
-  console.log("🔥 ADMIN DASHBOARD API HIT");
-
   try {
     const totalSales = await Order.aggregate([
-      { $group: { _id: null, revenue: { $sum: "$totalAmount" } } },
+      {
+        $group: {
+          _id: null,
+          revenue: { $sum: "$total" }
+        }
+      }
     ]);
 
     const products = await Product.countDocuments({ isDeleted: false });
@@ -29,13 +32,14 @@ export const getDashboardStats = async (req, res) => {
       categories,
       orders,
       outOfStock,
-      liveProducts,
+      liveProducts
     });
 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 /* ================= MONTHLY REVENUE ================= */
 
@@ -45,10 +49,61 @@ export const getMonthlyRevenue = async (req, res) => {
       {
         $group: {
           _id: { $month: "$createdAt" },
-          revenue: { $sum: "$totalAmount" },
+          revenue: { $sum: "$total" }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    res.json(data);
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+/* ================= CATEGORY SALES ================= */
+
+export const getCategorySales = async (req, res) => {
+  try {
+    const data = await Order.aggregate([
+      { $unwind: "$items" },
+
+      {
+        $lookup: {
+          from: "products",
+          localField: "items.product",
+          foreignField: "_id",
+          as: "product",
         },
       },
-      { $sort: { _id: 1 } },
+
+      { $unwind: "$product" },
+
+      {
+        $lookup: {
+          from: "categories",
+          localField: "product.category",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+
+      { $unwind: "$category" },
+
+      {
+        $group: {
+          _id: "$category.name",
+          sales: {
+            $sum: {
+              $multiply: ["$items.price", "$items.quantity"],
+            },
+          },
+        },
+      },
+
+      { $sort: { sales: -1 } },
     ]);
 
     res.json(data);
@@ -57,22 +112,121 @@ export const getMonthlyRevenue = async (req, res) => {
   }
 };
 
-/* ================= CATEGORY SALES ================= */
 
-export const getCategorySales = async (req, res) => {
+/* ================= REGIONAL DEMAND ================= */
+
+export const getRegionalDemand = async (req, res) => {
+  try {
+    const regions = await Order.aggregate([
+      {
+        $group: {
+          _id: "$shipping.city",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const total = regions.reduce((a, b) => a + b.count, 0);
+
+    res.json(
+      regions.map(r => ({
+        region: r._id || "Unknown",
+        percent: Math.round((r.count / total) * 100),
+      }))
+    );
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+
+
+/* ================= RECENT HIGH VALUE ORDERS ================= */
+
+export const getRecentOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .sort({ totalAmount: -1 })
+      .limit(5)
+      .populate("user", "name")
+      .select("totalAmount status createdAt");
+
+    res.json(
+      orders.map(o => ({
+        _id: o._id,
+        customer: o.user?.name || "Guest",
+        product: "Multiple Items",
+        amount: o.totalAmount,
+        status: o.status,
+        createdAt: o.createdAt,
+      }))
+    );
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const exportAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .sort({ createdAt: -1 })
+      .select("shipping total status createdAt");
+
+    res.json(
+      orders.map(o => ({
+        OrderID: o._id,
+        Customer: o.shipping?.fullName || "Guest",
+        City: o.shipping?.city || "Unknown",
+        Total: o.total,
+        Status: o.status,
+        Date: o.createdAt,
+      }))
+    );
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getTopProducts = async (req, res) => {
   try {
     const data = await Order.aggregate([
       { $unwind: "$items" },
+
       {
         $group: {
-          _id: "$items.category",
-          sales: { $sum: "$items.price" },
+          _id: "$items.product",
+          totalSold: { $sum: "$items.quantity" },
+        },
+      },
+
+      { $sort: { totalSold: -1 } },
+      { $limit: 5 },
+
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "product",
+        },
+      },
+
+      { $unwind: "$product" },
+
+      {
+        $project: {
+          name: "$product.name",
+          stock: "$product.stock",
+          orders: "$totalSold",
         },
       },
     ]);
 
     res.json(data);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

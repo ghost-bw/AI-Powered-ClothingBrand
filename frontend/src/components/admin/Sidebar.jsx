@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import logo from "../../assets/logo/logo.webp";
 import {
   LayoutDashboard,
   Package,
@@ -47,7 +48,7 @@ export default function Sidebar() {
     <aside className="w-72 h-screen sticky top-0 bg-white border-r flex flex-col px-6 py-6">
       {/* Logo */}
       <h1 className="text-xl font-black text-primary mb-10">
-        Graphura
+        <img src={logo} alt="logo" className="h-15 w-40"></img>
       </h1>
 
       {/* Navigation */}
@@ -105,7 +106,7 @@ export default function Sidebar() {
           </div>
 
           <div className="text-left">
-            <p className="text-sm font-semibold">Aamir Farid</p>
+            <p className="text-sm font-semibold"><h3>Admin</h3></p>
             <p className="text-xs text-gray-500">Product Admin</p>
           </div>
         </button>

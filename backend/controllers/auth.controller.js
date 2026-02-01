@@ -70,17 +70,21 @@ export const signup = async (req, res) => {
       token,
     });
   } catch (error) {
-    if (error.name === "ZodError") {
-      return res.status(400).json({
-        message: "Validation failed",
-        errors: error.errors,
-      });
-    }
-    res.status(500).json({
-      message: "Registration failed",
-      error: error.message,
+  console.log(error);
+
+  if (error.name === "ZodError") {
+    return res.status(400).json({
+      message: "Validation failed",
+      errors: error.errors,
     });
   }
+
+  res.status(500).json({
+    message: "Registration failed",
+    error: error.message,
+  });
+}
+
 };
 
 /**

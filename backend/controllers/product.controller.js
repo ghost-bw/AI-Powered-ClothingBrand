@@ -101,19 +101,48 @@ export const updateProduct = async (req, res) => {
 
     const updateData = { ...req.body };
 
-    // FIX "null" strings
-    if (updateData.discountPrice === "null") delete updateData.discountPrice;
-    if (updateData.stock === "null") delete updateData.stock;
+    /* ================= PARSE JSON FIELDS ================= */
 
-    // Replace images only if uploaded
-    if (images && images.length > 0) {
-      updateData.images = images;
+    if (updateData.colors) {
+      updateData.colors = JSON.parse(updateData.colors);
     }
+
+    if (updateData.details) {
+      updateData.details = JSON.parse(updateData.details);
+    }
+
+    /* ================= FIX STRING NUMBERS ================= */
+
+    if (updateData.price) updateData.price = Number(updateData.price);
+    if (updateData.discountPrice) updateData.discountPrice = Number(updateData.discountPrice);
+    if (updateData.stock) updateData.stock = Number(updateData.stock);
+
+    /* ================= FIX BOOLEAN STRINGS ================= */
+
+    ["isDeleted", "isActive", "isTrending", "isBrandStory"].forEach(key => {
+      if (updateData[key] !== undefined) {
+        updateData[key] = updateData[key] === "true";
+      }
+    });
+
+    /* ================= FIX NULL STRINGS ================= */
+
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === "null") delete updateData[key];
+    });
+
+    /* ================= IMAGES ================= */
+
+   // Replace color images only if uploaded
+if (images && images.length > 0 && updateData.colors?.length) {
+  updateData.colors[0].images = images;
+}
+
 
     const product = await Product.findByIdAndUpdate(
       req.params.id,
       updateData,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     if (!product) {

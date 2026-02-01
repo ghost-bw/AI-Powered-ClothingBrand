@@ -72,3 +72,36 @@ export const getAllOrders = async (req, res) => {
  }
 };
 
+export const updateOrderStatus = async (req, res) => {
+  try {
+    console.log("STATUS BODY:", req.body);
+    console.log("ORDER ID:", req.params.id);
+
+    const { status } = req.body;
+
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      console.log("ORDER NOT FOUND");
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.status = status;
+
+    await order.save();
+
+    res.json({
+      success: true,
+      status: order.status,
+    });
+
+  } catch (error) {
+
+    console.error("UPDATE STATUS ERROR FULL:", error); // 🔥 full error
+
+    res.status(500).json({
+      message: error.message,
+      stack: error.stack,      // 🔥 important
+    });
+  }
+};

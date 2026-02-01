@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import Sidebar from "../../components/admin/Sidebar";
 import ProductTable from "../../components/admin/ProductTable";
-import ProductMediaSection from "../../components/admin/ProductMediaSection";
+// import ProductMediaSection from "../../components/admin/ProductMediaSection";
 import AddProduct from "./AddProduct";
 import AddCategory from "./AddCategory";
 
@@ -256,9 +256,9 @@ const fetchCategories = async () => {
 
             <ProductTable filter={activeFilter} products={products} />
 
-            <div className="mt-12">
+            {/* <div className="mt-12">
               <ProductMediaSection />
-            </div>
+            </div> */}
           </>
         )}
 

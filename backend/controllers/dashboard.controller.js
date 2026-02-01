@@ -148,17 +148,17 @@ export const getRegionalDemand = async (req, res) => {
 export const getRecentOrders = async (req, res) => {
   try {
     const orders = await Order.find()
-      .sort({ totalAmount: -1 })
+      .sort({ total: -1 })        // FIXED
       .limit(5)
       .populate("user", "name")
-      .select("totalAmount status createdAt");
+      .select("total status createdAt");   // FIXED
 
     res.json(
       orders.map(o => ({
         _id: o._id,
         customer: o.user?.name || "Guest",
         product: "Multiple Items",
-        amount: o.totalAmount,
+        amount: o.total,          // FIXED
         status: o.status,
         createdAt: o.createdAt,
       }))
@@ -168,6 +168,7 @@ export const getRecentOrders = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const exportAllOrders = async (req, res) => {
   try {

@@ -11,33 +11,37 @@ const UserSignup = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+  name: "",
+  email: "",
+  phone: "",
+  password: "",
+});
+
 
   const handleSignup = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, password }),
-      });
+  try {
+    const res = await API.post("/users/signup", {
+      name,
+      email,
+      phone: formData.phone,
+      password,
+    });
 
-      const data = await res.json();
+    alert("Signup successful! Please login.");
+    navigate("/user/login");
 
-      if (res.ok) {
-        alert("Signup successful! Please login.");
-        navigate("/user/login");
-      } else {
-        alert(data.message || "Signup failed");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (error) {
+    console.log("FULL ERROR:", error.response?.data);
+    alert(error.response?.data?.message || "Signup failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200 px-4">
@@ -78,14 +82,16 @@ const UserSignup = () => {
               required
             />
 
-            <input
-              type="text"
-              placeholder="Phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="mb-4 px-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
-              required
-            />
+           <input
+                  type="text"
+                  placeholder="Phone"
+                  value={formData.phone}
+                   className="mb-6 px-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
+/>
+
 
             <input
               type="password"
@@ -109,7 +115,7 @@ const UserSignup = () => {
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
                 try {
-                  const res = await API.post("/auth/google", {
+                  const res = await API.post("/users/google", {
                     token: credentialResponse.credential,
                   });
 

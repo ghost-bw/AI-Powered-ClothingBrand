@@ -39,6 +39,9 @@ import Invoices from "./pages/dashboard/Invoices";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import Analytics from "./pages/admin/admindashboard/Analytics";
 // import Dashboard from "./pages/admin/Dashboard";
+import OrderManagement from "./pages/admin/OrderManagement";
+// import OrderDetails from "./pages/admins/OrderDetails";
+
 
 
 
@@ -46,102 +49,135 @@ import Analytics from "./pages/admin/admindashboard/Analytics";
 const App = () => {
   return (
     <BrowserRouter>
- 
-        <Routes>
-          {/* User Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/cart" element={<><Navbar /><Cart /></>} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/collections" element={<CollectionsPage />} />
+      <Routes>
 
-          {/* User Auth */}
-          <Route path="/user/signup" element={<UserSignup />} />
-          <Route path="/user/login" element={<UserLogin />} />
+        {/* Public */}
 
-          <Route
-  path="/user/dashboard"
-  element={
-    <ProtectedRoute>
-      <DashboardLayout />
-    </ProtectedRoute>
-  }
->
-  <Route index element={<Profile />} />
-  <Route path="me" element={<Profile />} />
-  <Route path="orders/my" element={<Orders />} />
-  <Route path="orders/:id" element={<OrderDetails />} />
- <Route path="track-order" element={<TrackOrder />} />
-<Route path="track-order/:orderId" element={<TrackOrder />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<><Navbar /><Cart /></>} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/collections" element={<CollectionsPage />} />
 
+        {/* User Auth */}
 
-  <Route path="address" element={<Address />} />
-  <Route path="invoices" element={<Invoices />} />
-</Route>
+        <Route path="/user/signup" element={<UserSignup />} />
+        <Route path="/user/login" element={<UserLogin />} />
 
+        {/* User Dashboard */}
 
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/signup" element={<AdminSignup />} />
-          <Route path="/admin/otp" element={<AdminOtp />} />
-          <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
+        <Route
+          path="/user/dashboard"
+          element={
+            <ProtectedRoute role="user">
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Profile />} />
+          <Route path="me" element={<Profile />} />
+          <Route path="orders/my" element={<Orders />} />
+          <Route path="orders/:id" element={<OrderDetails />} />
+          <Route path="track-order" element={<TrackOrder />} />
+          <Route path="track-order/:orderId" element={<TrackOrder />} />
+          <Route path="address" element={<Address />} />
+          <Route path="invoices" element={<Invoices />} />
+        </Route>
 
+        {/* Admin Auth */}
 
-          {/* Protected Admin Dashboard */}
-          <Route
-            path="/admin/analytics"
-            element={
-              <AdminProtectedRoute role="admin">
-                <Analytics />
-              </AdminProtectedRoute>
-            }
-          />
-         <Route
-                path="/admin/dashboard"
-                element={
-                  <AdminProtectedRoute role="admin">
-                    <Dashboard />
-                  </AdminProtectedRoute>
-                }
-              />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/signup" element={<AdminSignup />} />
+        <Route path="/admin/otp" element={<AdminOtp />} />
 
+        {/* Admin Protected */}
 
-           <Route
-            path="/user/dashboard"
-            element={
-              <ProtectedRoute role="user">
-                <DashboardLayout />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-  path="/admin/products/add"
-  element={
-    <AdminProtectedRoute role="admin">
-      <AddProduct />
-    </AdminProtectedRoute>
-  }
-/>
-<Route
-  path="/admin/categories/add"
-  element={
-    <AdminProtectedRoute role="admin">
-      <AddCategory />
-    </AdminProtectedRoute>
-  }
-/>
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminProtectedRoute role="admin">
+              <Dashboard />
+            </AdminProtectedRoute>
+          }
+        />
 
+        <Route
+          path="/admin/analytics"
+          element={
+            <AdminProtectedRoute role="admin">
+              <Analytics />
+            </AdminProtectedRoute>
+          }
+        />
 
+        <Route
+          path="/admin/orders"
+          element={
+            <AdminProtectedRoute role="admin">
+              <OrderManagement />
+            </AdminProtectedRoute>
+          }
+        />
 
-<Route path="*" element={<NotFound />} />
-<Route path="/admin/products" element={<ProductManagement />} />
-<Route path="/admin/products/edit/:id" element={<EditProduct />} />
+        <Route
+          path="/admin/orders/:id"
+          element={
+            <AdminProtectedRoute role="admin">
+              <OrderDetails />
+            </AdminProtectedRoute>
+          }
+        />
 
+        <Route
+          path="/admin/products"
+          element={
+            <AdminProtectedRoute role="admin">
+              <ProductManagement />
+            </AdminProtectedRoute>
+          }
+        />
 
-        </Routes>
-      
+        <Route
+          path="/admin/products/add"
+          element={
+            <AdminProtectedRoute role="admin">
+              <AddProduct />
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products/edit/:id"
+          element={
+            <AdminProtectedRoute role="admin">
+              <EditProduct />
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/categories/add"
+          element={
+            <AdminProtectedRoute role="admin">
+              <AddCategory />
+            </AdminProtectedRoute>
+          }
+        />
+
+        {/* Redirect admin root */}
+
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
+
+        {/* Not Found ALWAYS LAST */}
+
+        <Route path="*" element={<NotFound />} />
+
+      </Routes>
     </BrowserRouter>
   );
 };
 
 export default App;
+
+
+

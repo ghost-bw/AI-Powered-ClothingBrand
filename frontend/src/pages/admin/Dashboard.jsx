@@ -238,11 +238,13 @@ const exportDashboardCSV = () => {
             <tbody>
 
               {orders.map((o,i)=>(
+                  // console.log("ORDER OBJECT:", o),
+
                 <tr key={i} className="border-t hover:bg-gray-50">
                   <td className="py-3 text-blue-600 font-semibold">{o._id}</td>
                   <td>{o.customer}</td>
                   <td>{o.product}</td>
-                  <td>₹{o.amount}</td>
+                  <td>₹{o.total || o.amount || 0}</td>
                   <td>
                     <span className={`px-3 py-1 rounded-full text-xs ${
                       o.status==="Delivered"

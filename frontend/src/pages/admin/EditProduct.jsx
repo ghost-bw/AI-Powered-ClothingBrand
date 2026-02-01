@@ -53,33 +53,42 @@ const EditProduct = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const data = new FormData();
+  try {
+    const data = new FormData();
 
-      Object.keys(formData).forEach(key => {
-  if (formData[key] !== null && formData[key] !== "null") {
-    data.append(key, formData[key]);
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null && formData[key] !== "null") {
+
+        // 🔥 stringify objects / arrays
+        if (typeof formData[key] === "object") {
+          data.append(key, JSON.stringify(formData[key]));
+        } else {
+          data.append(key, formData[key]);
+        }
+      }
+    });
+
+    // numbers
+    data.set("price", Number(formData.price));
+    data.set("discountPrice", Number(formData.discountPrice || 0));
+    data.set("stock", Number(formData.stock || 0));
+
+    // images
+    images.forEach((img) => data.append("images", img));
+
+    await API.put(`/products/${id}`, data);
+
+    alert("✅ Product updated successfully");
+    navigate("/admin/products");
+
+  } catch (error) {
+    console.error(error);
+    alert("Update failed");
   }
-});
-    data.set("price", Number(formData.price || 0));
-data.set("discountPrice", formData.discountPrice ? Number(formData.discountPrice) : "");
-data.set("stock", formData.stock ? Number(formData.stock) : "");
+};
 
-
-      images.forEach(img => data.append("images", img));
-
-      await API.put(`/products/${id}`, data);
-
-      alert("✅ Product updated successfully");
-      navigate("/admin/products");
-
-    } catch (error) {
-      console.error(error);
-      alert("Update failed");
-    }
-  };
 
   return (
     <div className="max-w-3xl mx-auto p-8">

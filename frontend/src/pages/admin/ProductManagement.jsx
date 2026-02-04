@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 
 import Sidebar from "../../components/admin/Sidebar";
 import ProductTable from "../../components/admin/ProductTable";
-// import ProductMediaSection from "../../components/admin/ProductMediaSection";
 import AddProduct from "./AddProduct";
 import AddCategory from "./AddCategory";
+import AddCollection from "./AddCollection";
+import DeleteCollection from "./DeleteCollection";
+import DeleteCategory from "./DeleteCategory";
 
 import API from "../../api/axios";
 
@@ -13,7 +15,6 @@ import {
   PackageX,
   Sparkles,
   CheckCircle2,
-  Download,
 } from "lucide-react";
 
 import {
@@ -31,9 +32,11 @@ export default function ProductManagement() {
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [activeTab, setActiveTab] = useState("MANAGE");
 
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [revenueData, setRevenueData] = useState([]);
   const [categorySales, setCategorySales] = useState([]);
+
   const [stats, setStats] = useState({
     totalSales: 0,
     outOfStock: 0,
@@ -41,96 +44,105 @@ export default function ProductManagement() {
     livePercent: 0,
   });
 
-  /* ================= FETCH EVERYTHING ================= */
-
   useEffect(() => {
     fetchDashboard();
     fetchCategories();
   }, []);
 
-const fetchDashboard = async () => {
-  try {
-    const token = localStorage.getItem("token");
+  /* ================= DASHBOARD ================= */
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+  const fetchDashboard = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    const [
-      productsRes,
-      statsRes,
-      revenueRes,
-      categoryRes,
-    ] = await Promise.all([
-      API.get("/products", config),
-      API.get("/admin/dashboard/stats", config),
-      API.get("/admin/dashboard/revenue", config),
-      API.get("/admin/dashboard/category-sales", config),
-    ]);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-    setProducts(Array.isArray(productsRes.data) ? productsRes.data : []);
+      const [
+        productsRes,
+        statsRes,
+        revenueRes,
+        categoryRes,
+      ] = await Promise.all([
+        API.get("/products", config),
+        API.get("/admin/dashboard/stats", config),
+        API.get("/admin/dashboard/revenue", config),
+        API.get("/admin/dashboard/category-sales", config),
+      ]);
 
-    setRevenueData(
-      Array.isArray(revenueRes.data)
-        ? revenueRes.data.map(m => ({
-            month: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m._id - 1],
-            revenue: m.revenue,
-          }))
-        : []
-    );
+      /* ===== PRODUCTS FIX ===== */
 
-    setCategorySales(
-      Array.isArray(categoryRes.data)
-        ? categoryRes.data.map(c => ({
-            category: c._id,
-            sales: c.sales,
-          }))
-        : []
-    );
+      const productList = Array.isArray(productsRes.data)
+        ? productsRes.data
+        : productsRes.data.products;
 
-    setStats({
-      totalSales: statsRes.data.revenue || 0,
-      outOfStock: statsRes.data.outOfStock || 0,
-      newArrivals: statsRes.data.orders || 0,
-      livePercent:
-        statsRes.data.liveProducts && statsRes.data.products
-          ? Math.round(
-              (statsRes.data.liveProducts / statsRes.data.products) * 100
-            )
-          : 0,
-    });
+      setProducts(productList || []);
 
-  } catch (err) {
-    console.log("Dashboard Fetch Error:", err);
-  }
-};
-const fetchCategories = async () => {
-  const res = await API.get("/categories");
-  setCategories(res.data);
-};
+      console.log("PRODUCTS:", productList);
 
+      /* ===== REVENUE ===== */
 
+      setRevenueData(
+        Array.isArray(revenueRes.data)
+          ? revenueRes.data.map(m => ({
+              month: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m._id - 1],
+              revenue: m.revenue,
+            }))
+          : []
+      );
 
-  /* ================= CSV EXPORT ================= */
+      /* ===== CATEGORY SALES ===== */
 
-  const exportCSV = () => {
-    const headers = ["Name", "Category", "Price", "Stock"];
+      setCategorySales(
+        Array.isArray(categoryRes.data)
+          ? categoryRes.data.map(c => ({
+              category: c._id,
+              sales: c.sales,
+            }))
+          : []
+      );
 
-    const rows = products.map((p) =>
-      [p.name, p.category?.name || "N/A", p.price, p.stock].join(",")
-    );
+      /* ===== STATS ===== */
 
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      [headers.join(","), ...rows].join("\n");
+      setStats({
+        totalSales: statsRes.data.revenue || 0,
+        outOfStock: statsRes.data.outOfStock || 0,
+        newArrivals: statsRes.data.orders || 0,
+        livePercent:
+          statsRes.data.liveProducts && statsRes.data.products
+            ? Math.round(
+                (statsRes.data.liveProducts / statsRes.data.products) * 100
+              )
+            : 0,
+      });
 
-    const link = document.createElement("a");
-    link.href = encodeURI(csvContent);
-    link.download = "products.csv";
-    link.click();
+    } catch (err) {
+      console.log("Dashboard Fetch Error:", err);
+    }
   };
+
+  /* ================= CATEGORIES ================= */
+
+  const fetchCategories = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await API.get("/categories", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setCategories(res.data || []);
+    } catch (err) {
+      console.log("Category Fetch Error:", err);
+    }
+  };
+
+  /* ================= CARDS ================= */
 
   const cards = [
     {
@@ -175,19 +187,11 @@ const fetchCategories = async () => {
               Manage your clothing brand products & inventory
             </p>
           </div>
-
-          {/* <button
-            onClick={exportCSV}
-            className="flex items-center gap-2 bg-black text-white px-5 py-3 rounded-xl hover:bg-gray-800"
-          >
-            <Download size={18} />
-            Export CSV
-          </button> */}
         </div>
 
         {/* Tabs */}
         <div className="flex gap-4 mb-8">
-          {["MANAGE", "ADD_PRODUCT", "ADD_CATEGORY"].map(tab => (
+          {["MANAGE","ADD_PRODUCT","ADD_CATEGORY","ADD_COLLECTION","DELETE_COLLECTION","DELETE_CATEGORY"].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -254,16 +258,16 @@ const fetchCategories = async () => {
               </div>
             </div>
 
+            {/* TABLE */}
             <ProductTable filter={activeFilter} products={products} />
-
-            {/* <div className="mt-12">
-              <ProductMediaSection />
-            </div> */}
           </>
         )}
 
         {activeTab === "ADD_PRODUCT" && <AddProduct refresh={fetchDashboard} />}
         {activeTab === "ADD_CATEGORY" && <AddCategory refresh={fetchCategories} />}
+        {activeTab === "ADD_COLLECTION" && <AddCollection />}
+        {activeTab === "DELETE_COLLECTION" && <DeleteCollection />}
+        {activeTab === "DELETE_CATEGORY" && <DeleteCategory />}
 
       </main>
     </div>

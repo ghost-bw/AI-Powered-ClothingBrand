@@ -1,3 +1,145 @@
+// import React, { useState, useEffect } from 'react'
+// import { ChevronLeft, ChevronRight } from 'lucide-react';
+// import { useNavigate } from "react-router-dom";
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Navigation } from 'swiper/modules';
+// import 'swiper/css';
+// import 'swiper/css/navigation';
+// import productsData from "../../data/products.json";
+
+// const Trending = () => {
+//   const [trendingProducts, setTrendingProducts] = useState([]);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const products = Object.values(productsData);
+//     const shuffled = [...products].sort(() => 0.5 - Math.random());
+//     const selected = shuffled.slice(0, 8).map(product => ({
+//       id: product.id,
+//       img: product.images[0],
+//       category: product.category,
+//       name: product.title,
+//       price: product.price.toLocaleString(),
+//       discount: product.discount,
+//       rating: product.rating
+//     }));
+//     setTrendingProducts(selected);
+//   }, []);
+
+//   const handleProductClick = (productId) => {
+//     navigate(`/product/${productId}`);
+//   };
+
+//   const formatPrice = (price) => `₹${price}`;
+
+//   return (
+//     <section className="bg-gray-50 py-8 sm:py-10 md:py-12">
+//       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
+
+//         {/* Header */}
+//         <div className="flex justify-between items-end mb-6 sm:mb-8">
+//           <div>
+//             <p className="text-xs sm:text-sm tracking-widest text-gray-500 uppercase">
+//               Trending Now
+//             </p>
+//             <h2 className="mt-1 text-xl sm:text-2xl md:text-3xl font-serif font-semibold">
+//               Featured Products
+//             </h2>
+//           </div>
+
+//           <button
+//             onClick={() => navigate('/collections')}
+//             className="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 group"
+//           >
+//             View All
+//             <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+//           </button>
+//         </div>
+
+//         {/* Slider */}
+//         <div className="relative">
+//           <Swiper
+//             modules={[Navigation]}
+//             spaceBetween={12}
+//             slidesPerView={3}   // 👈 MOBILE PE 3 CARDS
+//             navigation={{
+//               nextEl: '.trending-next',
+//               prevEl: '.trending-prev',
+//             }}
+//             breakpoints={{
+//               640: { slidesPerView: 3, spaceBetween: 14 },
+//               768: { slidesPerView: 3, spaceBetween: 18 },
+//               1024: { slidesPerView: 4, spaceBetween: 24 },
+//             }}
+//           >
+//             {trendingProducts.map((product) => (
+//               <SwiperSlide key={product.id}>
+//                 <div
+//                   onClick={() => handleProductClick(product.id)}
+//                   className="group cursor-pointer bg-white rounded-2xl shadow-sm hover:shadow-lg transition overflow-hidden"
+//                 >
+//                   {/* Image */}
+//                   <div className="relative aspect-square bg-gray-100 overflow-hidden">
+//                     <img
+//                       src={product.img}
+//                       alt={product.name}
+//                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+//                     />
+
+//                     {product.discount > 0 && (
+//                       <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-red-500 text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold">
+//                         {product.discount}% OFF
+//                       </span>
+//                     )}
+
+//                     {product.rating && (
+//                       <span className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 bg-white/90 backdrop-blur px-2 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-medium">
+//                         ⭐ {product.rating}
+//                       </span>
+//                     )}
+//                   </div>
+
+//                   {/* Info */}
+//                   <div className="p-2 sm:p-4">
+//                     <p className="text-[9px] sm:text-xs text-gray-500 uppercase tracking-wide mb-1">
+//                       {product.category}
+//                     </p>
+
+//                     <h3 className="text-xs sm:text-base font-medium line-clamp-1 mb-1 sm:mb-2 group-hover:text-indigo-600 transition">
+//                       {product.name}
+//                     </h3>
+
+//                     <div className="flex justify-between items-center">
+//                       <p className="text-sm sm:text-lg font-bold">
+//                         {formatPrice(product.price)}
+//                       </p>
+//                       <span className="hidden sm:inline text-xs text-gray-500 hover:text-indigo-600">
+//                         Quick View
+//                       </span>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </SwiperSlide>
+//             ))}
+//           </Swiper>
+
+//           {/* Navigation Buttons – Mobile + Desktop */}
+//           <div className="trending-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-3 bg-white rounded-full p-1.5 sm:p-2 lg:p-3 shadow-md cursor-pointer z-10">
+//             <ChevronLeft size={18} />
+//           </div>
+
+//           <div className="trending-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-3 bg-white rounded-full p-1.5 sm:p-2 lg:p-3 shadow-md cursor-pointer z-10">
+//             <ChevronRight size={18} />
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default Trending;
+
+
 import React, { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
@@ -8,134 +150,146 @@ import 'swiper/css/navigation';
 import productsData from "../../data/products.json";
 
 const Trending = () => {
-    const [trendingProducts, setTrendingProducts] = useState([]);
-    const navigate = useNavigate();
+  const [trendingProducts, setTrendingProducts] = useState([]);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // Get random 8 products from products.json
-        const products = Object.values(productsData);
-        const shuffled = [...products].sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 8).map(product => ({
-            id: product.id,
-            img: product.images[0],
-            category: product.category,
-            name: product.title,
-            price: product.price.toLocaleString(),
-            discount: product.discount,
-            rating: product.rating
-        }));
-        setTrendingProducts(selected);
-    }, []);
+  useEffect(() => {
+    const products = Object.values(productsData);
+    const shuffled = [...products].sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 8).map(product => ({
+      id: product.id,
+      img: product.images[0],
+      category: product.category,
+      name: product.title,
+      price: product.price.toLocaleString(),
+      discount: product.discount,
+      rating: product.rating
+    }));
+    setTrendingProducts(selected);
+  }, []);
 
-    const handleProductClick = (productId) => {
-        navigate(`/product/${productId}`);
-    };
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  };
 
-    const formatPrice = (price) => {
-        return `₹${price}`;
-    };
+  const formatPrice = (price) => `₹${price}`;
 
-    return (
-        <div className='py-12 px-4 sm:px-6 md:px-8 lg:px-12 bg-gray-50'>
-            <div className="flex justify-between items-center mb-8">
-                <div>
-                    <h6 className="text-sm tracking-widest text-gray-500 uppercase">Trending Now</h6>
-                    <h1 className='text-2xl md:text-3xl font-serif font-semibold mt-1'>Featured Products</h1>
-                </div>
-                <button 
-                    onClick={() => navigate('/collections')}
-                    className="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 group"
-                >
-                    View All
-                    <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-            </div>
+  return (
+    <section className="relative bg-white py-20 md:py-24 overflow-hidden">
 
-            {/* Swiper Slider */}
-            <div className="relative">
-                <Swiper
-                    modules={[Navigation]}
-                    spaceBetween={24}
-                    slidesPerView={1}
-                    navigation={{
-                        nextEl: '.trending-next',
-                        prevEl: '.trending-prev',
-                    }}
-                    breakpoints={{
-                        640: {
-                            slidesPerView: 2,
-                        },
-                        768: {
-                            slidesPerView: 3,
-                        },
-                        1024: {
-                            slidesPerView: 4,
-                        },
-                    }}
-                    className="px-2"
-                >
-                    {trendingProducts.map((product) => (
-                        <SwiperSlide key={product.id}>
-                            <div 
-                                onClick={() => handleProductClick(product.id)}
-                                className="group cursor-pointer bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
-                            >
-                                {/* Product Image */}
-                                <div className="relative overflow-hidden aspect-square bg-gray-100">
-                                    <img
-                                        src={product.img}
-                                        alt={product.name}
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                    />
-                                    {product.discount > 0 && (
-                                        <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                            {product.discount}% OFF
-                                        </div>
-                                    )}
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                                    
-                                    {/* Rating Badge */}
-                                    {product.rating && (
-                                        <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                                            ⭐ {product.rating}
-                                        </div>
-                                    )}
-                                </div>
+      {/* subtle white luxury glow */}
+      <div className="absolute -top-40 left-1/3 w-[600px] h-[600px] bg-black/5 rounded-full blur-[160px]" />
+      <div className="absolute bottom-0 -right-40 w-[700px] h-[700px] bg-black/10 rounded-full blur-[200px]" />
 
-                                {/* Product Info */}
-                                <div className="p-4">
-                                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                                        {product.category}
-                                    </p>
-                                    <h3 className="font-medium text-gray-900 line-clamp-1 mb-2 group-hover:text-indigo-600 transition-colors">
-                                        {product.name}
-                                    </h3>
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-lg font-bold text-gray-900">
-                                            {formatPrice(product.price)}
-                                        </p>
-                                        <button className="text-xs text-gray-500 hover:text-indigo-600 font-medium">
-                                            Quick View
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
+      <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8">
 
-                {/* Custom Navigation Buttons */}
-                <div className="trending-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all z-10 hidden md:flex items-center justify-center cursor-pointer">
-                    <ChevronLeft size={24} />
-                </div>
-                <div className="trending-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all z-10 hidden md:flex items-center justify-center cursor-pointer">
-                    <ChevronRight size={24} />
-                </div>
-            </div>
+        {/* HEADER */}
+        <div className="flex justify-between items-end mb-10 md:mb-14">
+          <div>
+            <p className="text-[11px] tracking-[0.35em] text-gray-400 uppercase">
+              Trending Now
+            </p>
+            <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-serif font-semibold text-gray-900">
+              Featured Products
+            </h2>
+          </div>
+
+          <button
+            onClick={() => navigate('/collections')}
+            className="text-xs sm:text-sm tracking-widest text-gray-900 flex items-center gap-2 hover:opacity-60 transition"
+          >
+            VIEW ALL
+            <ChevronRight size={16} />
+          </button>
         </div>
-    )
-}
 
-export default Trending
+        {/* SLIDER */}
+        <div className="relative">
+          <Swiper
+            modules={[Navigation]}
+            spaceBetween={14}
+            slidesPerView={3}
+            navigation={{
+              nextEl: '.trending-next',
+              prevEl: '.trending-prev',
+            }}
+            breakpoints={{
+              640: { slidesPerView: 3, spaceBetween: 16 },
+              768: { slidesPerView: 3, spaceBetween: 22 },
+              1024: { slidesPerView: 4, spaceBetween: 28 },
+            }}
+          >
+            {trendingProducts.map((product) => (
+              <SwiperSlide key={product.id}>
+                <div
+                  onClick={() => handleProductClick(product.id)}
+                  className="
+                    group cursor-pointer
+                    bg-white
+                    rounded-[1.75rem]
+                    overflow-hidden
+                    shadow-[0_20px_60px_-30px_rgba(0,0,0,0.35)]
+                    transition-all duration-500
+                    hover:-translate-y-1 hover:shadow-[0_40px_100px_-40px_rgba(0,0,0,0.5)]
+                  "
+                >
+                  {/* IMAGE */}
+                  <div className="relative aspect-square bg-gray-100 overflow-hidden">
+                    <img
+                      src={product.img}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+                    />
 
+                    {product.discount > 0 && (
+                      <span className="absolute top-3 left-3 bg-black text-white px-3 py-1 rounded-full text-[10px] tracking-widest">
+                        {product.discount}% OFF
+                      </span>
+                    )}
 
+                    {product.rating && (
+                      <span className="absolute bottom-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-medium">
+                        ★ {product.rating}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* INFO */}
+                  <div className="px-4 py-5">
+                    <p className="text-[10px] tracking-[0.25em] text-gray-400 uppercase mb-2">
+                      {product.category}
+                    </p>
+
+                    <h3 className="text-sm sm:text-base font-medium text-gray-900 mb-3 line-clamp-1 group-hover:opacity-70 transition">
+                      {product.name}
+                    </h3>
+
+                    <div className="flex justify-between items-center">
+                      <p className="text-base sm:text-lg font-semibold">
+                        {formatPrice(product.price)}
+                      </p>
+                      <span className="text-[11px] tracking-widest text-gray-400 opacity-0 group-hover:opacity-100 transition">
+                        VIEW →
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* NAVIGATION */}
+          <div className="trending-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 bg-white rounded-full p-3 shadow-lg cursor-pointer hover:scale-105 transition z-10">
+            <ChevronLeft size={18} />
+          </div>
+
+          <div className="trending-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 bg-white rounded-full p-3 shadow-lg cursor-pointer hover:scale-105 transition z-10">
+            <ChevronRight size={18} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Trending;

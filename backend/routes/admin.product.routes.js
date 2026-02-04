@@ -5,26 +5,31 @@ import {
   updateProduct,
   deleteProduct,
   getAllProducts,
-  getSingleProduct        // <-- ADD THIS
+  getSingleProduct,
+  getProducts   // 👈 ADD PUBLIC
 } from "../controllers/product.controller.js";
-import  protect  from "../middlewares/auth.middleware.js";
+
+import protect from "../middlewares/auth.middleware.js";
 import { isAdmin } from "../middlewares/admin.middleware.js";
 
 const router = express.Router();
 
-// CREATE
-router.post("/", protect, isAdmin, upload.any(), addProduct);
+/* ========= PUBLIC ========= */
 
-// GET ALL
-router.get("/", getAllProducts);
+// PUBLIC LIST
+router.get("/", getProducts);
 
-// GET SINGLE PRODUCT  🔥 ADD THIS
+// PUBLIC SINGLE
 router.get("/:id", getSingleProduct);
 
-// UPDATE
+/* ========= ADMIN ========= */
+
+router.post("/", protect, isAdmin, upload.any(), addProduct);
+
+router.get("/admin/all", protect, isAdmin, getAllProducts);
+
 router.put("/:id", protect, isAdmin, upload.any(), updateProduct);
 
-// DELETE
 router.delete("/:id", protect, isAdmin, deleteProduct);
 
 export default router;

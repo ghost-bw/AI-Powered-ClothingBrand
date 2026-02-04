@@ -7,6 +7,7 @@ import ProductDetails from "./pages/user/ProductDetails";
 import Cart from "./pages/user/Cart";
 import CheckoutPage from "./pages/user/Checkout";
 import CollectionsPage from "./pages/user/Collections";
+import KidsCategory from "./pages/user/KidsCategory";
 import UserSignup from "./pages/user/UserSignup";
 import UserLogin from "./pages/user/UserLogin";
 import UserDashboard from "./pages/user/UserDashboard";
@@ -21,6 +22,10 @@ import Dashboard from "./pages/admin/Dashboard";
 // import AdminCollections from "./pages/admin/AdminCollections";
 import EditProduct from "./pages/admin/EditProduct";
 import ProductManagement from "./pages/admin/ProductManagement";
+import AddCollection from "./pages/admin/AddCollection";
+import DeleteCollection from "./pages/admin/DeleteCollection";
+import DeleteCategory from "./pages/admin/DeleteCategory";
+
 
 
 
@@ -40,6 +45,8 @@ import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import Analytics from "./pages/admin/admindashboard/Analytics";
 // import Dashboard from "./pages/admin/Dashboard";
 import OrderManagement from "./pages/admin/OrderManagement";
+import MenCategoryPage from "./pages/user/MenCategory";
+import WomenCategoryPage from "./pages/user/WomenCategory";
 // import OrderDetails from "./pages/admins/OrderDetails";
 
 
@@ -58,6 +65,9 @@ const App = () => {
         <Route path="/cart" element={<><Navbar /><Cart /></>} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/collections" element={<CollectionsPage />} />
+        <Route path="/kids" element={<KidsCategory />} />
+        <Route path="/men" element={<MenCategoryPage />} />
+        <Route path="/women" element={<WomenCategoryPage />} />
 
         {/* User Auth */}
 
@@ -100,6 +110,9 @@ const App = () => {
             </AdminProtectedRoute>
           }
         />
+
+<Route path="/admin/categories/delete" element={<DeleteCategory/>}/>
+
 
         <Route
           path="/admin/analytics"

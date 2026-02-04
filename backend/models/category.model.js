@@ -16,7 +16,17 @@ const categorySchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true
-    }
+    },collection:{
+ type:mongoose.Schema.Types.ObjectId,
+ ref:"Collection"
+},
+
+gender:{
+ type:String,
+ enum:["boys","girls",null],
+ default:null
+}
+
   },
   { timestamps: true }
 );

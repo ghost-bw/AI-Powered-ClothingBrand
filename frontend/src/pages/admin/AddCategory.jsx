@@ -1,55 +1,113 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const AddCategory = ({ refresh }) => {
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-console.log("TOKEN =>", localStorage.getItem("admin_token"));
+ const [name,setName]=useState("");
+ const [collection,setCollection]=useState("");
+ const [gender,setGender]=useState("");
+ const [collections,setCollections]=useState([]);
+ const [message,setMessage]=useState("");
+ const [selectedCollectionName,setSelectedCollectionName]=useState("");
 
-    const res = await fetch("http://localhost:4000/api/categories", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("admin_token")}`
-      },
-      body: JSON.stringify({ name })
-    });
+ useEffect(()=>{
+  fetch("http://localhost:4000/api/collections")
+   .then(r=>r.json())
+   .then(setCollections);
+ },[]);
 
-    const data = await res.json();
+ const submitHandler = async (e) => {
+  e.preventDefault();
 
-    if (res.ok) {
-      setMessage("Category added successfully");
-      setName("");
-      refresh(); // 🔥 THIS updates dashboard
-    } else {
-      setMessage(data.message);
-    }
-  };
+  const res = await fetch("http://localhost:4000/api/categories",{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    Authorization:`Bearer ${localStorage.getItem("admin_token")}`
+   },
+   body:JSON.stringify({
+    name,
+    collection,
+    gender:selectedCollectionName==="kids"?gender:null
+   })
+  });
 
-  return (
-    <div className="p-8 max-w-md">
-      <h1 className="text-3xl font-bold mb-6">Add Category</h1>
+  const data = await res.json();
 
-      {message && <p className="mb-4 text-sm">{message}</p>}
+  if(res.ok){
+   setMessage("Category added");
+   setName("");
+   setCollection("");
+   setGender("");
+   refresh();
+  }else{
+   setMessage(data.message);
+  }
+ };
 
-      <form onSubmit={submitHandler} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Category name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full border p-3 rounded"
-          required
-        />
+ return(
+  <div className="p-8 max-w-md">
 
-        <button className="bg-black text-white px-5 py-3 rounded">
-          Add Category
-        </button>
-      </form>
-    </div>
-  );
+   <h1 className="text-3xl font-bold mb-6">Add Category</h1>
+
+   {message && <p className="mb-4 text-sm">{message}</p>}
+
+   <form onSubmit={submitHandler} className="space-y-4">
+
+    {/* COLLECTION */}
+
+    <select
+     value={collection}
+     onChange={e=>{
+      const selected=collections.find(c=>c._id===e.target.value);
+      setCollection(e.target.value);
+      setSelectedCollectionName(selected?.name?.toLowerCase());
+      setGender("");
+     }}
+     className="w-full border p-3 rounded"
+     required
+    >
+     <option value="">Select Collection</option>
+
+     {collections.map(c=>(
+      <option key={c._id} value={c._id}>
+       {c.name}
+      </option>
+     ))}
+    </select>
+
+    {/* KIDS GENDER */}
+
+    {selectedCollectionName==="kids" && (
+
+     <select
+      value={gender}
+      onChange={e=>setGender(e.target.value)}
+      className="w-full border p-3 rounded"
+      required
+     >
+      <option value="">Select Gender</option>
+      <option value="boys">Boys</option>
+      <option value="girls">Girls</option>
+     </select>
+
+    )}
+
+    <input
+     value={name}
+     onChange={e=>setName(e.target.value)}
+     placeholder="Category name"
+     className="w-full border p-3 rounded"
+     required
+    />
+
+    <button className="bg-black text-white px-5 py-3 rounded w-full">
+     Add Category
+    </button>
+
+   </form>
+
+  </div>
+ );
 };
 
 export default AddCategory;

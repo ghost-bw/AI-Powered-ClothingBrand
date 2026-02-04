@@ -3,7 +3,8 @@ import Order from "../models/order.model.js";
 import Address from "../models/address.model.js";
 import Invoice from "../models/invoices.model.js";
 // import Order from "../models/order.model.js";
-import PDFDocument from "pdfkit";
+// import PDFDocument from "pdfkit";
+import { generateInvoicePDF } from "../utils/generateInvoicePDF.js";
 
 
 /* SINGLE ORDER */
@@ -68,70 +69,7 @@ export const getInvoices = async (req, res) => {
 };
 
 
-const generateInvoicePDF = async (invoiceId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      // 1️⃣ Load invoice
-      const invoice = await Invoice.findById(invoiceId);
 
-      if (!invoice) throw new Error("Invoice not found");
-
-      // 2️⃣ Load order using invoice.orderId
-      const order = await Order.findById(invoice.orderId).populate("user");
-
-      if (!order) throw new Error("Order not found");
-
-      const doc = new PDFDocument({ margin: 40 });
-      const buffers = [];
-
-      doc.on("data", buffers.push.bind(buffers));
-      doc.on("end", () => resolve(Buffer.concat(buffers)));
-
-      // ===== HEADER =====
-      doc.fontSize(22).text("GRAPHURA INVOICE", { align: "center" });
-      doc.moveDown();
-
-      doc.fontSize(12);
-      doc.text(`Invoice ID: ${invoice._id}`);
-      doc.text(`Order ID: ${order._id}`);
-      doc.text(`Customer: ${order.user.name}`);
-      doc.text(`Email: ${order.user.email}`);
-      doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`);
-
-      doc.moveDown();
-
-      // ===== ITEMS =====
-      doc.fontSize(14).text("Order Items");
-      doc.moveDown(0.5);
-
-      order.items.forEach((item, i) => {
-        doc.fontSize(11).text(
-          `${i + 1}. ${item.name} | Qty: ${item.quantity} | ₹${item.price}`
-        );
-      });
-
-      doc.moveDown();
-
-      // ===== TOTALS =====
-      doc.text(`Subtotal: ₹${order.subtotal}`);
-      doc.text(`GST: ₹${order.gst}`);
-      doc.text(`Shipping: ₹${order.shippingCost}`);
-      doc.text(`Discount: ₹${order.discount}`);
-      doc.moveDown();
-      doc.fontSize(14).text(`Grand Total: ₹${order.total}`);
-
-      doc.moveDown(2);
-      doc.fontSize(11).text("Thank you for shopping with Graphura!", {
-        align: "center",
-      });
-
-      doc.end();
-
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
 
 /* DOWNLOAD */
 

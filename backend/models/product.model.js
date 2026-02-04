@@ -6,6 +6,11 @@ const productSchema = new mongoose.Schema({
  name:String,
  slug:String,
  isDeleted:{type:Boolean,default:false},
+ gender:{
+  type:String,
+  enum:["boys","girls"],
+  default:null
+ },
 
  category:{
    type:mongoose.Schema.Types.ObjectId,
@@ -26,7 +31,13 @@ const productSchema = new mongoose.Schema({
 
  sizes:[String],
 
- collections:[String],
+ collections: [
+ {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Collection"
+ }
+],
+
 
  isTrending:{type:Boolean,default:false},
  isBrandStory:{type:Boolean,default:false},
@@ -49,6 +60,7 @@ const productSchema = new mongoose.Schema({
  }
 ]
 ,
+
 
  location:{
   city:String,

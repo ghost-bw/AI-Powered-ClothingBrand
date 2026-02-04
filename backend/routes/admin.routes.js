@@ -1,12 +1,14 @@
 import express from "express";
-import { adminSignup, adminLogin } from "../controllers/admin.controller.js";
+import { adminLogin } from "../controllers/admin.controller.js";
 import  protect  from "../middlewares/auth.middleware.js";
 import { isAdmin } from "../middlewares/admin.middleware.js";
 
 const router = express.Router();
 
-router.post("/signup", adminSignup);
+// router.post("/signup", adminSignup);
 router.post("/login", adminLogin);
+
+
 
 // Example protected admin route
 import Order from "../models/order.model.js";

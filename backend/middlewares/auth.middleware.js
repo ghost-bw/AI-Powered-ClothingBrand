@@ -4,7 +4,7 @@ import Admin from "../models/admin.model.js";
 
 console.log("Auth middleware loaded");
 
- const protect = async (req, res, next) => {
+ export const protect = async (req, res, next) => {
 
  console.log("---- PROTECT MIDDLEWARE HIT ----");
 

@@ -1,167 +1,212 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { FaBox, FaTruck, FaMapMarkerAlt, FaHome } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaLock,
+  FaUndo,
+  FaTimesCircle,
+  FaMoneyCheckAlt,
+} from "react-icons/fa";
 
 const OrderDetails = () => {
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const { id: orderId } = useParams();
   const token = localStorage.getItem("token");
 
   const [order, setOrder] = useState(null);
+  const [status, setStatus] = useState("");
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:4000/api/user/dashboard/orders/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setOrder(res.data.order));
-  }, []);
+  const statusStyle = {
+    Delivered: "bg-green-100 text-green-700",
+    Shipped: "bg-blue-100 text-blue-700",
+    Cancelled: "bg-red-100 text-red-600",
+    Returned: "bg-orange-100 text-orange-600",
+    Refunded: "bg-gray-200 text-gray-600",
+    Processing: "bg-yellow-100 text-yellow-700",
+  };
+
+useEffect(() => {
+  axios
+    .get(`http://localhost:4000/api/user/dashboard/orders/${orderId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      setOrder(res.data.order || res.data);
+      setStatus(res.data.status || res.data.order?.status);
+    })
+    .catch(console.error);
+}, [orderId]);
+
 
   if (!order) return null;
 
   return (
-    <div className="bg-gray-50 min-h-screen p-4 md:p-8">
+    <div className="min-h-screen bg-gray-100 px-4 py-8">
+      <div className="max-w-lg mx-auto space-y-5">
+        {/* Back */}
+        <button
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl
+          bg-white border shadow-sm text-sm font-semibold text-gray-700
+          transition-all duration-300
+          hover:bg-purple-500 hover:text-white hover:shadow-md group"
+        >
+          <FaArrowLeft className="transition-transform group-hover:-translate-x-1" />
+          Back to Orders
+        </button>
 
-      {/* ORDER HEADER */}
-      <div className="bg-white border rounded-2xl p-6 mb-6">
-        <h1 className="text-xl font-semibold">Order #{order._id.slice(-6)}</h1>
-
-        <p className="text-sm text-gray-500 mt-1">
-          Placed on {new Date(order.createdAt).toDateString()} • Total ₹{order.total}
-        </p>
-
-        <span className="inline-block mt-3 px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700">
-          {order.status}
-        </span>
-      </div>
-
-      {/* TRACKING TIMELINE */}
-      <div className="bg-white border rounded-2xl p-6 mb-6">
-        <h2 className="font-semibold mb-4">Order Status</h2>
-
-        <div className="space-y-6">
-          <TimelineItem icon={<FaBox />} title="Packed" active />
-          <TimelineItem icon={<FaTruck />} title="Shipped" active />
-          <TimelineItem icon={<FaMapMarkerAlt />} title={order.status} current />
-          <TimelineItem icon={<FaHome />} title="Delivered" />
-        </div>
-      </div>
-
-      {/* INFO CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-
-        <InfoCard
-          title="Delivery Address"
-          value={`${order?.shipping?.fullName}, ${order?.shipping?.address}, ${order?.shipping?.city}, ${order?.shipping?.state}`}
-        />
-
-        <InfoCard
-          title="Courier Partner"
-          value={
-            <>
-              FastExpress
-              <br />
-              <span className="text-xs text-gray-500">
-                Tracking ID: {order.trackingId || "N/A"}
-              </span>
-            </>
-          }
-        />
-
-        <div className="bg-green-600 text-white rounded-2xl p-6 flex flex-col justify-between">
-          <h3 className="text-lg font-semibold">Need Help?</h3>
-          <button className="mt-4 bg-white text-green-700 py-2 rounded-lg">
-            Contact Support
-          </button>
-        </div>
-
-      </div>
-
-      {/* ITEMS */}
-      <div className="bg-white border rounded-2xl p-6">
-        <h2 className="font-semibold mb-4">Ordered Items</h2>
-
-        {order.items.map((item) => (
-          <div
-            key={item._id}
-            className="flex items-center justify-between gap-4 border rounded-xl p-4 mb-3"
-          >
-            <div className="flex items-center gap-4">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-20 h-20 object-cover rounded-lg"
-              />
-
-              <div>
-                <h3 className="font-medium">{item.product?.name || item.name}</h3>
-                <p className="text-sm text-gray-500">
-                  Qty: {item.quantity}
-                </p>
-              </div>
+        {/* CARD */}
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          {/* Header */}
+          <div className="p-5 border-b flex justify-between items-start">
+            <div>
+              <p className="text-base font-bold text-gray-900">
+                Order #{order?._id?.slice(-6)}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Placed on {new Date(order.createdAt).toLocaleDateString()}
+              </p>
             </div>
 
-            <p className="font-semibold">₹{item.price}</p>
-          </div>
-        ))}
-
-        {/* PRICE SUMMARY */}
-        <div className="border-t mt-6 pt-4 space-y-2 text-sm">
-
-          <div className="flex justify-between">
-            <span>Subtotal</span>
-            <span>₹{order.subtotal}</span>
-          </div>
-
-          <div className="flex justify-between">
-            <span>GST</span>
-            <span>₹{order.gst}</span>
-          </div>
-
-          <div className="flex justify-between">
-            <span>Shipping</span>
-            <span className="text-green-600">
-              ₹{order.shippingCost || 0}
+            <span
+              className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                statusStyle[status]
+              }`}
+            >
+              {status}
             </span>
           </div>
 
-          <div className="flex justify-between font-semibold text-base">
-            <span>Total</span>
-            <span>₹{order.total}</span>
+          {/* ITEMS */}
+          <div className="p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-gray-800">
+              Item Details
+            </h3>
+
+             {order?.items?.map((item) => (
+
+              <div key={item._id} className="flex gap-4">
+                <img
+                  src={item.image}
+                  alt="product"
+                  className="w-24 h-24 rounded-xl border object-cover"
+                />
+
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900">{item.name}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                Size: {item.size} • Color: {item.color} • Qty: {item.quantity}
+                  </p>
+
+                  <p className="text-lg font-bold mt-2">₹{item.price}</p>
+                </div>
+              </div>
+            ))}
           </div>
 
-        </div>
+          {/* Price */}
+          <div className="px-5 py-4 border-t text-sm space-y-2 bg-gray-50">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Subtotal</span>
+              <span>₹{order.subtotal}</span>
+            </div>
 
+            <div className="flex justify-between">
+              <span className="text-gray-600">Shipping</span>
+              <span>₹{order.shippingCost}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-600">GST</span>
+              <span>₹{order.gst}</span>
+            </div>
+
+            <div className="flex justify-between font-semibold pt-2 border-t">
+              <span>Total</span>
+              <span>₹{order.total}</span>
+            </div>
+          </div>
+
+          {/* Address */}
+          <div className="p-5 border-t">
+            <h3 className="text-sm font-semibold mb-2">Delivery Address</h3>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              {order?.shipping?.fullName}
+              <br />
+              {order?.shipping?.address}
+              <br />
+              {order?.shipping?.city}, {order?.shipping?.state} –{" "}
+              {order?.shipping?.zip}
+              <br />
+              India
+            </p>
+          </div>
+
+          {/* Payment */}
+          <div className="p-5 border-t bg-gray-50">
+            <div className="flex items-start gap-3">
+              <FaLock className="text-gray-500 mt-1" />
+              <div>
+                <h3 className="text-sm font-semibold">Payment Method</h3>
+                <p className="text-xs text-gray-600">
+                  {order?.paymentMethod?.toUpperCase()}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Your order & payment information is securely encrypted.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="p-5 border-t space-y-3">
+            {status === "Shipped" && (
+              <button
+                onClick={() => setStatus("Cancelled")}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
+                border border-red-500 text-red-600 font-semibold
+                hover:bg-red-50 transition"
+              >
+                <FaTimesCircle /> Cancel Order
+              </button>
+            )}
+
+            {status === "Delivered" && (
+              <>
+                <button
+                  onClick={() => setStatus("Returned")}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
+                  border border-orange-500 text-orange-600 font-semibold
+                  hover:bg-orange-50 transition"
+                >
+                  <FaUndo /> Return Order
+                </button>
+
+                <button
+                  onClick={() => setStatus("Refunded")}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
+                  border border-gray-400 text-gray-700 font-semibold
+                  hover:bg-gray-100 transition"
+                >
+                  <FaMoneyCheckAlt /> Request Refund
+                </button>
+              </>
+            )}
+
+            {(status === "Returned" || status === "Refunded") && (
+              <button
+                disabled
+                className="w-full py-3 rounded-xl bg-gray-100 text-gray-400 font-semibold"
+              >
+                Action Completed
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
-
-/* COMPONENTS */
-
-const TimelineItem = ({ icon, title, active, current }) => (
-  <div className="flex items-start gap-4">
-    <div
-      className={`w-10 h-10 flex items-center justify-center rounded-full ${
-        current
-          ? "bg-blue-600 text-white"
-          : active
-          ? "bg-green-500 text-white"
-          : "bg-gray-200 text-gray-500"
-      }`}
-    >
-      {icon}
-    </div>
-
-    <p className={`font-medium ${current ? "text-blue-600" : ""}`}>{title}</p>
-  </div>
-);
-
-const InfoCard = ({ title, value }) => (
-  <div className="bg-white border rounded-2xl p-6">
-    <h3 className="font-semibold mb-1">{title}</h3>
-    <p className="text-sm text-gray-600">{value}</p>
-  </div>
-);
 
 export default OrderDetails;

@@ -31,7 +31,12 @@ export default function ProductTable() {
         },
       });
 
-      setProducts(res.data.products || []);
+      const list = Array.isArray(res.data)
+        ? res.data
+        : res.data.products;
+
+      setProducts(list || []);
+
     } catch (err) {
       console.log("Product table fetch error:", err);
     }
@@ -52,8 +57,8 @@ export default function ProductTable() {
       stockFilter === "All"
         ? true
         : stockFilter === "Low"
-        ? product.stock < 10
-        : product.stock > 0;
+        ? (product.stock ?? 0) < 10
+        : (product.stock ?? 0) > 0;
 
     return matchSearch && matchCategory && matchStock;
   });
@@ -95,7 +100,7 @@ export default function ProductTable() {
     try {
       await API.delete(`/products/${id}`);
       fetchProducts();
-    } catch (err) {
+    } catch {
       alert("Delete failed");
     }
   };
@@ -105,21 +110,21 @@ export default function ProductTable() {
   return (
     <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
 
-      {/* HEADER */}
-      <div className="p-4 border-b flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+      {/* HEADER CONTROLS */}
+      <div className="p-4 border-b flex flex-wrap gap-3 justify-between">
+
         <h3 className="font-bold text-lg">Products</h3>
 
-        <div className="flex flex-wrap gap-3 items-center">
+        <div className="flex gap-3 flex-wrap">
 
           <input
-            type="text"
             placeholder="Search product..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
               resetPage();
             }}
-            className="border rounded-xl px-4 py-2 text-sm w-48"
+            className="border rounded-xl px-4 py-2 text-sm"
           />
 
           <select
@@ -131,8 +136,8 @@ export default function ProductTable() {
             className="border rounded-xl px-3 py-2 text-sm"
           >
             <option value="All">All Categories</option>
-            {[...new Set(safeProducts.map(p => p.category?.name))].map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {[...new Set(safeProducts.map(p => p.category?.name).filter(Boolean))].map(cat => (
+              <option key={cat}>{cat}</option>
             ))}
           </select>
 
@@ -161,89 +166,84 @@ export default function ProductTable() {
 
       {/* TABLE */}
       <table className="w-full text-sm">
+
+        {/* TABLE HEADER */}
+        <thead className="bg-gray-50 text-left">
+          <tr>
+            <th className="p-4">✓</th>
+            <th className="p-4">Product</th>
+            <th className="p-4">Category</th>
+            <th className="p-4">Price</th>
+            <th className="p-4">Stock</th>
+            <th className="p-4 text-right">Action</th>
+          </tr>
+        </thead>
+
         <tbody>
 
-          <tr className="border-b bg-gray-50">
-            <td className="p-4">
-              <input
-                type="checkbox"
-                checked={
-                  paginatedProducts.length > 0 &&
-                  paginatedProducts.every((p) =>
-                    selectedIds.includes(p._id)
-                  )
-                }
-                onChange={toggleSelectAll}
-                className="w-5 h-5"
-              />
-            </td>
-            <td colSpan="5" className="font-semibold">
-              Select All (This Page)
-            </td>
-          </tr>
+          {paginatedProducts.map(product => (
 
-          {paginatedProducts.map((product) => (
-
-            <tr key={product._id} className="border-b hover:bg-gray-50">
+            <tr key={product._id} className="border-t hover:bg-gray-50">
 
               <td className="p-4">
                 <input
                   type="checkbox"
                   checked={selectedIds.includes(product._id)}
                   onChange={() => toggleSelect(product._id)}
-                  className="w-5 h-5"
                 />
               </td>
 
-              <td className="p-4">
-                <div className="flex items-center gap-4">
-                  <img
-                    src={product.colors?.[0]?.images?.[0] || "/products/placeholder.png"}
-                    alt={product.name}
-                    className="w-14 h-14 rounded-lg object-cover"
-                  />
-                  <div>
-                    <p className="font-semibold">{product.name}</p>
-                    <p className="text-xs text-gray-500">
-                      SKU: {product.sku || "N/A"}
-                    </p>
-                  </div>
+              <td className="p-4 flex items-center gap-4">
+
+                <img
+                  src={
+                    product.colors?.find(c => c.images?.length)?.images?.[0] ||
+                    "/products/placeholder.png"
+                  }
+                  className="w-14 h-14 rounded-lg object-cover"
+                />
+
+                <div>
+                  <p className="font-semibold">{product.name}</p>
+                  <p className="text-xs text-gray-500">SKU: {product.sku || "N/A"}</p>
                 </div>
+
               </td>
 
-              <td>{product.category?.name}</td>
-              <td className="font-semibold">₹{product.price}</td>
+              <td className="p-4">{product.category?.name || "N/A"}</td>
 
-              <td>
-                <span className={`font-bold ${product.stock < 10 ? "text-red-500" : "text-green-600"}`}>
-                  {product.stock}
+              <td className="p-4 font-semibold">₹{product.price || 0}</td>
+
+              <td className="p-4">
+                <span className={(product.stock ?? 0) < 10 ? "text-red-500 font-bold" : "text-green-600 font-bold"}>
+                  {product.stock ?? 0}
                 </span>
               </td>
 
-              <td className="text-right p-4">
-
+              <td className="p-4 text-right">
                 <button
                   onClick={() => navigate(`/admin/products/edit/${product._id}`)}
-                  className="text-blue-600 font-semibold text-sm"
+                  className="text-blue-600 text-sm font-semibold"
                 >
                   Edit
                 </button>
 
                 <button
                   onClick={() => handleDelete(product._id)}
-                  className="text-red-500 font-semibold text-sm ml-4"
+                  className="text-red-500 text-sm font-semibold ml-4"
                 >
                   Delete
                 </button>
-
               </td>
 
             </tr>
+
           ))}
 
         </tbody>
       </table>
 
+      {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="p-4 flex justify-center gap-2">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
@@ -251,9 +251,7 @@ export default function ProductTable() {
               key={page}
               onClick={() => setCurrentPage(page)}
               className={`px-4 py-2 rounded-lg text-sm font-semibold ${
-                page === currentPage
-                  ? "bg-black text-white"
-                  : "border hover:bg-gray-100"
+                page === currentPage ? "bg-black text-white" : "border"
               }`}
             >
               {page}

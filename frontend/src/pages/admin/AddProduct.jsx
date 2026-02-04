@@ -1,268 +1,279 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import API from "../../api/axios";
 
 const AddProduct = () => {
-
-const [formData,setFormData] = useState({
- name:"",
- category:"",
- price:"",
- discountPercent:"",
- discountPrice:"",
- stock:"",
- sku:"",
- description:"",
- fabric:"",
- material:"",
- care:"",
- weight:"",
- dimensions:"",
- origin:"",
- sizes:"",
- collections:[],
- isTrending:false,
- isBrandStory:false
-});
-
-const [colors,setColors] = useState([]);
-const [categories,setCategories] = useState([]);
-
-useEffect(()=>{
- fetch("/api/categories").then(r=>r.json()).then(setCategories);
-},[]);
-
-// AUTO DISCOUNT
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const data = new FormData();
-
-  // ---------- AUTO DISCOUNT (SAFETY CALC) ----------
-  const price = Number(formData.price || 0);
-  const percent = Number(formData.discountPercent || 0);
-
-  const discountPrice = Math.round(price - (price * percent) / 100);
-
-  // ---------- BASIC FIELDS ----------
-  Object.keys(formData).forEach((k) => {
-    if (k === "sizes") data.append("sizes", JSON.stringify(formData.sizes.split(",")));
-    else if (k === "collections") data.append("collections", JSON.stringify(formData.collections));
-    else if (k === "discountPrice") data.append("discountPrice", discountPrice);
-    else data.append(k, formData[k]);
+  const [formData, setFormData] = useState({
+    name: "",
+    category: "",
+    price: "",
+    discountPercent: "",
+    discountPrice: "",
+    stock: "",
+    sku: "",
+    description: "",
+    fabric: "",
+    material: "",
+    care: "",
+    weight: "",
+    dimensions: "",
+    origin: "",
+    sizes: "",
+    collections: [],
+    isTrending: false,
+    isBrandStory: false,
   });
 
-  // ---------- DETAILS ----------
-  data.append(
-    "details",
-    JSON.stringify({
-      fabric: formData.fabric,
-      material: formData.material,
-      care: formData.care,
-      weight: formData.weight,
-      dimensions: formData.dimensions,
-      origin: formData.origin,
-      stock:formData.origin
-    })
-  );
+  const [colors, setColors] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [collectionsList, setCollectionsList] = useState([]);
+  const [gender, setGender] = useState("");
+  const [selectedCollectionName,setSelectedCollectionName]=useState("");
 
-  // ---------- COLORS META ----------
-  data.append(
-    "colors",
-    JSON.stringify(
-      colors.map((c) => ({
-        name: c.name,
-        hex: c.hex,
-      }))
-    )
-  );
 
-  // ---------- COLORS IMAGES ----------
-  colors.forEach((color, i) => {
-    color.images.forEach((img) => {
-      data.append(`colorImages_${i}`, img);
+  useEffect(() => {
+    fetch("/api/categories").then((r) => r.json()).then(setCategories);
+    fetch("/api/collections").then((r) => r.json()).then(setCollectionsList);
+  }, []);
+
+  /* ================= SUBMIT ================= */
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData();
+
+    const price = Number(formData.price || 0);
+    const percent = Number(formData.discountPercent || 0);
+    const discountPrice = Math.round(price - (price * percent) / 100);
+
+    Object.keys(formData).forEach((k) => {
+      if (k === "sizes")
+        data.append("sizes", JSON.stringify(formData.sizes.split(",")));
+      else if (k === "collections")
+        data.append("collections", JSON.stringify(formData.collections));
+      else if (k === "discountPrice") data.append("discountPrice", discountPrice);
+      else data.append(k, formData[k]);
     });
-  });
-console.log("COLORS BEFORE SUBMIT:", colors);
 
-  await API.post("/products", data, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+    data.append("gender", gender);
 
-  alert("✅ Product Added Successfully");
-};
+    data.append(
+      "details",
+      JSON.stringify({
+        fabric: formData.fabric,
+        material: formData.material,
+        care: formData.care,
+        weight: formData.weight,
+        dimensions: formData.dimensions,
+        origin: formData.origin,
+        stock: formData.stock,
+      })
+    );
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
+    data.append(
+      "colors",
+      JSON.stringify(
+        colors.map((c) => ({
+          name: c.name,
+          hex: c.hex,
+        }))
+      )
+    );
 
-  let updated = { ...formData, [name]: value };
+    colors.forEach((color, i) => {
+      color.images.forEach((img) => {
+        data.append(`colorImages_${i}`, img);
+      });
+    });
+console.log("FORM DATA COLLECTIONS:", formData.collections);
 
-  // Auto discount live
-  if (name === "price" || name === "discountPercent") {
-    const price = Number(name === "price" ? value : updated.price);
-    const percent = Number(name === "discountPercent" ? value : updated.discountPercent);
+    await API.post("/products", data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+      },
+    });
 
-    if (price && percent >= 0) {
+    alert("✅ Product Added Successfully");
+  };
+
+  /* ================= CHANGE ================= */
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    let updated = { ...formData, [name]: value };
+
+    if (name === "price" || name === "discountPercent") {
+      const price = Number(name === "price" ? value : updated.price);
+      const percent = Number(
+        name === "discountPercent" ? value : updated.discountPercent
+      );
+
       updated.discountPrice = Math.round(price - (price * percent) / 100);
     }
-  }
 
-  setFormData(updated);
-};
+    setFormData(updated);
+  };
 
-const addColor = ()=>{
- setColors([...colors,{name:"",hex:"",images:[]}]);
-};
+  const addColor = () => {
+    setColors([...colors, { name: "", hex: "", images: [] }]);
+  };
 
+  return (
+    <div className="max-w-4xl mx-auto p-8 bg-white shadow rounded-lg">
+      <h1 className="text-3xl font-bold mb-8">Add Product</h1>
 
+      <form onSubmit={handleSubmit} className="space-y-6">
 
-return (
-<div className="max-w-4xl mx-auto p-8 bg-white shadow rounded-lg">
+        {/* COLLECTION FIRST */}
+      <select
+ className="border-2 p-3 rounded w-full"
+ onChange={(e)=>{
 
-<h1 className="text-3xl font-bold mb-8">Add Product</h1>
+  const selected = collectionsList.find(c=>c._id===e.target.value);
 
-<form onSubmit={handleSubmit} className="space-y-6">
+  setFormData({
+   ...formData,
+   collections:[e.target.value]
+  });
 
-{/* BASIC */}
-<div className="grid grid-cols-2 gap-4">
+  setSelectedCollectionName(selected?.name?.toLowerCase());
+  setGender(""); // reset gender when collection changes
+ }}
+>
 
-<input name="name" placeholder="Product Name" onChange={handleChange} className="border p-3 rounded"/>
+<option value="">Select Collection</option>
 
-<select name="category" onChange={handleChange} className="border p-3 rounded">
-<option>Select Category</option>
-{categories.map(c=>(
-<option key={c._id} value={c._id}>{c.name}</option>
-))}
-</select>
-
-</div>
-
-<textarea name="description" placeholder="Description" onChange={handleChange} className="border p-3 rounded w-full"/>
-
-{/* PRICE */}
-<div className="grid grid-cols-4 gap-4">
-
-<input name="price" placeholder="Price" onChange={handleChange} className="border p-3 rounded"/>
-
-<input name="discountPercent" placeholder="Discount %" onChange={handleChange} className="border p-3 rounded"/>
-
-<input value={formData.discountPrice} placeholder="Discount Price" readOnly className="border p-3 rounded bg-gray-100"/>
-
-<input name="sizes" placeholder="Sizes S,M,L,XL" onChange={handleChange} className="border p-3 rounded"/>
-
-</div>
-
-{/* DETAILS */}
-<h2 className="font-semibold text-lg">Product Details</h2>
-
-<div className="grid grid-cols-2 gap-4">
-
-<input name="fabric" placeholder="Fabric" onChange={handleChange} className="border p-3 rounded"/>
-<input name="material" placeholder="Material" onChange={handleChange} className="border p-3 rounded"/>
-<input name="care" placeholder="Care" onChange={handleChange} className="border p-3 rounded"/>
-<input name="weight" placeholder="Weight" onChange={handleChange} className="border p-3 rounded"/>
-<input name="dimensions" placeholder="Dimensions" onChange={handleChange} className="border p-3 rounded"/>
-<input name="origin" placeholder="Origin" onChange={handleChange} className="border p-3 rounded"/>
-<input name="stock" placeholder="stock" onChange={handleChange} className="border p-3 rounded"/>
-</div>
-
-{/* COLLECTIONS */}
-<select multiple className="border p-3 rounded w-full h-32" onChange={e=>{
- const vals=[...e.target.selectedOptions].map(o=>o.value);
- setFormData({...formData,collections:vals});
-}}>
-<option>Men</option>
-<option>Women</option>
-<option>Kids</option>
-<option>Streetwear</option>
-<option>Winter</option>
-</select>
-
-{/* FLAGS */}
-<div className="flex gap-8">
-
-<label className="flex gap-2">
-<input type="checkbox" onChange={e=>setFormData({...formData,isTrending:e.target.checked})}/>
-Trending
-</label>
-
-<label className="flex gap-2">
-<input type="checkbox" onChange={e=>setFormData({...formData,isBrandStory:e.target.checked})}/>
-Brand Story
-</label>
-
-</div>
-
-{/* COLORS */}
-<div>
-
-<h2 className="text-xl font-semibold mb-4">Colors & Images (Min 5 per color)</h2>
-
-{colors.map((c,i)=>(
-<div key={i} className="border p-4 rounded mb-4 bg-gray-50">
-
-<div className="grid grid-cols-3 gap-3 mb-3">
-
-<input
-  placeholder="Color Name"
-  onChange={(e) => {
-    const updated = [...colors];
-    updated[i] = { ...updated[i], name: e.target.value };
-    setColors(updated);
-  }}
-  className="border p-2 rounded"
-/>
-
-<input
-  type="color"
-  onChange={(e) => {
-    const updated = [...colors];
-    updated[i] = { ...updated[i], hex: e.target.value };
-    setColors(updated);
-  }}
-  className="border rounded h-10"
-/>
-
-<input
-  type="file"
-  multiple
-  accept="image/*"
-  onChange={(e) => {
-    const updated = [...colors];
-    updated[i] = {
-      ...updated[i],
-      images: Array.from(e.target.files),
-    };
-    setColors(updated);
-  }}
-/>
-
-</div>
-
-<label className="text-sm text-gray-500 block mb-2">
-Upload minimum 5 images for this color
-</label>
-
-<input type="file" multiple accept="image/*" onChange={e=>colors[i].images=[...e.target.files]}/>
-
-</div>
+{collectionsList.map(c=>(
+ <option key={c._id} value={c._id}>
+  {c.name}
+ </option>
 ))}
 
-<button type="button" onClick={addColor} className="px-4 py-2 bg-gray-200 rounded">
-+ Add Color
-</button>
+</select>
 
-</div>
 
-<button type="submit" className="w-full bg-black text-white py-3 rounded hover:bg-gray-800">
-Save Product
-</button>
 
-</form>
+        {/* KIDS GENDER */}
+       {selectedCollectionName === "kids" && (
+<select
+ className="border p-3 rounded w-full"
+ onChange={e=>setGender(e.target.value)}
+>
+<option value="">Select Gender</option>
+<option value="boys">Boys</option>
+<option value="girls">Girls</option>
+</select>
+)}
 
-</div>
-);
+        {/* CATEGORY */}
+        <select
+          name="category"
+          onChange={handleChange}
+          className="border p-3 rounded w-full"
+        >
+          <option>Select Category</option>
+          {categories.map((c) => (
+            <option key={c._id} value={c._id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+
+        <input name="name" placeholder="Product Name" onChange={handleChange} className="border p-3 rounded w-full" />
+
+        <textarea name="description" placeholder="Description" onChange={handleChange} className="border p-3 rounded w-full" />
+
+        {/* PRICE */}
+        <div className="grid grid-cols-4 gap-4">
+          <input name="price" placeholder="Price" onChange={handleChange} className="border p-3 rounded" />
+          <input name="discountPercent" placeholder="Discount %" onChange={handleChange} className="border p-3 rounded" />
+          <input value={formData.discountPrice} placeholder="Discounted Price" readOnly className="border p-3 rounded bg-gray-100" />
+          <input name="sizes" placeholder="Sizes S,M,L" onChange={handleChange} className="border p-3 rounded" />
+        </div>
+
+        {/* DETAILS */}
+        <div className="grid grid-cols-2 gap-4">
+          <input name="fabric" placeholder="Fabric" onChange={handleChange} className="border p-3 rounded" />
+          <input name="material" placeholder="Material" onChange={handleChange} className="border p-3 rounded" />
+          <input name="care" placeholder="Care" onChange={handleChange} className="border p-3 rounded" />
+          <input name="weight" placeholder="Weight" onChange={handleChange} className="border p-3 rounded" />
+          <input name="dimensions" placeholder="Dimensions" onChange={handleChange} className="border p-3 rounded" />
+          <input name="origin" placeholder="Origin" onChange={handleChange} className="border p-3 rounded" />
+          <input name="stock" placeholder="Stock" onChange={handleChange} className="border p-3 rounded" />
+        </div>
+
+        {/* FLAGS */}
+        <div className="flex gap-6">
+          <label className="flex gap-2">
+            <input type="checkbox" onChange={(e) => setFormData({ ...formData, isTrending: e.target.checked })} />
+            Trending
+          </label>
+
+          <label className="flex gap-2">
+            <input type="checkbox" onChange={(e) => setFormData({ ...formData, isBrandStory: e.target.checked })} />
+            Brand Story
+          </label>
+        </div>
+
+        {/* COLORS */}
+        <h2 className="text-xl font-semibold">Colors & Images</h2>
+
+        {colors.map((c, i) => (
+          <div key={i} className="border p-4 rounded bg-gray-50">
+
+            <div className="grid grid-cols-3 gap-3 mb-3">
+              <input
+                placeholder="Color Name"
+                className="border p-2 rounded"
+                onChange={(e) => {
+                  const updated = [...colors];
+                  updated[i].name = e.target.value;
+                  setColors(updated);
+                }}
+              />
+
+              <input
+                type="color"
+                onChange={(e) => {
+                  const updated = [...colors];
+                  updated[i].hex = e.target.value;
+                  setColors(updated);
+                }}
+              />
+
+              <div className="border-2 border-dashed rounded-lg p-4 text-center">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  hidden
+                  id={`img-${i}`}
+                  onChange={(e) => {
+                    const updated = [...colors];
+                    updated[i].images = Array.from(e.target.files);
+                    setColors(updated);
+                  }}
+                />
+
+                <label htmlFor={`img-${i}`} className="cursor-pointer">
+                  Click to upload images (min 5)
+                </label>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <button type="button" onClick={addColor} className="bg-gray-200 px-4 py-2 rounded">
+          + Add Color
+        </button>
+
+        <button type="submit" className="w-full bg-black text-white py-3 rounded">
+          Save Product
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default AddProduct;

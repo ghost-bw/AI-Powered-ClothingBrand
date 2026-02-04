@@ -1,5 +1,5 @@
 import PDFDocument from "pdfkit";
-import Invoice from "../models/invoice.model.js";
+import Invoice from "../models/invoices.model.js";
 import Order from "../models/order.model.js";
 
 export const generateInvoicePDF = async (invoiceId) => {

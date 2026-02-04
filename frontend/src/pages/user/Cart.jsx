@@ -27,18 +27,14 @@ const gstRate=0.12;
 const navigate=useNavigate();
 
 /* ================= LOAD CART ================= */
-useEffect(()=>{
+useEffect(() => {
+  loadCart();
+  loadWishlist();
+}, []);
 
- const init = async ()=>{
-  await loadCart();
-  await loadWishlist();
-  await loadRecommended();
-  setLoading(false);
- };
-
- init();
-
-},[]);
+useEffect(() => {
+  if (cart.length) loadRecommended();
+}, [cart]);
 
 
 const loadCart = async () => {
@@ -76,10 +72,30 @@ const loadWishlist = async () => {
 
 
 /* ================= RECOMMENDED ================= */
-const loadRecommended=async()=>{
- const res=await API.get("/products");
- setRecommendedItems(res.data.products?.slice(0,4)||[]);
+const loadRecommended = async () => {
+  if (!cart.length) return;
+
+  // Take collection from first cart item
+  const collectionSlug =
+    cart[0]?.product?.collections?.[0]?.slug ||
+    cart[0]?.collections?.[0]?.slug;
+
+  if (!collectionSlug) return;
+
+  const res = await API.get(`/products?collection=${collectionSlug}`);
+
+  const products = Array.isArray(res.data)
+    ? res.data
+    : res.data.products;
+
+  // Remove items already in cart
+  const filtered = products.filter(
+    p => !cart.some(c => c.product?._id === p._id)
+  );
+
+  setRecommendedItems(filtered.slice(0, 4));
 };
+
 
 /* ================= CART TOTAL ================= */
 const cartTotal=cart.reduce((a,b)=>a+(b.price*b.quantity),0);

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import API from "../../api/axios";
-
 import {
   FaCheckCircle,
   FaBox,
@@ -9,11 +8,14 @@ import {
   FaMapMarkerAlt,
   FaHome,
   FaPhoneAlt,
+  FaUser,
+  FaMoneyBillWave,
+  FaMapMarkedAlt,
 } from "react-icons/fa";
 
 export default function TrackOrder() {
-  const { orderId } = useParams();
   const navigate = useNavigate();
+  const { orderId } = useParams();
 
   const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState(null);
@@ -25,38 +27,19 @@ export default function TrackOrder() {
     else fetchAllOrders();
   }, [orderId]);
 
- const fetchAllOrders = async () => {
-  try {
-    const res = await API.get("/user/dashboard/orders/my");
-
-    console.log("RAW RESPONSE:", res.data);
-
-    // Support every possible backend structure
-    const ordersArray =
-      res.data.orders ||
-      res.data.data ||
-      res.data.result ||
-      res.data;
-
-    console.log("PARSED ORDERS:", ordersArray);
-
-    setOrders(Array.isArray(ordersArray) ? ordersArray : []);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+  const fetchAllOrders = async () => {
+    try {
+      const res = await API.get("/user/dashboard/orders/my");
+      setOrders(Array.isArray(res.data) ? res.data : []);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchSingleOrder = async () => {
     try {
       const res = await API.get(`/user/dashboard/orders/${orderId}`);
-      setOrder(res.data.order || null);
-    } catch (err) {
-      console.error(err);
-      setOrder(null);
+      setOrder(res.data.order || res.data);
     } finally {
       setLoading(false);
     }
@@ -64,17 +47,14 @@ export default function TrackOrder() {
 
   if (loading) return <p>Loading...</p>;
 
-  /* ================= SHOW ALL ORDERS ================= */
+  /* ================= LIST MODE ================= */
 
   if (!orderId) {
     return (
       <div className="space-y-6">
-
         <h2 className="text-xl font-semibold">Track Your Orders</h2>
 
-        {orders.length === 0 && <p>No orders found.</p>}
-
-        {orders.map(o => (
+        {orders.map((o) => (
           <div
             key={o._id}
             className="bg-white border rounded-xl p-5 flex justify-between items-center"
@@ -88,7 +68,9 @@ export default function TrackOrder() {
             </div>
 
             <button
-              onClick={() => navigate(`/user/dashboard/track-order/${o._id}`)}
+              onClick={() =>
+                navigate(`/user/dashboard/track-order/${o._id}`)
+              }
               className="bg-black text-white px-4 py-2 rounded-lg text-sm"
             >
               Track
@@ -99,83 +81,159 @@ export default function TrackOrder() {
     );
   }
 
-  /* ================= SINGLE ORDER TRACK ================= */
-
- {if (orderId && !order) return <p>Order not found.</p>;
-
-
+  if (!order) return <p>Order not found.</p>;
 
   const steps = [
     { label: "Order Confirmed", done: true, icon: <FaCheckCircle /> },
-    { label: "Packed", done: order?.status !== "Pending", icon: <FaBox /> },
+    { label: "Packed", done: order.status !== "Pending", icon: <FaBox /> },
     {
       label: "Shipped",
-      done: ["Shipped", "OutForDelivery", "Delivered"].includes(order?.status),
+      done: ["Shipped", "OutForDelivery", "Delivered"].includes(order.status),
       icon: <FaTruck />,
     },
     {
       label: "Out for Delivery",
-      current: order?.status === "OutForDelivery",
+      current: order.status === "OutForDelivery",
       icon: <FaMapMarkerAlt />,
     },
     {
       label: "Delivered",
-      done: order?.status === "Delivered",
+      done: order.status === "Delivered",
       icon: <FaHome />,
     },
   ];
 
   return (
-    <div className="space-y-6">
-
-      <button
-        onClick={() => navigate("/user/dashboard/track-order")}
-        className="text-sm text-blue-600"
-      >
-        ← Back to Orders
-      </button>
-
-      <div className="bg-white rounded-xl border p-5">
-        <h2 className="text-xl font-semibold">Tracking Order</h2>
-        <p className="text-sm text-gray-600 mt-1">Order ID: {order._id}</p>
+    <div className="space-y-8">
+      {/* Order Summary */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300">
+        <h2 className="text-2xl font-semibold">Track Your Order</h2>
+        <div className="mt-3 flex flex-wrap gap-4 text-sm text-gray-600">
+          <span>
+            Order ID: <b>#{order._id.slice(-6)}</b>
+          </span>
+          <span>
+            Placed on {new Date(order.createdAt).toLocaleDateString()}
+          </span>
+        </div>
       </div>
 
-      <div className="bg-white rounded-xl border p-6">
-        <h3 className="font-semibold mb-6">Order Status</h3>
+      {/* Order Status */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300">
+        <h3 className="font-semibold text-lg mb-6">Order Status</h3>
 
         <div className="relative">
-          <div className="absolute left-4 top-0 bottom-0 w-[2px] bg-gray-200"></div>
+          <div className="absolute left-[28px] top-0 bottom-0 w-[2px] bg-gray-200" />
 
-          <div className="space-y-8">
-            {steps.map((step, i) => (
-              <div key={i} className="flex gap-4">
-
+          <div className="space-y-10">
+            {steps.map((step, index) => (
+              <div key={index} className="flex items-start gap-5 group">
                 <div
-                  className={`w-8 h-8 flex items-center justify-center rounded-full
+                  className={`relative z-10 w-14 h-14 rounded-full flex items-center justify-center
                   ${
-                    step.done
+                    step.current
+                      ? "bg-blue-600 text-white ring-4 ring-blue-200"
+                      : step.done
                       ? "bg-green-500 text-white"
-                      : step.current
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-500"
+                      : "bg-gray-300 text-gray-500"
                   }`}
                 >
                   {step.icon}
                 </div>
 
-                <p className="font-medium">{step.label}</p>
+                <div className="pt-1">
+                  <p className="font-semibold">{step.label}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border p-5">
-        <h4 className="font-semibold mb-2">Delivery Address</h4>
-        <p className="text-sm text-gray-600">
-          {order.shipping?.address}, {order.shipping?.city}
-        </p>
+      <div className="grid md:grid-cols-3 gap-6">
+        {/* Address */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+          <h4 className="font-semibold mb-4 flex items-center gap-2">
+            <FaMapMarkedAlt className="text-blue-600" /> Delivery Address
+          </h4>
+
+          <div className="space-y-2 text-sm text-gray-700">
+            <p className="font-medium flex items-center gap-2">
+              <FaUser /> {order.shipping?.fullName}
+            </p>
+            <p>{order.shipping?.address}</p>
+            <p>
+              {order.shipping?.city}, {order.shipping?.state}
+            </p>
+            <p>{order.shipping?.zip}</p>
+            <p>{order.shipping?.phone}</p>
+          </div>
+        </div>
+
+        {/* Courier */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+          <h4 className="font-semibold mb-1">Courier Partner</h4>
+          <p className="font-medium">Self Delivery</p>
+
+          <div className="mt-4 pt-4 border-t text-sm flex items-center gap-2">
+            <FaMoneyBillWave className="text-green-600" />
+            Payment: <b>{order.paymentMethod}</b>
+          </div>
+        </div>
+
+        {/* Support */}
+        <div className="bg-gradient-to-br from-green-500 to-emerald-700 text-white rounded-2xl p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <h4 className="font-semibold text-lg">Need Help?</h4>
+            <p className="text-sm opacity-90 mt-1">
+              Contact our support team for delivery issues
+            </p>
+          </div>
+
+          <button className="mt-5 bg-white text-green-700 font-semibold px-5 py-3 rounded-full flex items-center justify-center gap-2">
+            <FaPhoneAlt /> Contact Support
+          </button>
+        </div>
+      </div>
+
+      {/* Ordered Items */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300">
+        <h3 className="font-semibold text-lg mb-4">Ordered Items</h3>
+
+        {order.items.map((item) => (
+          <div
+            key={item._id}
+            className="flex items-center gap-5 p-4 rounded-xl bg-gray-50
+            hover:bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+          >
+            <img
+              src={item.image}
+              alt={item.name}
+              className="w-20 h-20 rounded-xl object-cover shadow-md"
+            />
+
+            <div className="flex-1">
+              <p className="font-medium">{item.name}</p>
+              <p className="text-sm text-gray-500">
+                Qty: {item.quantity} • Color: {item.color}
+              </p>
+            </div>
+
+            <div className="text-right space-y-2">
+              <p className="font-bold text-lg">₹{item.price}</p>
+              <button
+                onClick={() =>
+                  navigate(`/user/dashboard/orders/${order._id}`)
+                }
+                className="px-5 py-2 text-sm rounded-lg border border-black text-black
+                hover:bg-black hover:text-white hover:shadow-lg transition-all duration-200"
+              >
+                View Details
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
-}}
+}

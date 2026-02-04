@@ -105,10 +105,11 @@ export default function Sidebar() {
             A
           </div>
 
-          <div className="text-left">
-            <p className="text-sm font-semibold"><h3>Admin</h3></p>
-            <p className="text-xs text-gray-500">Product Admin</p>
-          </div>
+       <div className="text-left">
+  <h3 className="text-sm font-semibold">Admin</h3>
+  <p className="text-xs text-gray-500">Product Admin</p>
+</div>
+
         </button>
 
         {open && (

@@ -142,7 +142,7 @@ const CheckoutPage = () => {
   const [paymentStatus, setPaymentStatus] = useState(""); // "", "success", "failed"
   const [paymentError, setPaymentError] = useState("");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [paymentAttempts, setPaymentAttempts] = useState(0);
+  // const [paymentAttempts, setPaymentAttempts] = useState(0);
   
   const [shippingInfo, setShippingInfo] = useState({
     fullName: "",
@@ -155,12 +155,16 @@ const CheckoutPage = () => {
   });
 
   const [promoCode, setPromoCode] = useState("");
-  const [discount, setDiscount] = useState(0);
+  // const [discount, setDiscount] = useState(0);
+  const [discountPercent, setDiscountPercent] = useState(0);
+
   const [freeShippingThreshold] = useState(7000);
   const [shippingCost] = useState(150);
   const [gstRate] = useState(0.12);
   const [cart, setCart] = useState([]);
 const [loading, setLoading] = useState(true);
+const [orderId, setOrderId] = useState("");
+
 
 
   // Get real cart data from context
@@ -182,9 +186,12 @@ const subtotal = cartTotal;
 const estimatedShipping =
   subtotal >= freeShippingThreshold ? 0 : shippingCost;
 
-const gst = (subtotal + estimatedShipping) * gstRate;
+const discountAmount = subtotal * discountPercent;
 
-const total = subtotal + estimatedShipping + gst - discount;
+const gst = (subtotal - discountAmount + estimatedShipping) * gstRate;
+
+const total = subtotal - discountAmount + estimatedShipping + gst;
+
 
 
   // Calculate free shipping progress
@@ -237,24 +244,26 @@ const total = subtotal + estimatedShipping + gst - discount;
   };
 
   // Handle promo code
-  const handleApplyPromo = () => {
-    if (promoCode.trim() === "") return;
+ const handleApplyPromo = () => {
+  if (!promoCode.trim()) return;
 
-    const validPromoCodes = {
-      WELCOME15: 0.15,
-      SAVE10: 0.1,
-      FASHION20: 0.2,
-    };
-
-    if (validPromoCodes[promoCode.toUpperCase()]) {
-      const discountRate = validPromoCodes[promoCode.toUpperCase()];
-      const discountAmount = subtotal * discountRate;
-      setDiscount(discountAmount);
-      alert(`Promo code applied! You saved ₹${discountAmount.toFixed(2)}`);
-    } else {
-      alert("Invalid promo code. Please try again.");
-    }
+  const validPromoCodes = {
+    WELCOME15: 0.15,
+    SAVE10: 0.1,
+    FASHION20: 0.2,
   };
+
+  const code = promoCode.toUpperCase();
+
+  if (validPromoCodes[code]) {
+    setDiscountPercent(validPromoCodes[code]);
+    alert(`Promo applied! You saved ${validPromoCodes[code] * 100}%`);
+  } else {
+    alert("Invalid promo code");
+    setDiscountPercent(0);
+  }
+};
+
 
   // --- HANDLERS ---
   const handleInputChange = async (e) => {
@@ -297,22 +306,30 @@ const total = subtotal + estimatedShipping + gst - discount;
   };
 
   
- const handlePlaceOrder = async (e) => {
+const handlePlaceOrder = async (e) => {
   e.preventDefault();
+
+  console.log("🚀 PLACE ORDER CLICKED");
+
+  if (isProcessing) return;
 
   setIsProcessing(true);
   setShowPaymentModal(true);
 
   try {
+    console.log("📦 CART:", cart);
+    console.log("📍 SHIPPING:", shippingInfo);
+
     const res = await API.post(
       "/orders",
       {
         shipping: shippingInfo,
         payment: paymentMethod,
+        items: cart,
         subtotal,
         shippingCost: estimatedShipping,
         gst,
-        discount,
+        discount: discountAmount,
         total,
       },
       {
@@ -322,32 +339,45 @@ const total = subtotal + estimatedShipping + gst - discount;
       }
     );
 
-   if (res.data.success) {
+    console.log("✅ FULL RESPONSE:", res);
+    console.log("🆔 ORDER:", res.data.order);
+
+    const id =
+  res.data.order.orderId ||
+  res.data.order._id ||
+  res.data.order.id;
+
+setOrderId(id);
+
+setTimeout(() => {
   setPaymentStatus("success");
   setCurrentStep(3);
+  setIsProcessing(false);   // 👈 ADD THIS
+  setShowPaymentModal(false); // 👈 ALSO ADD THIS
+}, 1000);
 
-  setTimeout(() => {
-    navigate(`/user/dashboard/orders/${res.data.order._id}`);
-
-  }, 1500);
-}
 
   } catch (err) {
-    setPaymentStatus("failed");
-    setPaymentError(err.response?.data?.message || "Payment Failed");
-    setCurrentStep(3);
-  }
+    console.log("❌ AXIOS ERROR:", err);
+    console.log("❌ MESSAGE:", err.message);
+    console.log("❌ RESPONSE:", err.response);
 
-  setIsProcessing(false);
+    setPaymentStatus("failed");
+    setPaymentError(err.message || "Payment Failed");
+    setCurrentStep(3);
+    setIsProcessing(false);
+  }
 };
 
 
-  const handleRetryPayment = () => {
-    setPaymentStatus("");
-    setPaymentError("");
-    setShowPaymentModal(false);
-    simulatePayment();
-  };
+const handleRetryPayment = () => {
+  setPaymentStatus("");
+  setPaymentError("");
+  setShowPaymentModal(false);
+
+  handlePlaceOrder(new Event("submit"));
+};
+
 
   const handleTryDifferentMethod = () => {
     setPaymentStatus("");
@@ -404,6 +434,7 @@ const total = subtotal + estimatedShipping + gst - discount;
           </div>
         </div>
       </div>
+
       {/* Add this section after the Navbar for testing */}
 {process.env.NODE_ENV === 'development' && (
   <div className="fixed bottom-4 right-4 z-50 bg-white p-4 rounded-lg shadow-xl border border-gray-300">
@@ -539,7 +570,7 @@ const total = subtotal + estimatedShipping + gst - discount;
   // --- Success Content ---
   const SuccessContent = () => (
     <div className="col-span-1 lg:col-span-3">
-      <div className="max-w  -2xl mx-auto">
+      <div className="max-w-2xl mx-auto">
         <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-center">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in">
             <ShieldCheck className="text-green-600 w-10 h-10" />
@@ -551,7 +582,9 @@ const total = subtotal + estimatedShipping + gst - discount;
           
           <div className="bg-linear-to-r from-green-50 to-emerald-50 p-4 rounded-lg mb-6">
             <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg inline-block mb-3 animate-fade-in">
-              <span className="font-semibold">Order ID:</span> res.data.order._id
+              <span className="font-semibold">Order ID:</span> {orderId || "Generating..."}
+
+
 
             </div>
             <p className="text-green-700 font-medium">
@@ -594,7 +627,7 @@ const total = subtotal + estimatedShipping + gst - discount;
               Continue Shopping
             </button>
             <button
-              onClick={() => navigate("/dashboard/orders/:id")}
+             onClick={() => navigate(`/user/dashboard/orders/${orderId}`)}
               className="px-8 py-3 bg-white text-green-600 border-2 border-green-600 rounded-xl font-semibold hover:bg-green-50 transition-all duration-300"
             >
               View Order Details
@@ -1075,12 +1108,16 @@ const total = subtotal + estimatedShipping + gst - discount;
                           className="flex gap-3 pb-4 border-b border-gray-100 last:border-b-0"
                         >
                           <div className="w-16 h-16 bg-gray-200 rounded-md shrink-0 overflow-hidden">
-                            <img
-                        src={item.colors?.[0]?.images?.[0] || "/placeholder.png"}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                              />
-
+                           <img
+                                  src={
+                                    item.colors?.[0]?.images?.[0] ||
+                                    item.images?.[0] ||
+                                    item.image ||
+                                    "/placeholder.png"
+                                  }
+                                  alt={item.name}
+                                  className="w-full h-full object-cover"
+                                />
                           </div>
                           <div className="flex-1">
                             <div className="flex justify-between">
@@ -1124,10 +1161,10 @@ const total = subtotal + estimatedShipping + gst - discount;
                         <span>GST (12%)</span>
                         <span className="font-medium">₹{gst.toFixed(0)}</span>
                       </div>
-                      {discount > 0 && (
+                      {discountPercent > 0 && (
                         <div className="flex justify-between text-green-600">
                           <span>Discount Applied</span>
-                          <span className="font-medium">-₹{discount.toFixed(0)}</span>
+                          <span className="font-medium">-₹{discountPercent.toFixed(0)}</span>
                         </div>
                       )}
                       <div className="border-t border-gray-200 pt-4">

@@ -1,9 +1,10 @@
 import Product from "../models/product.model.js";
-
+import mongoose from "mongoose";
+import Collection from "../models/collection.model.js";
 /* ================================
    ADD PRODUCT (ADMIN ONLY)
 ================================ */
-// import Product from "../models/Product.model.js";
+
 
 import slugify from "slugify";
 
@@ -11,6 +12,7 @@ import slugify from "slugify";
 
 
 export const addProduct = async (req,res)=>{
+console.log("RAW BODY:", req.body);
 
  try{
 
@@ -43,35 +45,50 @@ export const addProduct = async (req,res)=>{
  const percent = Number(req.body.discountPercent||0);
  const discountPrice = Math.round(price-(price*percent/100));
 
- const productData = {
+let collections = [];
 
-  name:req.body.name,
-  slug:req.body.name+"-"+Date.now(),
-  category:req.body.category,
-  description:req.body.description,
+if (req.body.collections) {
+ const parsed =
+  typeof req.body.collections === "string"
+   ? JSON.parse(req.body.collections)
+   : req.body.collections;
 
-  price,
-  discountPercent:percent,
-  discountPrice,
+ collections = parsed.map(id => new mongoose.Types.ObjectId(id));
+}
+console.log("PARSED COLLECTIONS:", collections);
+const productData = {
 
-  stock:req.body.stock,
-  sku:req.body.sku,
+ name:req.body.name,
+ slug:req.body.name+"-"+Date.now(),
+ category:req.body.category,
+ description:req.body.description,
 
-  sizes:req.body.sizes?JSON.parse(req.body.sizes):[],
-  collections:req.body.collections?JSON.parse(req.body.collections):[],
-  details:req.body.details?JSON.parse(req.body.details):{},
+ price,
+ discountPercent:percent,
+ discountPrice,
 
-  colors,
+ stock:req.body.stock,
+ sku:req.body.sku,
 
-  isTrending:req.body.isTrending==="true",
-  isBrandStory:req.body.isBrandStory==="true",
+ sizes:req.body.sizes ? JSON.parse(req.body.sizes) : [],
 
-  createdBy:req.user?._id
- };
+ collections,   // 👈 THIS LINE WAS MISSING
+
+ details:req.body.details ? JSON.parse(req.body.details) : {},
+
+ colors,
+
+ isTrending:req.body.isTrending==="true",
+ isBrandStory:req.body.isBrandStory==="true",
+
+ createdBy:req.user?._id
+};
 
 //  console.log("FINAL PRODUCT DATA BEFORE SAVE:",productData);
 
- const product = await Product.create(productData);
+const product = await Product.create(productData);
+
+console.log("SAVED COLLECTIONS:", product.collections);
 
 //  console.log("SAVED PRODUCT:",product);
 
@@ -197,7 +214,9 @@ export const getAllProducts = async (req, res) => {
     const products = await Product.find({
       isDeleted: false,
     })
-      .populate("category","name")   // 🔥 THIS LINE IS CRITICAL
+       
+      .populate("category","name")
+      .populate("collections","name") // 🔥 THIS LINE IS CRITICAL
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -220,7 +239,9 @@ export const getSingleProduct = async (req,res)=>{
  try{
 
  const product = await Product.findById(req.params.id)
-  .populate("category");
+    .populate("category")
+.populate("collections","name");
+
 
  if(!product) return res.status(404).json({message:"Product not found"});
 
@@ -231,3 +252,37 @@ export const getSingleProduct = async (req,res)=>{
  }
 
 };
+
+export const getProducts = async (req, res) => {
+  try {
+    let filter = { isDeleted: false };
+
+    if (req.query.collection) {
+      const collectionDoc = await Collection.findOne({
+        name: new RegExp(req.query.collection, "i")
+      });
+
+      console.log("FOUND COLLECTION:", collectionDoc);
+
+      if (collectionDoc) {
+        filter.collections = collectionDoc._id;
+      }
+    }
+
+    console.log("FINAL FILTER:", filter);
+
+    const products = await Product.find(filter)
+      .populate("category", "name")
+      .populate("collections", "name");
+
+    console.log("RETURNED PRODUCTS:", products.length);
+
+    res.json(products);
+
+  } catch (err) {
+    console.log("PRODUCT FILTER ERROR:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+

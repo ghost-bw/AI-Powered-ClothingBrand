@@ -25,6 +25,8 @@ import ProductManagement from "./pages/admin/ProductManagement";
 import AddCollection from "./pages/admin/AddCollection";
 import DeleteCollection from "./pages/admin/DeleteCollection";
 import DeleteCategory from "./pages/admin/DeleteCategory";
+import CustomerManagement from "./pages/admin/CustomerManagement";
+
 
 
 
@@ -47,6 +49,7 @@ import Analytics from "./pages/admin/admindashboard/Analytics";
 import OrderManagement from "./pages/admin/OrderManagement";
 import MenCategoryPage from "./pages/user/MenCategory";
 import WomenCategoryPage from "./pages/user/WomenCategory";
+import Inventory from "./pages/admin/Inventory";
 // import OrderDetails from "./pages/admins/OrderDetails";
 
 
@@ -111,6 +114,16 @@ const App = () => {
           }
         />
 
+        <Route
+  path="/admin/customers"
+  element={
+    <ProtectedRoute role="admin">
+      <CustomerManagement />
+    </ProtectedRoute>
+  }
+/>
+
+
 <Route path="/admin/categories/delete" element={<DeleteCategory/>}/>
 
 
@@ -128,6 +141,14 @@ const App = () => {
           element={
             <AdminProtectedRoute role="admin">
               <OrderManagement />
+            </AdminProtectedRoute>
+          }
+        />
+         <Route
+          path="/admin/inventory"
+          element={
+            <AdminProtectedRoute role="admin">
+              <Inventory />
             </AdminProtectedRoute>
           }
         />
@@ -180,6 +201,7 @@ const App = () => {
         {/* Redirect admin root */}
 
         <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
+
 
         {/* Not Found ALWAYS LAST */}
 

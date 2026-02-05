@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema({
  discountPercent:Number,
  discountPrice:Number,
 
- stock:Number,
+//  stock:Number,
  sku:String,
 
  isActive:{type:Boolean,default:true},
@@ -36,6 +36,13 @@ const productSchema = new mongoose.Schema({
   type: mongoose.Schema.Types.ObjectId,
   ref: "Collection"
  }
+],
+inventory: [
+  {
+    size: String,
+    color: String,
+    stock: { type: Number, default: 0 }
+  }
 ],
 
 

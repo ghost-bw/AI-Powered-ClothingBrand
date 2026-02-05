@@ -187,7 +187,8 @@ const exportDashboardCSV = () => {
 
         <div className="grid xl:grid-cols-3 gap-8 mb-10">
 
-          <div className="xl:col-span-2 bg-white border rounded-2xl p-6">
+          <div className=" xl:col-span-2 bg-white rounded-2xl shadow-sm p-6">
+
 
             <h2 className="font-bold mb-4">Revenue Growth</h2>
 
@@ -204,7 +205,8 @@ const exportDashboardCSV = () => {
 
           </div>
 
-          <div className="bg-white border rounded-2xl p-6">
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+
 
             <h2 className="font-bold mb-4">Regional Demand</h2>
 
@@ -218,49 +220,66 @@ const exportDashboardCSV = () => {
 
         {/* ORDERS */}
 
-        <div className="bg-white border rounded-2xl p-6">
+        <div className="bg-white rounded-2xl shadow-sm p-6">
 
           <h2 className="font-bold mb-4">Recent High-Value Orders</h2>
 
-          <table className="w-full text-sm">
+         <table className="w-full text-sm">
+  <thead className="text-gray-500">
+    <tr>
+      <th className="text-left pb-3">Order ID</th>
+      <th>Customer</th>
+      <th>Product</th>
+      <th>Value</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+  </thead>
 
-            <thead className="text-gray-500">
-              <tr>
-                <th className="text-left pb-3">Order ID</th>
-                <th>Customer</th>
-                <th>Product</th>
-                <th>Value</th>
-                <th>Status</th>
-                <th>Date</th>
-              </tr>
-            </thead>
+  <tbody>
+    {orders.map((o, i) => (
+      <tr
+        key={i}
+        className="border-t hover:bg-gray-50 transition"
+      >
+        {/* Order ID */}
+        <td className="py-3 text-blue-600 font-semibold">
+          {o._id}
+        </td>
 
-            <tbody>
+        {/* Customer */}
+        <td>{o.customer || "Guest"}</td>
 
-              {orders.map((o,i)=>(
-                  // console.log("ORDER OBJECT:", o),
+        {/* Product */}
+        <td>{o.product || o.items?.[0]?.name || "-"}</td>
 
-                <tr key={i} className="border-t hover:bg-gray-50">
-                  <td className="py-3 text-blue-600 font-semibold">{o._id}</td>
-                  <td>{o.customer}</td>
-                  <td>{o.product}</td>
-                  <td>₹{o.total || o.amount || 0}</td>
-                  <td>
-                    <span className={`px-3 py-1 rounded-full text-xs ${
-                      o.status==="Delivered"
-                        ?"bg-green-100 text-green-700"
-                        :"bg-yellow-100 text-yellow-700"
-                    }`}>
-                      {o.status}
-                    </span>
-                  </td>
-                  <td>{new Date(o.createdAt).toLocaleString()}</td>
-                </tr>
-              ))}
+        {/* Value */}
+        <td>₹{o.total || o.amount || 0}</td>
 
-            </tbody>
+        {/* Status */}
+        <td>
+          <span
+            className={`px-3 py-1 rounded-full text-xs ${
+              o.status === "Delivered"
+                ? "bg-green-100 text-green-700"
+                : "bg-yellow-100 text-yellow-700"
+            }`}
+          >
+            {o.status}
+          </span>
+        </td>
 
-          </table>
+        {/* Date */}
+        <td>
+          {o.createdAt
+            ? new Date(o.createdAt).toLocaleString()
+            : "-"}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
 
         </div>
 

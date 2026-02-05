@@ -11,7 +11,6 @@ const EditProduct = () => {
     category: "",
     price: "",
     discountPrice: "",
-    stock: "",
     sku: "",
     description: "",
     fabric: "",
@@ -20,17 +19,21 @@ const EditProduct = () => {
     weight: "",
     dimensions: "",
     origin: "",
+    isTrending: false,
+    isBrandStory: false,
   });
 
   const [images, setImages] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // Load categories
+  /* LOAD CATEGORIES */
+
   useEffect(() => {
     API.get("/categories").then(res => setCategories(res.data));
   }, []);
 
-  // Load product
+  /* LOAD PRODUCT */
+
   useEffect(() => {
     API.get("/products").then(res => {
       const product = res.data.products.find(p => p._id === id);
@@ -39,136 +42,176 @@ const EditProduct = () => {
         setFormData({
           ...product,
           category: product.category?._id,
+          isTrending: Boolean(product.isTrending),
+          isBrandStory: Boolean(product.isBrandStory),
         });
       }
     });
   }, [id]);
 
+  /* INPUT HANDLERS */
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckbox = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.checked,
+    });
   };
 
   const handleImageChange = (e) => {
     setImages([...e.target.files]);
   };
 
+  /* SUBMIT */
+
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const data = new FormData();
+    try {
+      const data = new FormData();
 
-    Object.keys(formData).forEach((key) => {
-      if (formData[key] !== null && formData[key] !== "null") {
-
-        // 🔥 stringify objects / arrays
-        if (typeof formData[key] === "object") {
-          data.append(key, JSON.stringify(formData[key]));
-        } else {
-          data.append(key, formData[key]);
+      Object.keys(formData).forEach((key) => {
+        if (formData[key] !== null && formData[key] !== "null") {
+          if (typeof formData[key] === "object") {
+            data.append(key, JSON.stringify(formData[key]));
+          } else {
+            data.append(key, formData[key]);
+          }
         }
-      }
-    });
+      });
 
-    // numbers
-    data.set("price", Number(formData.price));
-    data.set("discountPrice", Number(formData.discountPrice || 0));
-    data.set("stock", Number(formData.stock || 0));
+      // numeric fields
+      data.set("price", Number(formData.price));
+      data.set("discountPrice", Number(formData.discountPrice || 0));
 
-    // images
-    images.forEach((img) => data.append("images", img));
+      // boolean flags
+      data.set("isTrending", formData.isTrending);
+      data.set("isBrandStory", formData.isBrandStory);
 
-    await API.put(`/products/${id}`, data);
+      // images
+      images.forEach(img => data.append("images", img));
 
-    alert("✅ Product updated successfully");
-    navigate("/admin/products");
+      await API.put(`/products/${id}`, data);
 
-  } catch (error) {
-    console.error(error);
-    alert("Update failed");
-  }
-};
+      alert("✅ Product updated successfully");
+      navigate("/admin/products");
 
+    } catch (error) {
+      console.error(error);
+      alert("Update failed");
+    }
+  };
 
   return (
     <div className="max-w-3xl mx-auto p-8">
 
-  <h1 className="text-3xl font-bold mb-6">Update Product</h1>
+      <h1 className="text-3xl font-bold mb-6">Update Product</h1>
 
-  <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
 
-    <div>
-      <label className="font-medium">Product Name</label>
-      <input
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        className="w-full border p-3 rounded mt-1"
-      />
+        <div>
+          <label className="font-medium">Product Name</label>
+          <input
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full border p-3 rounded mt-1"
+          />
+        </div>
+
+        <div>
+          <label className="font-medium">Category</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            className="w-full border p-3 rounded mt-1"
+          >
+            <option value="">Select Category</option>
+            {categories.map(cat => (
+              <option key={cat._id} value={cat._id}>{cat.name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="font-medium">Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full border p-3 rounded mt-1"
+          />
+        </div>
+
+        <div>
+          <label className="font-medium">Price</label>
+          <input
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            className="border p-3 rounded w-full mt-1"
+          />
+        </div>
+
+        <div>
+          <label className="font-medium">Discount Price</label>
+          <input
+            name="discountPrice"
+            value={formData.discountPrice || ""}
+            onChange={handleChange}
+            className="border p-3 rounded w-full mt-1"
+          />
+        </div>
+
+        {/* TRENDING + BRAND STORY */}
+
+        <div className="flex gap-6 mt-4">
+
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="isTrending"
+              checked={formData.isTrending}
+              onChange={handleCheckbox}
+              className="w-4 h-4"
+            />
+            <span className="font-medium">Trending Product</span>
+          </label>
+
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="isBrandStory"
+              checked={formData.isBrandStory}
+              onChange={handleCheckbox}
+              className="w-4 h-4"
+            />
+            <span className="font-medium">Brand Story</span>
+          </label>
+
+        </div>
+
+        <div>
+          <label className="font-medium">Product Images</label>
+          <input
+            type="file"
+            multiple
+            onChange={handleImageChange}
+            className="mt-1"
+          />
+        </div>
+
+        <button className="w-full bg-black text-white py-3 rounded hover:opacity-90 transition">
+          Update Product
+        </button>
+
+      </form>
     </div>
-
-    <div>
-      <label className="font-medium">Category</label>
-      <select
-        name="category"
-        value={formData.category}
-        onChange={handleChange}
-        className="w-full border p-3 rounded mt-1"
-      >
-        <option value="">Select Category</option>
-        {categories.map(cat => (
-          <option key={cat._id} value={cat._id}>{cat.name}</option>
-        ))}
-      </select>
-    </div>
-
-    <div>
-      <label className="font-medium">Description</label>
-      <textarea
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        className="w-full border p-3 rounded mt-1"
-      />
-    </div>
-
-    <div>
-      <label className="font-medium">Price</label>
-      <input
-        name="price"
-        value={formData.price}
-        onChange={handleChange}
-        className="border p-3 rounded w-full mt-1"
-      />
-    </div>
-
-    <div>
-      <label className="font-medium">Discount Price</label>
-      <input
-        name="discountPrice"
-        value={formData.discountPrice || ""}
-        onChange={handleChange}
-        className="border p-3 rounded w-full mt-1"
-      />
-    </div>
-
-    <div>
-      <label className="font-medium">Product Images</label>
-      <input
-        type="file"
-        multiple
-        onChange={handleImageChange}
-        className="mt-1"
-      />
-    </div>
-
-    <button className="w-full bg-black text-white py-3 rounded">
-      Update Product
-    </button>
-
-  </form>
-</div>
-
   );
 };
 

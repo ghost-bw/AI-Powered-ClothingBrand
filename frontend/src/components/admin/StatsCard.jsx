@@ -1,53 +1,70 @@
+import { motion } from "framer-motion";
+
 export default function StatsCard({
   title,
   value,
   badge,
+  badgeType = "up", // up | down
   icon,
-  trend,        // +12.5 / -3.2
-  subtitle,     // "vs last month"
+  accent = "blue", // blue | orange | yellow | green
 }) {
-  const isPositive = trend >= 0;
+  const accentMap = {
+    blue: {
+      bg: "bg-blue-100",
+      pill: "bg-blue-500",
+    },
+    orange: {
+      bg: "bg-orange-100",
+      pill: "bg-orange-500",
+    },
+    yellow: {
+      bg: "bg-yellow-100",
+      pill: "bg-yellow-400",
+    },
+    green: {
+      bg: "bg-green-100",
+      pill: "bg-green-400",
+    },
+  };
+
+  const badgeColor =
+    badgeType === "up"
+      ? "bg-green-100 text-green-600"
+      : "bg-red-100 text-red-600";
 
   return (
-    <div className="bg-white p-6 rounded-2xl border shadow-sm">
-      {/* Top */}
-      <div className="flex justify-between items-start mb-4">
-        <div className="p-2 bg-primary/10 rounded-lg">
-          {icon}
-        </div>
-
-        {badge && (
-          <span className="text-xs font-bold text-primary">
-            {badge}
-          </span>
-        )}
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      className={`relative overflow-hidden rounded-2xl p-6 ${accentMap[accent].bg}`}
+    >
+      {/* Top pill */}
+      <div
+        className={`inline-flex items-center gap-2 px-4 py-1 rounded-full text-sm font-medium text-white ${accentMap[accent].pill}`}
+      >
+        {icon}
+        {title}
       </div>
 
-      {/* Title */}
-      <p className="text-xs text-gray-500 uppercase">
-        {title}
-      </p>
+      {/* Value + badge */}
+      <div className="mt-4 flex items-center gap-3">
+        <h2 className="text-4xl font-extrabold text-gray-900">
+          {value}
+        </h2>
 
-      {/* Value */}
-      <p className="text-3xl font-black mt-1">
-        {value}
-      </p>
-
-      {/* Trend */}
-      {trend !== undefined && (
-        <p
-          className={`text-sm mt-1 font-medium ${
-            isPositive ? "text-green-600" : "text-red-600"
-          }`}
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${badgeColor}`}
         >
-          {isPositive ? "↑" : "↓"} {Math.abs(trend)}%
-          {subtitle && (
-            <span className="text-gray-400 font-normal">
-              {" "} {subtitle}
-            </span>
-          )}
-        </p>
-      )}
-    </div>
+          {badge}
+        </span>
+      </div>
+
+      <p className="text-sm text-gray-500 mt-1">
+        Than last week
+      </p>
+
+      {/* Decorative circle */}
+      <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/40 rounded-full" />
+    </motion.div>
   );
 }

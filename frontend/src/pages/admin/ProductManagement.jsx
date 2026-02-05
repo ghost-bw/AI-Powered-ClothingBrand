@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 import Sidebar from "../../components/admin/Sidebar";
 import ProductTable from "../../components/admin/ProductTable";
@@ -7,6 +8,7 @@ import AddCategory from "./AddCategory";
 import AddCollection from "./AddCollection";
 import DeleteCollection from "./DeleteCollection";
 import DeleteCategory from "./DeleteCategory";
+import StatsCard from "../../components/admin/StatsCard";
 
 import API from "../../api/axios";
 
@@ -32,7 +34,6 @@ export default function ProductManagement() {
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [activeTab, setActiveTab] = useState("MANAGE");
 
-  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [revenueData, setRevenueData] = useState([]);
   const [categorySales, setCategorySales] = useState([]);
@@ -46,66 +47,44 @@ export default function ProductManagement() {
 
   useEffect(() => {
     fetchDashboard();
-    fetchCategories();
   }, []);
+
+  const token = localStorage.getItem("token");
 
   /* ================= DASHBOARD ================= */
 
   const fetchDashboard = async () => {
     try {
-      const token = localStorage.getItem("token");
-
       const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       };
 
-      const [
-        productsRes,
-        statsRes,
-        revenueRes,
-        categoryRes,
-      ] = await Promise.all([
-        API.get("/products", config),
-        API.get("/admin/dashboard/stats", config),
-        API.get("/admin/dashboard/revenue", config),
-        API.get("/admin/dashboard/category-sales", config),
-      ]);
+      const [productsRes, statsRes, revenueRes, categoryRes] =
+        await Promise.all([
+          API.get("/products", config),
+          API.get("/admin/dashboard/stats", config),
+          API.get("/admin/dashboard/revenue", config),
+          API.get("/admin/dashboard/category-sales", config),
+        ]);
 
-      /* ===== PRODUCTS FIX ===== */
-
-      const productList = Array.isArray(productsRes.data)
-        ? productsRes.data
-        : productsRes.data.products;
-
-      setProducts(productList || []);
-
-      console.log("PRODUCTS:", productList);
-
-      /* ===== REVENUE ===== */
+      setProducts(productsRes.data?.products || productsRes.data || []);
 
       setRevenueData(
-        Array.isArray(revenueRes.data)
-          ? revenueRes.data.map(m => ({
-              month: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m._id - 1],
-              revenue: m.revenue,
-            }))
-          : []
+        revenueRes.data.map((m) => ({
+          month:
+            ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][
+              m._id - 1
+            ],
+          revenue: m.revenue,
+        }))
       );
-
-      /* ===== CATEGORY SALES ===== */
 
       setCategorySales(
-        Array.isArray(categoryRes.data)
-          ? categoryRes.data.map(c => ({
-              category: c._id,
-              sales: c.sales,
-            }))
-          : []
+        categoryRes.data.map((c) => ({
+          category: c._id,
+          sales: c.sales,
+        }))
       );
-
-      /* ===== STATS ===== */
 
       setStats({
         totalSales: statsRes.data.revenue || 0,
@@ -118,27 +97,8 @@ export default function ProductManagement() {
               )
             : 0,
       });
-
     } catch (err) {
-      console.log("Dashboard Fetch Error:", err);
-    }
-  };
-
-  /* ================= CATEGORIES ================= */
-
-  const fetchCategories = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const res = await API.get("/categories", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setCategories(res.data || []);
-    } catch (err) {
-      console.log("Category Fetch Error:", err);
+      console.log(err);
     }
   };
 
@@ -171,105 +131,131 @@ export default function ProductManagement() {
     },
   ];
 
+  const tabs = [
+    "MANAGE",
+    "ADD_PRODUCT",
+    "ADD_CATEGORY",
+    "ADD_COLLECTION",
+    "DELETE_COLLECTION",
+    "DELETE_CATEGORY",
+  ];
+
   return (
-    <div className="flex bg-background-light min-h-screen">
+    <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
-      <main className="flex-1 p-8 max-w-[1400px] mx-auto">
-
-        {/* Header */}
-        <div className="mb-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-black mb-2">
-              Product Management
-            </h1>
-            <p className="text-gray-500">
-              Manage your clothing brand products & inventory
-            </p>
-          </div>
+      <motion.main
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex-1 px-10 py-8 max-w-[1500px] mx-auto"
+      >
+        {/* HEADER */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-black">Product Management</h1>
+          <p className="text-gray-500 mt-1">
+            Manage your clothing brand products & inventory
+          </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-4 mb-8">
-          {["MANAGE","ADD_PRODUCT","ADD_CATEGORY","ADD_COLLECTION","DELETE_COLLECTION","DELETE_CATEGORY"].map(tab => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-5 py-2 rounded-xl border font-semibold ${
-                activeTab === tab ? "bg-black text-white" : "bg-white"
-              }`}
-            >
-              {tab.replace("_", " ")}
-            </button>
-          ))}
-        </div>
+        {/* TABS */}
+        <div className="flex gap-3 mb-10 overflow-x-auto whitespace-nowrap scrollbar-hide">
+  {tabs.map((tab) => (
+    <button
+      key={tab}
+      onClick={() => setActiveTab(tab)}
+      className={`px-5 py-2 rounded-xl border border-gray-200 font-semibold transition hover:opacity-90 flex-shrink-0 ${
+        activeTab === tab ? "bg-black text-white" : "bg-white"
+      }`}
+    >
+      {tab.replace("_", " ")}
+    </button>
+  ))}
+</div>
+
 
         {activeTab === "MANAGE" && (
           <>
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-              {cards.map((card, i) => {
-                const Icon = card.icon;
-                return (
-                  <div
-                    key={i}
-                    onClick={() => setActiveFilter(card.filter)}
-                    className="cursor-pointer bg-white rounded-2xl p-5 border hover:-translate-y-1 hover:shadow-xl transition-all flex justify-between items-center"
-                  >
-                    <div>
-                      <p className="text-sm text-gray-500">{card.title}</p>
-                      <h2 className="text-3xl font-bold">{card.value}</h2>
-                    </div>
-                    <Icon size={30} />
-                  </div>
-                );
-              })}
-            </div>
+            {/* STATS */}
+         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+  {cards.map((card, i) => (
+    <div
+      key={i}
+      onClick={() => setActiveFilter(card.filter)}
+      className={`cursor-pointer transition ${
+        activeFilter === card.filter
+          }`}
+    >
+      <StatsCard
+        title={card.title}
+        value={card.value}
+        badge={card.badge}
+        badgeType={card.badgeType}
+        icon={<card.icon size={16} />}
+        accent={card.accent}
+      />
+    </div>
+  ))}
+</div>
 
-            {/* Revenue */}
-            <div className="bg-white rounded-2xl p-6 border mb-10">
-              <h2 className="text-xl font-bold mb-4">Monthly Revenue</h2>
 
-              <div className="h-[260px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={revenueData}>
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line dataKey="revenue" strokeWidth={3} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
 
-            {/* Category */}
-            <div className="bg-white rounded-2xl p-6 border mb-10">
-              <h2 className="text-xl font-bold mb-4">Category-wise Sales</h2>
+            {/* REVENUE */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-10">
+  <h2 className="font-bold mb-4">Monthly Revenue</h2>
 
-              <div className="h-[260px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={categorySales}>
-                    <XAxis dataKey="category" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="sales" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+  <div className="h-[260px]">
+    <ResponsiveContainer>
+      <LineChart data={revenueData}>
+        <XAxis dataKey="month" />
+        <YAxis />
+        <Tooltip />
+        <Line
+          dataKey="revenue"
+          stroke="#22c55e"   // GREEN
+          strokeWidth={3}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+</div>
 
-            {/* TABLE */}
+
+            {/* CATEGORY */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-10">
+  <h2 className="font-bold mb-4">Category-wise Sales</h2>
+
+  <div className="h-[260px]">
+    <ResponsiveContainer>
+      <BarChart data={categorySales}>
+        <XAxis dataKey="category" />
+        <YAxis />
+        <Tooltip />
+
+        <defs>
+          <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#60a5fa" />
+            <stop offset="100%" stopColor="#2563eb" />
+          </linearGradient>
+        </defs>
+
+        <Bar dataKey="sales" fill="url(#blueGradient)" />
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
+</div>
+
+
             <ProductTable filter={activeFilter} products={products} />
           </>
         )}
 
         {activeTab === "ADD_PRODUCT" && <AddProduct refresh={fetchDashboard} />}
-        {activeTab === "ADD_CATEGORY" && <AddCategory refresh={fetchCategories} />}
+        {activeTab === "ADD_CATEGORY" && <AddCategory />}
         {activeTab === "ADD_COLLECTION" && <AddCollection />}
         {activeTab === "DELETE_COLLECTION" && <DeleteCollection />}
         {activeTab === "DELETE_CATEGORY" && <DeleteCategory />}
-
-      </main>
+      </motion.main>
     </div>
   );
 }

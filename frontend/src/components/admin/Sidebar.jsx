@@ -1,6 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import logo from "../../assets/logo/logo.webp";
 import {
   LayoutDashboard,
   Package,
@@ -11,48 +10,25 @@ import {
   LogOut,
   User,
 } from "lucide-react";
+import { logoutUser } from "../../api/axios";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const menu = [
-    {
-      name: "Dashboard",
-      icon: LayoutDashboard,
-      path: "/admin/dashboard",
-    },
-    {
-      name: "Products", 
-      icon: Package,
-      path: "/admin/products",
-    },
-    {
-      name: "Orders",
-      icon: ShoppingBag,
-      path: "/admin/orders",
-    },
-    {
-      name: "Customers",
-      icon: Users,
-      path: "/admin/customers",
-    },
-    {
-      name: "Analytics",
-      icon: BarChart2,
-      path: "/admin/analytics",
-    },
+    { name: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
+    { name: "Products", icon: Package, path: "/admin/products" },
+    { name: "Orders", icon: ShoppingBag, path: "/admin/orders" },
+    { name: "Customers", icon: Users, path: "/admin/customers" },
+    { name: "Analytics", icon: BarChart2, path: "/admin/analytics" },
+    { name: "Inventory", icon: Package, path: "/admin/inventory" },
   ];
 
   return (
     <aside className="w-72 h-screen sticky top-0 bg-white border-r flex flex-col px-6 py-6">
-      {/* Logo */}
-      <h1 className="text-xl font-black text-primary mb-10">
-        <img src={logo} alt="logo" className="h-15 w-40"></img>
-      </h1>
-
       {/* Navigation */}
-      <nav className="flex flex-col gap-2 flex-1">
+      <nav className="flex flex-col gap-2 flex-1 mt-4">
         {menu.map((item) => {
           const Icon = item.icon;
 
@@ -64,7 +40,7 @@ export default function Sidebar() {
                 `flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition
                 ${
                   isActive
-                    ? "bg-primary text-white"
+                    ? "bg-black text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`
               }
@@ -86,7 +62,7 @@ export default function Sidebar() {
           `flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition
           ${
             isActive
-              ? "bg-primary text-white"
+              ? "bg-black text-white"
               : "text-gray-600 hover:bg-gray-100"
           }`
         }
@@ -101,15 +77,14 @@ export default function Sidebar() {
           onClick={() => setOpen(!open)}
           className="w-full flex items-center gap-3 bg-gray-50 p-3 rounded-xl hover:bg-gray-100 transition"
         >
-          <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+          <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold">
             A
           </div>
 
-       <div className="text-left">
-  <h3 className="text-sm font-semibold">Admin</h3>
-  <p className="text-xs text-gray-500">Product Admin</p>
-</div>
-
+          <div className="text-left">
+            <p className="text-sm font-semibold">Admin</p>
+            <p className="text-xs text-gray-500">Product Admin</p>
+          </div>
         </button>
 
         {open && (
@@ -126,7 +101,7 @@ export default function Sidebar() {
             </button>
 
             <button
-              onClick={() => alert("Logout logic here")}
+              onClick={logoutUser}
               className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-red-600 w-full text-sm"
             >
               <LogOut size={16} />

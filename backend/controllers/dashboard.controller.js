@@ -193,41 +193,66 @@ export const exportAllOrders = async (req, res) => {
 
 export const getTopProducts = async (req, res) => {
   try {
-    const data = await Order.aggregate([
+    const result = await Order.aggregate([
       { $unwind: "$items" },
 
       {
         $group: {
-          _id: "$items.product",
-          totalSold: { $sum: "$items.quantity" },
+          _id: "$items.name",
+          orders: { $sum: "$items.quantity" },
         },
       },
 
-      { $sort: { totalSold: -1 } },
+      { $sort: { orders: -1 } },
       { $limit: 5 },
-
-      {
-        $lookup: {
-          from: "products",
-          localField: "_id",
-          foreignField: "_id",
-          as: "product",
-        },
-      },
-
-      { $unwind: "$product" },
-
-      {
-        $project: {
-          name: "$product.name",
-          stock: "$product.stock",
-          orders: "$totalSold",
-        },
-      },
     ]);
 
-    res.json(data);
+    const products = await Promise.all(
+      result.map(async r => {
+        const product = await Product.findOne({ name: r._id });
+
+        return {
+          name: r._id,
+          orders: r.orders,
+          stock: product?.stock || 0,
+        };
+      })
+    );
+
+    res.json(products);
+
   } catch (err) {
+    console.error("TOP PRODUCTS ERROR:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+export const getCustomersAnalytics = async (req, res) => {
+  try {
+    const users = await User.find().select("name email");
+
+    const customers = await Promise.all(
+      users.map(async u => {
+        const orders = await Order.find({ user: u._id });
+
+        const totalSpend = orders.reduce((a, b) => a + b.total, 0);
+
+        return {
+          _id: u._id,
+          name: u.name,
+          email: u.email,
+          orders: orders.length,
+          spend: Math.round(totalSpend),
+          status: orders.length ? "Active" : "Inactive"
+        };
+      })
+    );
+
+    res.json(customers);
+
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: err.message });
   }
 };

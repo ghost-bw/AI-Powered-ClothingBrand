@@ -1,90 +1,146 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import API from "../../api/axios";
 
-export default function OrderTable({ orders }) {
-  // console.log("TABLE ORDERS:", orders);
+export default function OrderTable({ orders = [] }) {
+  const [search, setSearch] = useState("");
+
+  const safeOrders = Array.isArray(orders) ? orders : [];
+
+  /* ================= STATUS UPDATE ================= */
 
   const updateStatus = async (id, status) => {
-  try {
-    await API.put(`/orders/admin/${id}/status`, { status });
+    try {
+      await API.put(`/orders/admin/${id}/status`, { status });
 
-    orders.find(o => o._id === id).status = status;
-    window.location.reload(); // simple refresh
-  } catch (err) {
-    alert("Failed to update status");
-  }
-};
+      safeOrders.find(o => o._id === id).status = status;
+      window.location.reload();
+    } catch {
+      alert("Failed to update status");
+    }
+  };
 
+  /* ================= SEARCH ================= */
 
-  if (!orders || !orders.length) {
-    return (
-      <div className="bg-white p-6 rounded-xl border text-center">
-        No orders found.
-      </div>
-    );
-  }
+  const filteredOrders = safeOrders.filter(o =>
+    o?._id?.toLowerCase().includes(search.toLowerCase()) ||
+    o?.user?.name?.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div className="bg-white rounded-2xl border p-6">
-      <table className="w-full text-left">
-        <thead className="text-gray-500 text-sm">
-          <tr>
-            <th className="pb-3">Order ID</th>
-            <th className="pb-3">Customer</th>
-            <th className="pb-3">Status</th>
-            <th className="pb-3">Amount</th>
-            <th className="pb-3">Action</th>
-          </tr>
-        </thead>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="bg-white rounded-2xl no-border p-6"
+    >
+      {/* SEARCH */}
+      <input
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search Order ID or Customer..."
+        className="w-full mb-4 px-4 py-3 no-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+      />
 
-        <tbody>
-          {orders.map((order, i) => (
-            <motion.tr
-              key={order._id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="border-t"
-            >
-              <td className="py-3 font-medium">
-                #{order._id.slice(-6)}
-              </td>
+      {/* TABLE */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-sm">
+          <thead className="text-gray-500">
+            <tr>
+              <th className="pb-3">Order ID</th>
+              <th className="pb-3">Customer</th>
+              <th className="pb-3">Date</th>
+              <th className="pb-3">Payment</th>
+              <th className="pb-3">Status</th>
+              <th className="pb-3">Amount</th>
+              <th className="pb-3">Action</th>
+            </tr>
+          </thead>
 
-              <td>
-                {order.user?.name || "Guest"}
-              </td>
+          <tbody>
+            {filteredOrders.map((order, i) => (
+              <motion.tr
+                key={order._id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="border-t hover:bg-gray-50 transition"
+              >
+                <td className="py-3 font-medium text-blue-600">
+                  #{order._id.slice(-6)}
+                </td>
 
-              <td>
-  <select
-    value={order.status}
-    onChange={e => updateStatus(order._id, e.target.value)}
-    className="border rounded px-2 py-1"
-  >
-    <option>Processing</option>
-    <option>Shipped</option>
-    <option>Delivered</option>
-    <option>Returned</option>
-  </select>
-</td>
+                <td>{order.user?.name || "Guest"}</td>
 
+                <td>
+                  {order.createdAt
+                    ? new Date(order.createdAt).toLocaleDateString()
+                    : "-"}
+                </td>
 
-              <td>
-                ₹{order.total}
-              </td>
+                <td>
+                  <PaymentBadge text={order.payment || "PAID"} />
+                </td>
 
-              <td>
-                <Link
-                  to={`/admin/orders/${order._id}`}
-                  className="text-blue-600 hover:underline"
+                <td>
+                  <select
+                    value={order.status}
+                    onChange={(e) =>
+                      updateStatus(order._id, e.target.value)
+                    }
+                    className="border rounded-xl px-3 py-1 text-sm"
+                  >
+                    <option>Processing</option>
+                    <option>Shipped</option>
+                    <option>Delivered</option>
+                    <option>Returned</option>
+                  </select>
+                </td>
+
+                <td>₹{order.total}</td>
+
+                <td>
+                  <Link
+                    to={`/admin/orders/${order._id}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    View Order
+                  </Link>
+                </td>
+              </motion.tr>
+            ))}
+
+            {filteredOrders.length === 0 && (
+              <tr>
+                <td
+                  colSpan="7"
+                  className="text-center py-6 text-gray-400"
                 >
-                  View
-                </Link>
-              </td>
-            </motion.tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                  No orders found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ================= BADGES ================= */
+
+function PaymentBadge({ text }) {
+  const color =
+    text === "PAID"
+      ? "bg-green-100 text-green-700"
+      : text === "COD"
+      ? "bg-yellow-100 text-yellow-700"
+      : "bg-red-100 text-red-700";
+
+  return (
+    <span className={`px-3 py-1 rounded-full text-xs ${color}`}>
+      {text}
+    </span>
   );
 }

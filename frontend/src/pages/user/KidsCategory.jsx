@@ -1,227 +1,198 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../../api/axios";
+import { SlidersHorizontal, Heart } from "lucide-react";
 
-/* ------------------ SCROLL HELPER ------------------ */
-const scrollToSection = (id) => {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth" });
-};
+/* HERO SLIDES */
+const heroSlides = [
+  {
+    image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519",
+    title: "Premium Kids Collection",
+    subtitle: "Designed for comfort. Styled for smiles.",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+    title: "Cute & Cozy Styles",
+    subtitle: "Soft fabrics kids truly love",
+  },
+];
 
-/* ================= HERO ================= */
-function KidsHeroCarousel({ heroSlides }) {
+/* CATEGORIES  */
+const categories = [
+  { name: "All", id: "all" },
+  { name: "Boys T-Shirts", id: "boys-tshirts" },
+  { name: "Boys Shirts", id: "boys-shirts" },
+  { name: "Boys Bottom Wear", id: "boys-bottomwear" },
+  { name: "Boys Footwear", id: "boys-footwear" },
+  { name: "Girls Dresses", id: "girls-dresses" },
+  { name: "Girls Tops", id: "girls-tops" },
+];
+
+/* ------------------ PRODUCTS ------------------ */
+const kidsProducts = [
+  { id: 1, title: "Boys Graphic T-Shirt", price: 799, category: "boys-tshirts", image: "https://images.unsplash.com/photo-1520975916090-3105956dac38" },
+  { id: 2, title: "Boys Printed Tee", price: 699, category: "boys-tshirts", image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b" },
+  { id: 3, title: "Boys Casual Shirt", price: 1099, category: "boys-shirts", image: "https://images.unsplash.com/photo-1593032465175-481ac7f401a0" },
+  { id: 4, title: "Boys Joggers", price: 999, category: "boys-bottomwear", image: "https://images.unsplash.com/photo-1542068829-1115f7259450" },
+  { id: 5, title: "Boys Sneakers", price: 1799, category: "boys-footwear", image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519" },
+  { id: 6, title: "Girls Party Dress", price: 1499, category: "girls-dresses", image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f" },
+  { id: 7, title: "Girls Casual Top", price: 899, category: "girls-tops", image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246" },
+];
+
+/*  HERO  */
+function KidsHeroCarousel() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    if (!heroSlides.length) return;
-
     const timer = setInterval(
       () => setCurrent((p) => (p + 1) % heroSlides.length),
       4000
     );
-
     return () => clearInterval(timer);
-  }, [heroSlides]);
-
-  if (!heroSlides.length) return null;
+  }, []);
 
   return (
-    <section className="relative h-[70vh] overflow-hidden">
-      {heroSlides.map((slide, index) => (
+    <section className="relative h-[55vh] overflow-hidden">
+      {heroSlides.map((slide, i) => (
         <div
-          key={index}
+          key={i}
           className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === current ? "opacity-100 z-20" : "opacity-0 z-10"
+            i === current ? "opacity-100 z-20" : "opacity-0 z-10"
           }`}
         >
-          <div className="absolute inset-0 bg-black/40 z-10" />
-
-          <img
-            src={slide.image}
-            className="w-full h-full object-cover"
-            alt=""
-          />
-
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-white text-center">
+          <div className="absolute inset-0 bg-black/40" />
+          <img src={slide.image} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center">
             <h2 className="text-4xl md:text-6xl font-bold">{slide.title}</h2>
-            <p className="mt-3 opacity-90 max-w-xl">{slide.subtitle}</p>
+            <p className="mt-3 text-lg opacity-90">{slide.subtitle}</p>
           </div>
         </div>
       ))}
-
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-        {heroSlides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`w-3 h-3 rounded-full ${
-              current === i ? "bg-white" : "bg-white/40"
-            }`}
-          />
-        ))}
-      </div>
     </section>
   );
 }
 
-/* ================= MAIN ================= */
-export default function KidsCategory() {
-  const [products, setProducts] = useState([]);
-  const [heroSlides, setHeroSlides] = useState([]);
-  const [categories, setCategories] = useState({});
+/* MAIN PAGE */
+export default function KidsPage() {
+  const [activeCategory, setActiveCategory] = useState("all");
 
-  useEffect(() => {
-    const load = async () => {
-      const res = await API.get("/products");
-      const data = Array.isArray(res.data) ? res.data : res.data.products;
-
-      /* ONLY KIDS */
-    const kids = data.filter(p =>
-  p.collections?.includes("Kids")
-);
-
-      setProducts(kids);
-
-      /* HERO SLIDES (TOP 3) */
-      setHeroSlides(
-        kids.slice(0, 3).map((p) => ({
-          image: p.colors?.[0]?.images?.[0],
-          title: p.name,
-          subtitle: p.description,
-        }))
-      );
-
-      /* AUTO CATEGORY MAP */
-      const map = {};
-
-      kids.forEach((p) => {
-        const gender = p.gender || "boys";
-        const sub = p.subCategory || "Others";
-
-        if (!map[gender]) map[gender] = new Set();
-        map[gender].add(sub);
-      });
-
-      const formatted = {};
-      Object.keys(map).forEach((k) => (formatted[k] = [...map[k]]));
-
-      setCategories(formatted);
-    };
-
-    load();
-  }, []);
+  const filteredProducts =
+    activeCategory === "all"
+      ? kidsProducts
+      : kidsProducts.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="w-full bg-[#fafafa]">
+    <div className="bg-[#fafafa]">
+      <KidsHeroCarousel />
 
-      <KidsHeroCarousel heroSlides={heroSlides} />
+      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-[230px_1fr] gap-5">
+        {/* SIDEBAR */}
+        <aside>
+          <div className="bg-white rounded-xl shadow p-4 sticky top-24">
+            <div className="flex items-center gap-2 mb-3">
+              <SlidersHorizontal size={18} />
+              <h2 className="font-semibold text-lg">Filters</h2>
+            </div>
 
-      {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
-          <h1 className="text-2xl font-extrabold">KIDS FASHION</h1>
+            <ul className="space-y-1">
+              {categories.map((cat) => (
+                <li
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition
+                    ${
+                      activeCategory === cat.id
+                        ? "bg-black text-white"
+                        : "hover:bg-gray-100"
+                    }`}
+                >
+                  {cat.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
 
-          <div className="hidden md:flex gap-10">
-            {Object.keys(categories).map((g) => (
-              <div key={g} className="group relative cursor-pointer">
-                <span className="capitalize">{g} ▾</span>
-
-                <div className="absolute left-0 mt-4 bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:visible group-hover:opacity-100 transition">
-                  {categories[g].map((c) => (
-                    <p
-                      key={c}
-                      onClick={() => scrollToSection(`${g}-${c}`)}
-                      className="px-5 py-3 hover:bg-gray-50"
-                    >
-                      {c}
-                    </p>
-                  ))}
-                </div>
-              </div>
+        {/* PRODUCTS */}
+        <section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
-        </div>
-      </nav>
-
-      {/* SECTIONS */}
-      <div className="max-w-7xl mx-auto px-6 py-16 space-y-24">
-        {Object.keys(categories).map((gender) =>
-          categories[gender].map((cat) => (
-            <CategorySection
-              key={`${gender}-${cat}`}
-              id={`${gender}-${cat}`}
-              title={`${gender} ${cat}`}
-              products={products}
-            />
-          ))
-        )}
+        </section>
       </div>
     </div>
   );
 }
 
-/* ================= CATEGORY ================= */
-function CategorySection({ id, title, products }) {
+/* PRODUCT CARD */
+function ProductCard({ product }) {
   const navigate = useNavigate();
-  const sub = title.split(" ")[1].toLowerCase();
-
-  const items = products.filter((p) =>
-    p.subCategory?.toLowerCase().includes(sub)
-  );
-
-  if (!items.length) return null;
 
   return (
-    <section id={id} className="mb-16 text-center">
+    <div
+      onClick={() => navigate(`/product/${product.id}`)}
+      className="
+        group bg-white rounded-2xl cursor-pointer
+        transition-all duration-300 ease-out
+        hover:-translate-y-2 hover:shadow-2xl
+      "
+    >
+      {/* IMAGE */}
+      <div className="relative aspect-[3/4] overflow-hidden rounded-t-2xl">
+        <img
+          src={product.image}
+          alt={product.title}
+          className="
+            w-full h-full object-cover
+            transition-transform duration-500 ease-out
+            group-hover:scale-110
+          "
+        />
 
-      <h3 className="text-3xl font-bold mb-10">{title}</h3>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-        {items.map((p) => (
-          <div
-            key={p._id}
-            onClick={() => navigate(`/product/${p._id}`)}
-            className="bg-white rounded-2xl shadow hover:shadow-xl cursor-pointer"
-          >
-            <div className="aspect-3/4 overflow-hidden">
-              <img
-                src={p.colors?.[0]?.images?.[0]}
-                className="w-full h-full object-cover hover:scale-110 transition"
-                alt=""
-              />
-            </div>
-
-            <div className="p-4">
-              <p className="font-semibold">{p.name}</p>
-              <p className="font-bold mt-1">
-                ₹{p.discountPrice || p.price}
-              </p>
-
-              <div className="flex gap-2 mt-4">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate("/cart");
-                  }}
-                  className="flex-1 bg-green-500 text-white py-2 rounded"
-                >
-                  Add to Cart
-                </button>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate("/checkout");
-                  }}
-                  className="flex-1 bg-indigo-500 text-white py-2 rounded"
-                >
-                  Buy Now
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+        {/* WISHLIST */}
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="
+            absolute top-3 right-3
+            bg-white p-2 rounded-full shadow
+            transition-transform duration-300
+            hover:scale-110
+          "
+        >
+          <Heart size={16} />
+        </button>
       </div>
-    </section>
+
+      {/* CONTENT */}
+      <div className="p-5">
+        {/* CATEGORY */}
+        <p className="text-sm text-gray-500 mb-1">
+          {product.category}
+        </p>
+
+        {/* TITLE */}
+        <p className="font-semibold text-base leading-tight">
+          {product.title}
+        </p>
+
+        {/* PRICE + BUTTON */}
+        <div className="flex items-center justify-between mt-4">
+          <span className="font-bold text-xl">
+            ₹{product.price}
+          </span>
+
+          <button
+            className="
+              border border-black px-4 py-1.5 rounded-full text-sm
+              transition-all duration-300
+              group-hover:bg-black group-hover:text-white
+            "
+          >
+            View
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

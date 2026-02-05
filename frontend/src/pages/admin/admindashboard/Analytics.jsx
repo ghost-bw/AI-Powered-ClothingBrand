@@ -1,255 +1,305 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../../../components/admin/Sidebar";
+import StatsCard from "../../../components/admin/StatsCard";
+import LineChartBox from "../../../components/charts/LineChartBox";
+import BarChartBox from "../../../components/charts/BarChartBox";
+import Header from "../../../components/admin/Header";
+
 import API from "../../../api/axios";
 
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
+  IndianRupee,
+  ShoppingBag,
+  Users,
+  Percent,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+
+import {
   PieChart,
   Pie,
   Cell,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 
-/* ================= COLORS ================= */
-
 const COLORS = ["#2563eb", "#22c55e", "#f97316", "#a855f7"];
+const weekDays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 export default function Analytics() {
 
-  const token = localStorage.getItem("admin_token");
+  const today = new Date();
+  const [currentDate, setCurrentDate] = useState(
+    new Date(today.getFullYear(), today.getMonth(), 1)
+  );
 
-  const [showAllStats, setShowAllStats] = useState(false);
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay();
+
+  const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
+  const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
+
+  /* ================= STATES ================= */
 
   const [stats, setStats] = useState({});
   const [revenueData, setRevenueData] = useState([]);
   const [categoryOrders, setCategoryOrders] = useState([]);
+  const [trafficData, setTrafficData] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
 
-  const trafficData = [
-    { name: "Website", value: 55 },
-    { name: "Instagram", value: 25 },
-    { name: "Facebook", value: 12 },
-    { name: "Others", value: 8 },
-  ];
+  /* ================= FETCH ================= */
 
   useEffect(() => {
-    fetchStats();
-    fetchRevenue();
-    fetchCategorySales();
-    fetchTopProducts();
+    fetchAnalytics();
   }, []);
 
-  /* ===== BACKEND ===== */
+ const token = localStorage.getItem("admin_token");
 
-  const fetchStats = async () => {
-    const { data } = await API.get("/admin/dashboard/stats", {
+
+
+const fetchAnalytics = async () => {
+  try {
+    const statsRes = await API.get("/admin/dashboard/stats", {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setStats(data);
-  };
 
-  const fetchRevenue = async () => {
-    const { data } = await API.get("/admin/dashboard/revenue", {
+    const revenueRes = await API.get("/admin/dashboard/revenue", {
       headers: { Authorization: `Bearer ${token}` },
     });
+
+    const categoryRes = await API.get("/admin/dashboard/category-sales", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const productsRes = await API.get("/admin/dashboard/top-products", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // console.log("RAW TOP PRODUCTS:", productsRes.data);
+
 
     const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-    setRevenueData(data.map(m => ({
-      month: months[m._id - 1],
-      revenue: m.revenue,
-    })));
-  };
+    /* ===== STATS ===== */
 
-  const fetchCategorySales = async () => {
-    const { data } = await API.get("/admin/dashboard/category-sales", {
-      headers: { Authorization: `Bearer ${token}` },
+    setStats({
+      revenue: statsRes.data.revenue,
+      orders: statsRes.data.orders,
+      customers: statsRes.data.users,
+      conversion: ((statsRes.data.orders / statsRes.data.visitors) * 100 || 0).toFixed(1),
+      todayOrders: statsRes.data.todayOrders || 0,
+
+      // funnel: [
+      //   { label: "Visitors", value: statsRes.data.visitors || 0 },
+      //   { label: "Views", value: statsRes.data.views || 0 },
+      //   { label: "Cart", value: statsRes.data.cart || 0 },
+      //   { label: "Checkout", value: statsRes.data.checkout || 0 },
+      //   { label: "Orders", value: statsRes.data.orders || 0 },
+      // ],
     });
 
-    setCategoryOrders(data.map(c => ({
-      name: c._id || "Other",
-      orders: Math.round(c.sales),
-    })));
-  };
+    /* ===== REVENUE ===== */
 
-  const fetchTopProducts = async () => {
-    const { data } = await API.get("/admin/dashboard/top-products", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    setRevenueData(
+      revenueRes.data.map(m => ({
+        month: months[m._id - 1],
+        revenue: m.revenue,
+      }))
+    );
 
-    setTopProducts(data);
-  };
+    /* ===== CATEGORY ===== */
 
-  /* ===== CARDS ===== */
+    setCategoryOrders(
+      categoryRes.data.map(c => ({
+        name: c._id || "Other",
+        orders: Math.round(c.sales),
+      }))
+    );
 
-  const statsCards = [
-    { title: "Revenue", value: `₹${stats.revenue || 0}` },
-    { title: "Orders", value: stats.orders || 0 },
-    { title: "Customers", value: stats.users || 0 },
-    { title: "Products", value: stats.products || 0 },
-    { title: "Categories", value: stats.categories || 0 },
-    { title: "Out of Stock", value: stats.outOfStock || 0 },
-    { title: "Live Products", value: stats.liveProducts || 0 },
-  ];
+    /* ===== TOP PRODUCTS ===== */
+
+    setTopProducts(
+      productsRes.data.map(p => ({
+        name: p.name,
+        orders: p.orders || p.totalOrders || 0,
+        stock: p.stock || p.quantity || 0,
+        best: false,
+      }))
+    );
+
+    /* ===== TRAFFIC (STATIC) ===== */
+
+    setTrafficData([
+      { name: "Website", value: 55 },
+      { name: "Instagram", value: 25 },
+      { name: "Facebook", value: 12 },
+      { name: "Others", value: 8 },
+    ]);
+
+  } catch (err) {
+    console.log("ANALYTICS ERROR:", err.response?.data || err.message);
+  }
+};
+
+
+
+  const exportCSV = () => alert("CSV Exported (demo)");
+  const downloadReport = () => alert("Report Downloaded (demo)");
 
   return (
-    <div className="flex min-h-screen bg-background-light">
+    <div className="flex bg-gray-50 min-h-screen">
       <Sidebar />
 
-      <main className="flex-1 p-6 max-w-[1400px] mx-auto">
+      <div className="flex-1 flex flex-col">
+        <Header />
 
-        <h1 className="text-3xl font-semibold mb-1">Analytics Dashboard</h1>
-        <p className="text-gray-500 mb-8">Business performance overview</p>
+        <main className="flex-1 px-10 py-8 max-w-[1400px] mx-auto">
 
-        {/* OVERVIEW */}
-
-        <div className="mb-12">
-
-          <div className="flex justify-between mb-4">
-            <h2 className="font-bold">Overview</h2>
-            <button onClick={()=>setShowAllStats(!showAllStats)} className="text-blue-600 text-sm">
-              {showAllStats ? "Hide" : "View All"}
-            </button>
+          <div className="mb-8">
+            <h1 className="text-4xl font-extrabold text-gray-900">Analytics</h1>
+            <p className="text-gray-500 mt-1">Track performance & business insights</p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(showAllStats ? statsCards : statsCards.slice(0,4)).map((s,i)=>(
-              <StatsCard key={i} {...s}/>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10 ">
+            <StatsCard title="Total Revenue" value={`₹${stats.revenue || 0}`} badge={stats.revenueGrowth} icon={<IndianRupee size={16} />} />
+            <StatsCard title="Total Orders" value={stats.orders || 0} badge={stats.ordersGrowth} icon={<ShoppingBag size={16} />} />
+            <StatsCard title="Customers" value={stats.customers || 0} badge={stats.customerGrowth} icon={<Users size={16} />} />
+            <StatsCard title="Conversion Rate" value={`${stats.conversion || 0}%`} badge={stats.conversionGrowth} icon={<Percent size={16} />} />
           </div>
 
-        </div>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
+            <LineChartBox title="Revenue Trend" data={revenueData} xKey="month" yKey="revenue" height={280} />
+            <BarChartBox title="Orders by Category" data={categoryOrders} xKey="name" yKey="orders" height={280} />
+          </div>
 
-        {/* CHARTS */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
 
-        <div className="grid xl:grid-cols-2 gap-8 mb-12">
+            <div className="bg-white rounded-2xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg">
+              <h2 className="font-bold mb-4">Traffic Sources</h2>
 
-          <ChartCard title="Revenue Trend">
-            <LineChart data={revenueData}>
-              <XAxis dataKey="month"/>
-              <YAxis/>
-              <Tooltip/>
-              <Line dataKey="revenue" stroke="#2563eb" strokeWidth={3}/>
-            </LineChart>
-          </ChartCard>
-
-          <ChartCard title="Orders by Category">
-            <BarChart data={categoryOrders}>
-              <XAxis dataKey="name"/>
-              <YAxis/>
-              <Tooltip/>
-              <Bar dataKey="orders" fill="#22c55e"/>
-            </BarChart>
-          </ChartCard>
-
-        </div>
-
-        {/* TRAFFIC */}
-
-        <div className="bg-white border rounded-xl p-6 mb-12">
-
-          <h2 className="font-bold mb-6">Traffic Sources</h2>
-
-          <div className="flex gap-10">
-
-            <div className="h-[260px] w-1/2">
-              <ResponsiveContainer>
-                <PieChart>
-                  <Pie data={trafficData} dataKey="value" innerRadius={70} outerRadius={110}>
-                    {trafficData.map((_,i)=>(
-                      <Cell key={i} fill={COLORS[i]}/>
-                    ))}
-                  </Pie>
-                  <Tooltip/>
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="h-[260px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={trafficData} dataKey="value" innerRadius={60} outerRadius={100}>
+                      {trafficData.map((_, i) => (
+                        <Cell key={i} fill={COLORS[i]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </div>
 
-            <div className="grid gap-4 w-1/2">
-              {trafficData.map((t,i)=>(
-                <div key={i} className="flex justify-between">
-                  <span>{t.name}</span>
-                  <b>{t.value}%</b>
+            <div className="bg-white rounded-2xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg">
+              <h2 className="font-bold mb-4">Calendar Snapshot</h2>
+
+              <div className="border rounded-xl p-4">
+
+                <div className="flex justify-between items-center mb-4">
+                  <ChevronLeft onClick={prevMonth} className="cursor-pointer" />
+                  <span className="font-semibold">
+                    {currentDate.toLocaleString("default", { month: "long" })} {year}
+                  </span>
+                  <ChevronRight onClick={nextMonth} className="cursor-pointer" />
                 </div>
+
+                <div className="grid grid-cols-7 text-xs text-gray-500 mb-2">
+                  {weekDays.map(d => (
+                    <div key={d} className="text-center">{d}</div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-7 gap-2 text-sm">
+                  {[...Array(firstDay)].map((_, i) => <div key={i} />)}
+
+                  {[...Array(daysInMonth)].map((_, i) => {
+                    const day = i + 1;
+                    const isToday =
+                      day === today.getDate() &&
+                      month === today.getMonth() &&
+                      year === today.getFullYear();
+
+                    return (
+                      <div
+                        key={day}
+                        className={`h-9 flex items-center justify-center rounded-lg
+                        ${isToday ? "bg-blue-600 text-white font-bold" : "hover:bg-gray-100"}`}
+                      >
+                        {day}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="flex justify-between text-xs text-gray-500 mt-5">
+                  <span>Total Orders Today</span>
+                  <span className="font-semibold text-gray-900">{stats.todayOrders || 0}</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="bg-white border rounded-2xl p-6 mb-12">
+            <h2 className="font-bold mb-6">Conversion Funnel</h2>
+
+            {stats.funnel?.map((f, i) => (
+              <div key={i} className="mb-3">
+                <div className="flex justify-between text-sm mb-1">
+                  <span>{f.label}</span>
+                  <b>{f.value}</b>
+                </div>
+
+                <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full"
+                  style={{ width: `${100 - i * 15}%` }}
+                />
+              </div>
+            ))}
+          </div> */}
+
+          <div className="bg-white rounded-2xl p-6 mb-12 transition-all hover:-translate-y-1 hover:shadow-lg">
+            <h2 className="font-bold mb-6">Top Products</h2>
+
+            <div className="space-y-4">
+              {topProducts.map((p, i) => (
+                <ProductRow key={i} {...p} />
               ))}
             </div>
-
-          </div>
-        </div>
-
-        {/* CONVERSION FUNNEL */}
-
-        <div className="bg-white border rounded-xl p-6 mb-12">
-
-          <h2 className="font-bold mb-4">Conversion Funnel</h2>
-
-          {[
-            ["Visitors", stats.visitors || 12000],
-            ["Views", stats.views || 6200],
-            ["Cart", stats.cart || 2400],
-            ["Checkout", stats.checkout || 1560],
-            ["Orders", stats.orders || 0],
-          ].map(([l,v],i)=>(
-            <div key={i} className="mb-3">
-              <div className="flex justify-between text-sm mb-1">
-                <span>{l}</span>
-                <b>{v}</b>
-              </div>
-              <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full" style={{width:`${100-i*15}%`}}/>
-            </div>
-          ))}
-
-        </div>
-
-        {/* TOP PRODUCTS */}
-
-        <div className="bg-white border rounded-xl p-6">
-
-          <h2 className="font-bold mb-4">Top Products</h2>
-
-          <div className="space-y-4">
-            {topProducts.map((p,i)=>(
-              <div key={i} className="flex justify-between p-4 border rounded-lg hover:bg-gray-50 transition">
-                <div>
-                  <p className="font-medium">{p.name}</p>
-                  <p className="text-xs text-gray-500">{p.orders} orders</p>
-                </div>
-                <span className={p.stock<20?"text-red-600":"text-gray-700"}>
-                  {p.stock} in stock
-                </span>
-              </div>
-            ))}
           </div>
 
-        </div>
+          {/* <div className="flex gap-4">
+            <button onClick={exportCSV} className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm">
+              Export CSV
+            </button>
 
-      </main>
+            <button onClick={downloadReport} className="px-6 py-2.5 border rounded-lg text-sm">
+              Download Report
+            </button>
+          </div> */}
+
+        </main>
+      </div>
     </div>
   );
 }
 
-/* ================= COMPONENTS ================= */
+/* ================= PRODUCT ROW ================= */
 
-function StatsCard({ title, value }) {
+function ProductRow({ name, orders, stock, best }) {
   return (
-    <div className="bg-white p-5 rounded-xl border hover:shadow-md transition">
-      <p className="text-sm text-gray-500">{title}</p>
-      <p className="text-2xl font-semibold">{value}</p>
-    </div>
-  );
-}
+    <div className="flex justify-between items-center px-5 py-4 border rounded-lg hover:bg-gray-50">
+      <div>
+        <p className="font-medium">{name} {best && "⭐"}</p>
+        <p className="text-xs text-gray-500">{orders} orders</p>
+      </div>
 
-function ChartCard({ title, children }) {
-  return (
-    <div className="bg-white border rounded-xl p-6 h-[320px]">
-      <h2 className="font-semibold mb-4">{title}</h2>
-      <ResponsiveContainer>{children}</ResponsiveContainer>
+      <span className={`text-sm font-semibold ${stock < 20 ? "text-red-600" : "text-gray-700"}`}>
+        {stock} in stock
+      </span>
     </div>
   );
 }

@@ -66,7 +66,7 @@ const AddProduct = () => {
         weight: formData.weight,
         dimensions: formData.dimensions,
         origin: formData.origin,
-        stock: formData.stock,
+        // stock: formData.stock,
       })
     );
 
@@ -200,7 +200,7 @@ console.log("FORM DATA COLLECTIONS:", formData.collections);
           <input name="weight" placeholder="Weight" onChange={handleChange} className="border p-3 rounded" />
           <input name="dimensions" placeholder="Dimensions" onChange={handleChange} className="border p-3 rounded" />
           <input name="origin" placeholder="Origin" onChange={handleChange} className="border p-3 rounded" />
-          <input name="stock" placeholder="Stock" onChange={handleChange} className="border p-3 rounded" />
+          {/* <input name="stock" placeholder="Stock" onChange={handleChange} className="border p-3 rounded" /> */}
         </div>
 
         {/* FLAGS */}

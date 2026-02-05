@@ -57,7 +57,7 @@ export default function TrackOrder() {
         {orders.map((o) => (
           <div
             key={o._id}
-            className="bg-white border rounded-xl p-5 flex justify-between items-center"
+            className="bg-white no-border rounded-xl p-5 flex justify-between items-center"
           >
             <div>
               <p className="font-medium">Order #{o._id.slice(-6)}</p>

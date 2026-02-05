@@ -11,99 +11,91 @@ import slugify from "slugify";
 
 
 
-export const addProduct = async (req,res)=>{
-console.log("RAW BODY:", req.body);
+export const addProduct = async (req, res) => {
+  try {
 
- try{
+    const colorsMeta = JSON.parse(req.body.colors || "[]");
 
-//  console.log("============== DEBUG START ==============");
-//  console.log("RAW BODY:",req.body);
-//  console.log("RAW FILES:",req.files);
+    const colors = colorsMeta.map((c, i) => {
+      const imgs = (req.files || [])
+        .filter(f => f.fieldname === `colorImages_${i}`)
+        .map(f => f.path);
 
- const colorsMeta = JSON.parse(req.body.colors || "[]");
+      return {
+        name: c.name,
+        hex: c.hex,
+        images: imgs,
+      };
+    });
 
-//  console.log("COLORS META:",colorsMeta);
+    const price = Number(req.body.price || 0);
+    const percent = Number(req.body.discountPercent || 0);
+    const discountPrice = Math.round(price - (price * percent) / 100);
 
- const colors = colorsMeta.map((c,i)=>{
+    let collections = [];
 
-  const imgs = (req.files || [])
-   .filter(f=>f.fieldname===`colorImages_${i}`)
-   .map(f=>f.path);
+    if (req.body.collections) {
+      const parsed =
+        typeof req.body.collections === "string"
+          ? JSON.parse(req.body.collections)
+          : req.body.collections;
 
-  // console.log(`IMAGES FOR COLOR ${i}:`,imgs);
+      collections = parsed.map(id => new mongoose.Types.ObjectId(id));
+    }
 
-  return {
-   name:c.name,
-   hex:c.hex,
-   images:imgs
-  };
- });
+    const sizes = req.body.sizes ? JSON.parse(req.body.sizes) : [];
 
-//  console.log("FINAL COLORS OBJECT:",colors);
+    const productData = {
+      name: req.body.name,
+      slug: req.body.name + "-" + Date.now(),
+      category: req.body.category,
+      description: req.body.description,
 
- const price = Number(req.body.price||0);
- const percent = Number(req.body.discountPercent||0);
- const discountPrice = Math.round(price-(price*percent/100));
+      price,
+      discountPercent: percent,
+      discountPrice,
 
-let collections = [];
+      sku: req.body.sku,
 
-if (req.body.collections) {
- const parsed =
-  typeof req.body.collections === "string"
-   ? JSON.parse(req.body.collections)
-   : req.body.collections;
+      sizes,
+      collections,
 
- collections = parsed.map(id => new mongoose.Types.ObjectId(id));
-}
-console.log("PARSED COLLECTIONS:", collections);
-const productData = {
+      details: req.body.details ? JSON.parse(req.body.details) : {},
 
- name:req.body.name,
- slug:req.body.name+"-"+Date.now(),
- category:req.body.category,
- description:req.body.description,
+      colors,
 
- price,
- discountPercent:percent,
- discountPrice,
+      isTrending: req.body.isTrending === "true",
+      isBrandStory: req.body.isBrandStory === "true",
 
- stock:req.body.stock,
- sku:req.body.sku,
+      createdBy: req.user?._id,
+    };
 
- sizes:req.body.sizes ? JSON.parse(req.body.sizes) : [],
+    const product = await Product.create(productData);
 
- collections,   // 👈 THIS LINE WAS MISSING
+    /* 🔥 AUTO CREATE INVENTORY VARIANTS */
 
- details:req.body.details ? JSON.parse(req.body.details) : {},
+    product.inventory = [];
 
- colors,
+    sizes.forEach(size => {
+      colors.forEach(c => {
+        product.inventory.push({
+          size,
+          color: c.name,
+          stock: 0,
+        });
+      });
+    });
 
- isTrending:req.body.isTrending==="true",
- isBrandStory:req.body.isBrandStory==="true",
+    await product.save();
 
- createdBy:req.user?._id
+    res.json(product);
+
+  } catch (err) {
+    console.log("ADD PRODUCT ERROR:", err);
+    res.status(500).json({ message: err.message });
+  }
 };
 
-//  console.log("FINAL PRODUCT DATA BEFORE SAVE:",productData);
-
-const product = await Product.create(productData);
-
-console.log("SAVED COLLECTIONS:", product.collections);
-
-//  console.log("SAVED PRODUCT:",product);
-
-//  console.log("============== DEBUG END ==============");
-
- res.json(product);
-
- }catch(err){
-
-  console.log("ADD PRODUCT ERROR:",err);
-  res.status(500).json({message:err.message});
-
- }
-
-};
 
 
 /* ================================
@@ -253,19 +245,20 @@ export const getSingleProduct = async (req,res)=>{
 
 };
 
+
 export const getProducts = async (req, res) => {
   try {
     let filter = { isDeleted: false };
 
     if (req.query.collection) {
-      const collectionDoc = await Collection.findOne({
-        name: new RegExp(req.query.collection, "i")
+      const collection = await Collection.findOne({
+        slug: req.query.collection.toLowerCase()
       });
 
-      console.log("FOUND COLLECTION:", collectionDoc);
+      console.log("FOUND COLLECTION:", collection);
 
-      if (collectionDoc) {
-        filter.collections = collectionDoc._id;
+      if (collection) {
+        filter.collections = collection._id;
       }
     }
 
@@ -273,16 +266,15 @@ export const getProducts = async (req, res) => {
 
     const products = await Product.find(filter)
       .populate("category", "name")
-      .populate("collections", "name");
-
-    console.log("RETURNED PRODUCTS:", products.length);
+      .populate("collections", "name slug");
 
     res.json(products);
 
   } catch (err) {
-    console.log("PRODUCT FILTER ERROR:", err);
+    console.log(err);
     res.status(500).json({ message: err.message });
   }
 };
+
 
 

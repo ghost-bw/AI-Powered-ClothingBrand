@@ -15,6 +15,10 @@ import userRoutes from "./routes/auth.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 import userdashboardRoutes from "./routes/userdashboard.routes.js";
 import collectionRoutes from "./routes/collection.routes.js"
+import inventoryRoutes from "./routes/inventory.routes.js";
+
+
+
 
 
 
@@ -47,6 +51,7 @@ app.use("/api/cart",cartRoutes);
 app.use("/api/orders",orderRoutes);
 app.use("/api/user/dashboard",userdashboardRoutes);
 app.use("/api", collectionRoutes); 
+app.use("/api/admin/dashboard/inventory", inventoryRoutes);
 
 
 

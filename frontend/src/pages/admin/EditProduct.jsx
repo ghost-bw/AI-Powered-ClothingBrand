@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 
 const EditProduct = () => {
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -21,6 +22,8 @@ const EditProduct = () => {
     origin: "",
     isTrending: false,
     isBrandStory: false,
+    isPremium:false,
+    isLimited:false
   });
 
   const [images, setImages] = useState([]);
@@ -36,30 +39,33 @@ const EditProduct = () => {
 
   useEffect(() => {
     API.get("/products").then(res => {
+
       const product = res.data.products.find(p => p._id === id);
 
       if (product) {
+
         setFormData({
           ...product,
           category: product.category?._id,
-          isTrending: Boolean(product.isTrending),
-          isBrandStory: Boolean(product.isBrandStory),
+          isTrending:Boolean(product.isTrending),
+          isBrandStory:Boolean(product.isBrandStory),
+          isPremium:Boolean(product.isPremium),
+          isLimited:Boolean(product.isLimited)
         });
+
       }
+
     });
   }, [id]);
 
-  /* INPUT HANDLERS */
+  /* HANDLERS */
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({...formData,[e.target.name]:e.target.value});
   };
 
   const handleCheckbox = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.checked,
-    });
+    setFormData({...formData,[e.target.name]:e.target.checked});
   };
 
   const handleImageChange = (e) => {
@@ -72,146 +78,89 @@ const EditProduct = () => {
     e.preventDefault();
 
     try {
+
       const data = new FormData();
 
-      Object.keys(formData).forEach((key) => {
-        if (formData[key] !== null && formData[key] !== "null") {
-          if (typeof formData[key] === "object") {
-            data.append(key, JSON.stringify(formData[key]));
-          } else {
-            data.append(key, formData[key]);
-          }
-        }
+      Object.keys(formData).forEach(k=>{
+        data.append(k,formData[k]);
       });
 
-      // numeric fields
-      data.set("price", Number(formData.price));
-      data.set("discountPrice", Number(formData.discountPrice || 0));
+      images.forEach(img=>data.append("images",img));
 
-      // boolean flags
-      data.set("isTrending", formData.isTrending);
-      data.set("isBrandStory", formData.isBrandStory);
+      await API.put(`/products/${id}`,data);
 
-      // images
-      images.forEach(img => data.append("images", img));
-
-      await API.put(`/products/${id}`, data);
-
-      alert("✅ Product updated successfully");
+      alert("✅ Product Updated");
       navigate("/admin/products");
 
-    } catch (error) {
-      console.error(error);
+    } catch(err){
+      console.log(err);
       alert("Update failed");
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
 
-      <h1 className="text-3xl font-bold mb-6">Update Product</h1>
+<div className="bg-gray-100 py-16">
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+<div className="max-w-3xl mx-auto bg-white rounded-2xl border border-gray-200 p-8
+shadow-md transition-all hover:-translate-y-1 hover:shadow-xl">
 
-        <div>
-          <label className="font-medium">Product Name</label>
-          <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full border p-3 rounded mt-1"
-          />
-        </div>
+<h1 className="text-3xl font-bold mb-6 text-center">Update Product</h1>
 
-        <div>
-          <label className="font-medium">Category</label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full border p-3 rounded mt-1"
-          >
-            <option value="">Select Category</option>
-            {categories.map(cat => (
-              <option key={cat._id} value={cat._id}>{cat.name}</option>
-            ))}
-          </select>
-        </div>
+<form onSubmit={handleSubmit} className="space-y-4">
 
-        <div>
-          <label className="font-medium">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full border p-3 rounded mt-1"
-          />
-        </div>
+<input name="name" value={formData.name} onChange={handleChange}
+placeholder="Product Name" className="input"/>
 
-        <div>
-          <label className="font-medium">Price</label>
-          <input
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            className="border p-3 rounded w-full mt-1"
-          />
-        </div>
+<select name="category" value={formData.category} onChange={handleChange}
+className="input">
+<option value="">Select Category</option>
+{categories.map(c=>(
+<option key={c._id} value={c._id}>{c.name}</option>
+))}
+</select>
 
-        <div>
-          <label className="font-medium">Discount Price</label>
-          <input
-            name="discountPrice"
-            value={formData.discountPrice || ""}
-            onChange={handleChange}
-            className="border p-3 rounded w-full mt-1"
-          />
-        </div>
+<textarea name="description" value={formData.description} onChange={handleChange}
+placeholder="Description" className="input"/>
 
-        {/* TRENDING + BRAND STORY */}
+<div className="grid grid-cols-2 gap-4">
 
-        <div className="flex gap-6 mt-4">
+<input name="price" value={formData.price} onChange={handleChange}
+placeholder="Price" className="input"/>
 
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="isTrending"
-              checked={formData.isTrending}
-              onChange={handleCheckbox}
-              className="w-4 h-4"
-            />
-            <span className="font-medium">Trending Product</span>
-          </label>
+<input name="discountPrice" value={formData.discountPrice || ""}
+onChange={handleChange} placeholder="Discount Price" className="input"/>
 
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="isBrandStory"
-              checked={formData.isBrandStory}
-              onChange={handleCheckbox}
-              className="w-4 h-4"
-            />
-            <span className="font-medium">Brand Story</span>
-          </label>
+</div>
 
-        </div>
+{/* FLAGS */}
 
-        <div>
-          <label className="font-medium">Product Images</label>
-          <input
-            type="file"
-            multiple
-            onChange={handleImageChange}
-            className="mt-1"
-          />
-        </div>
+<div className="flex flex-wrap gap-6">
 
-        <button className="w-full bg-black text-white py-3 rounded hover:opacity-90 transition">
-          Update Product
-        </button>
+{["isTrending","isBrandStory","isPremium","isLimited"].map(f=>(
+<label key={f} className="flex items-center gap-2">
+<input type="checkbox" name={f} checked={formData[f]} onChange={handleCheckbox}/>
+{f.replace("is","")}
+</label>
+))}
 
-      </form>
-    </div>
+</div>
+
+<div>
+<label className="block font-medium mb-1">Product Images</label>
+<input type="file" multiple onChange={handleImageChange}/>
+</div>
+
+<button className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-900 transition">
+Update Product
+</button>
+
+</form>
+
+</div>
+
+</div>
+
   );
 };
 

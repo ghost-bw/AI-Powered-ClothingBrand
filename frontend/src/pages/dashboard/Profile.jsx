@@ -131,8 +131,7 @@ const saveProfile = async () => {
       {/* Hero */}
       <div
         className="rounded-3xl p-7 md:p-9 text-white
-        bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-600
-        shadow-[0_25px_70px_rgba(124,58,237,0.45)]"
+bg-black shadow-[0_25px_70px_rgba(124,58,237,0.45)]"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
@@ -155,8 +154,8 @@ const saveProfile = async () => {
               setEditOpen(true);
             }}
             className="px-6 py-2.5 rounded-xl text-sm flex items-center gap-2
-            bg-white text-purple-700 font-semibold
-            hover:bg-purple-50 transition"
+            bg-white text-black font-semibold
+            hover:bg-white transition"
           >
             <FiEdit /> Edit Profile
           </button>
@@ -176,7 +175,7 @@ const saveProfile = async () => {
             className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition"
           >
             <div className="h-11 w-11 rounded-xl bg-purple-50 flex items-center justify-center mb-3">
-              <item.icon className="text-purple-600 text-xl" />
+              <item.icon className="text-black-600 text-xl" />
             </div>
             <p className="text-sm text-gray-500">{item.label}</p>
             <p className="text-2xl font-bold">{item.value}</p>
@@ -197,13 +196,13 @@ const saveProfile = async () => {
           <button
             onClick={() => setPasswordOpen(true)}
             className="flex items-center gap-2 text-sm font-semibold
-            text-purple-600 hover:text-purple-700"
+            text-black-400 hover:text-black-700"
           >
             <FiLock /> Change Password
           </button>
 
           <p className="mt-4 text-sm font-medium text-green-600">
-            ✔ Two-Step Verification Enabled
+            ✔ Verification Enabled
           </p>
         </Card>
       </div>
@@ -214,9 +213,8 @@ const saveProfile = async () => {
           {cards.map((card, i) => (
             <div
               key={i}
-              className="rounded-2xl p-5 text-white
-              bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-600"
-            >
+              className="rounded-2xl p-5 text-white bg-black"
+             >
               <p className="font-semibold tracking-wider">{card.number}</p>
               <p className="text-sm opacity-80">Expiry {card.expiry}</p>
             </div>
@@ -225,8 +223,8 @@ const saveProfile = async () => {
           <button
             onClick={() => setCardOpen(true)}
             className="rounded-2xl p-5 flex items-center justify-center gap-2
-            border-2 border-dashed border-purple-300
-            text-purple-600 hover:bg-purple-50 transition"
+            border-2 border-dashed border-black-300
+            text-black-600 hover:bg-purple-50 transition"
           >
             <FiPlus /> Add new card
           </button>
@@ -275,7 +273,7 @@ const Card = ({ title, children }) => (
 
 const InfoRow = ({ icon: Icon, value }) => (
   <div className="flex items-center gap-3 mb-3 text-gray-700">
-    <Icon className="text-purple-600 text-lg" />
+    <Icon className="text-black-600 text-lg" />
     <span className="text-sm">{value}</span>
   </div>
 );
@@ -295,7 +293,7 @@ const Modal = ({ title, children, onClose }) => (
 const Input = ({ label, ...props }) => (
   <div>
     <label className="text-sm text-gray-600">{label}</label>
-    <input {...props} className="w-full rounded-xl px-3 py-2 mt-1 border border-gray-300 focus:ring-2 focus:ring-purple-500 outline-none"/>
+    <input {...props} className="w-full rounded-xl px-3 py-2 mt-1 border border-gray-300  outline-none"/>
   </div>
 );
 
@@ -304,7 +302,7 @@ const ModalFooter = ({ onCancel, onSave }) => (
     <button onClick={onCancel} className="px-5 py-2 rounded-xl border hover:bg-gray-100">
       Cancel
     </button>
-    <button onClick={onSave} className="px-5 py-2 rounded-xl text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-600 hover:opacity-95 transition">
+    <button onClick={onSave} className="px-5 py-2 rounded-xl text-white bg-black hover:opacity-95 transition">
       Save
     </button>
   </div>

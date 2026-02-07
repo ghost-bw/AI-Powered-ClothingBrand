@@ -2,90 +2,129 @@ import Order from "../models/order.model.js";
 import Invoice from "../models/invoices.model.js";
 import Product from "../models/product.model.js";
 import Inventory from "../models/inventory.model.js";
+import twilio from "twilio";
+import WhatsappLog from "../models/WhatsappLog.model.js";
+
+const client = twilio(
+ process.env.TWILIO_SID,
+ process.env.TWILIO_AUTH
+);
+
 
 export const placeOrder = async (req, res) => {
-  try {
-    const user = req.user;
+ try {
+  const user = req.user;
 
-    if (!user.cart || user.cart.length === 0)
-      return res.status(400).json({ message: "Cart empty" });
+  if (!user.cart || user.cart.length === 0)
+    return res.status(400).json({ message: "Cart empty" });
 
-    /* ===== UPDATE VARIANT INVENTORY ===== */
+  /* ===== UPDATE VARIANT INVENTORY ===== */
 
-    for (const item of user.cart) {
+  for (const item of user.cart) {
 
-      // IMPORTANT: cart item must contain productId, size, color, quantity
+    const product = await Product.findById(item.product);
 
-      const product = await Product.findById(item.product);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
-      if (!product) {
-        return res.status(404).json({
-          message: "Product not found"
-        });
-      }
+    const variant = product.inventory.find(
+      v => v.size === item.size && v.color === item.color
+    );
 
-      const variant = product.inventory.find(
-        v => v.size === item.size && v.color === item.color
-      );
-
-      if (!variant || variant.stock < item.quantity) {
-        return res.status(400).json({
-          message: `${product.name} (${item.color}/${item.size}) out of stock`
-        });
-      }
-
-      // Deduct stock
-      variant.stock -= item.quantity;
-
-      // Increase sold count
-      product.totalSold += item.quantity;
-
-      await product.save();
-
-      // Inventory history log
-      await Inventory.create({
-        product: product._id,
-        size: item.size,
-        color: item.color,
-        change: -item.quantity,
-        updatedBy: "Customer Order",
+    if (!variant || variant.stock < item.quantity) {
+      return res.status(400).json({
+        message: `${product.name} (${item.color}/${item.size}) out of stock`
       });
     }
 
-    /* ===== CREATE ORDER ===== */
+    variant.stock -= item.quantity;
+    product.totalSold += item.quantity;
 
-    const order = await Order.create({
-      user: user._id,
-      items: user.cart,
-      shipping: req.body.shipping,
-      paymentMethod: req.body.payment,
-      subtotal: req.body.subtotal,
-      shippingCost: req.body.shippingCost,
-      gst: req.body.gst,
-      discount: req.body.discount,
-      total: req.body.total
+    await product.save();
+
+    await Inventory.create({
+      product: product._id,
+      size: item.size,
+      color: item.color,
+      change: -item.quantity,
+      updatedBy: "Customer Order",
     });
-
-    /* ===== CLEAR CART ===== */
-
-    user.cart = [];
-    await user.save();
-
-    /* ===== CREATE INVOICE ===== */
-
-    await Invoice.create({
-      user: req.user._id,
-      orderId: order._id,
-      amount: order.total,
-    });
-
-    res.json({ success: true, order });
-
-  } catch (err) {
-    console.log("ORDER ERROR:", err);
-    res.status(500).json({ message: err.message });
   }
+
+  /* ===== CREATE ORDER ===== */
+
+  const order = await Order.create({
+    user: user._id,
+    items: user.cart,
+    shipping: req.body.shipping,
+    paymentMethod: req.body.payment,
+    subtotal: req.body.subtotal,
+    shippingCost: req.body.shippingCost,
+    gst: req.body.gst,
+    discount: req.body.discount,
+    total: req.body.total,
+    status:"Processing"
+  });
+
+  /* ===== AUTO WHATSAPP CONFIRMATION ===== */
+
+  let phone = order.shipping.phone;
+  if(phone.length === 10) phone = "+91" + phone;
+  else if(!phone.startsWith("+")) phone = "+" + phone;
+
+  const itemNames = order.items
+   .map(i => `${i.name} x${i.quantity}`)
+   .join(", ");
+
+  const message = `Hello ${order.shipping.fullName},
+
+Thank you for your order! 🎉
+
+Order ID: ${order._id}
+
+Items:
+${itemNames}
+
+Total: ₹${order.total}
+
+Your order is now Processing.
+
+– Graphura`;
+
+  await client.messages.create({
+   from:"whatsapp:+14155238886",
+   to:`whatsapp:${phone}`,
+   body:message
+  });
+
+  await WhatsappLog.create({
+   phone,
+   template:"Order Confirmation",
+   status:"Sent"
+  });
+
+  /* ===== CLEAR CART ===== */
+
+  user.cart = [];
+  await user.save();
+
+  /* ===== CREATE INVOICE ===== */
+
+  await Invoice.create({
+    user: req.user._id,
+    orderId: order._id,
+    amount: order.total,
+  });
+
+  res.json({ success: true, order });
+
+ } catch (err) {
+  console.log("ORDER ERROR:", err);
+  res.status(500).json({ message: err.message });
+ }
 };
+
 
 
 /* ================= MY ORDERS ================= */
@@ -117,36 +156,74 @@ export const getAllOrders = async (req, res) => {
  }
 };
 
-export const updateOrderStatus = async (req, res) => {
-  try {
-    console.log("STATUS BODY:", req.body);
-    console.log("ORDER ID:", req.params.id);
+export const getCustomerOrders = async (req, res) => {
+ try {
 
-    const { status } = req.body;
+  const orders = await Order.find({
+    user: req.params.id   // <-- customer id
+  }).sort({ createdAt: -1 });
 
-    const order = await Order.findById(req.params.id);
+  res.json(orders);
 
-    if (!order) {
-      console.log("ORDER NOT FOUND");
-      return res.status(404).json({ message: "Order not found" });
-    }
+ } catch (err) {
+  res.status(500).json({ message: err.message });
+ }
+};
 
-    order.status = status;
+export const updateOrderStatus = async (req,res)=>{
+ try{
 
-    await order.save();
+  console.log("ORDER STATUS API HIT");
 
-    res.json({
-      success: true,
-      status: order.status,
-    });
+  const { status } = req.body;
+  const orderId = req.params.id;
 
-  } catch (error) {
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    { status },
+    { new:true }
+  );
 
-    console.error("UPDATE STATUS ERROR FULL:", error); // 🔥 full error
+  if(!order) return res.status(404).json({success:false});
 
-    res.status(500).json({
-      message: error.message,
-      stack: error.stack,      // 🔥 important
-    });
-  }
+  let phone = order.shipping.phone;
+ if(phone.length === 10){
+ phone = "+91" + phone;
+}
+else if(!phone.startsWith("+")){
+ phone = "+" + phone;
+}
+const itemNames = order.items.map(i => i.name).join(", ");
+
+const message = `Hello ${order.shipping.fullName},
+
+Your order ${order._id}, Items:${itemNames}    
+status is now:
+${status}
+
+Total: ₹${order.total}
+
+– Graphura`;
+
+  // console.log("PHONE:", phone);
+  // console.log("MESSAGE:", message);
+
+  await client.messages.create({
+    from:"whatsapp:+14155238886",
+    to:`whatsapp:${phone}`,
+    body:message
+  });
+
+  await WhatsappLog.create({
+   phone,
+   template:status,
+   status:"Sent"
+  });
+
+  res.json({success:true});
+
+ }catch(err){
+  console.log("STATUS ERROR:",err);
+  res.status(500).json({success:false});
+ }
 };

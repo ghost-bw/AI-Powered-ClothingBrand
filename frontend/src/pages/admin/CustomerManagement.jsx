@@ -77,13 +77,13 @@ export default function CustomerManagement() {
                 Export CSV
               </button>
 
-              <button
+              {/* <button
                 onClick={() => navigate("/admin/customers/create")}
                 className="flex items-center gap-2 bg-black text-white px-5 py-3 rounded-xl hover:opacity-90 transition"
               >
                 <UserPlus size={18} />
                 Add Customer
-              </button>
+              </button> */}
 
             </div>
           </div>

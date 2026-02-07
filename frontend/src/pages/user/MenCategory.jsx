@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Heart, SlidersHorizontal } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
@@ -11,13 +11,9 @@ const MenCategoryPage = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState(["All"]);
   const [activeCategory, setActiveCategory] = useState("All");
-
-  const [heroImages, setHeroImages] = useState([]);
-  const [heroIndex, setHeroIndex] = useState(0);
-
   const [loading, setLoading] = useState(true);
 
-  /* ---------------- FETCH MEN PRODUCTS ---------------- */
+  /* FETCH PRODUCTS */
 
   useEffect(() => {
     loadProducts();
@@ -31,22 +27,7 @@ const MenCategoryPage = () => {
         ? res.data
         : res.data.products;
 
-        console.log(menProducts)
-
-      /* SAVE PRODUCTS */
-
       setProducts(menProducts);
-
-      /* HERO IMAGES */
-
-      const heroImgs = menProducts
-        .flatMap(p => p.colors?.map(c => c.images?.[0]))
-        .filter(Boolean)
-        .slice(0, 4);
-
-      setHeroImages(heroImgs);
-
-      /* CATEGORIES */
 
       const cats = [
         "All",
@@ -54,41 +35,27 @@ const MenCategoryPage = () => {
       ];
 
       setCategories(cats);
-
       setLoading(false);
-
     } catch (err) {
-      console.error("MEN PAGE ERROR:", err);
+      console.error(err);
       setLoading(false);
     }
   };
 
-  /* ---------------- HERO AUTO SLIDE ---------------- */
-
-  useEffect(() => {
-    if (!heroImages.length) return;
-
-    const interval = setInterval(() => {
-      setHeroIndex(prev => (prev + 1) % heroImages.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [heroImages]);
-
   const filteredProducts =
     activeCategory === "All"
       ? products
-      : products.filter(p =>
-          (p.category?.name || p.category) === activeCategory
+      : products.filter(
+          p => (p.category?.name || p.category) === activeCategory
         );
+
+  /* HERO TEXT ANIMATION */
 
   const text = "MEN COLLECTION";
 
   const container = {
     hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.05 },
-    },
+    visible: { transition: { staggerChildren: 0.05 } },
   };
 
   const letter = {
@@ -102,25 +69,17 @@ const MenCategoryPage = () => {
 
   return (
     <div className="bg-[#faf7f2] min-h-screen">
-<Navbar/>
-      {/* HERO */}
+      <Navbar />
 
-      <div className="relative h-[70vh] overflow-hidden">
-        <AnimatePresence>
-          <motion.img
-            key={heroIndex}
-            src={
-              heroImages[heroIndex] ||
-              products[0]?.colors?.[0]?.images?.[0]
-            }
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        </AnimatePresence>
+      {/* HERO — SAME BACKGROUND IMAGE */}
 
+      <div
+        className="relative h-[70vh] bg-cover bg-top"
+        style={{
+          backgroundImage:
+            "url(https://res.cloudinary.com/dttjgnypq/image/upload/v1770404996/male_k752dv.jpg)",
+        }}
+      >
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <motion.h1
             variants={container}
@@ -157,7 +116,7 @@ const MenCategoryPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveCategory(cat)}
-                  className={`cursor-pointer px-4 py-2 rounded-md text-sm font-medium transition ${
+                  className={`cursor-pointer px-4 py-2 rounded-md text-sm font-medium ${
                     activeCategory === cat
                       ? "bg-black text-white"
                       : "hover:bg-gray-100"
@@ -179,6 +138,7 @@ const MenCategoryPage = () => {
           )}
 
           <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
             {filteredProducts.map(product => (
               <motion.div
                 key={product._id}
@@ -218,6 +178,7 @@ const MenCategoryPage = () => {
                 </div>
               </motion.div>
             ))}
+
           </motion.div>
         </section>
       </div>

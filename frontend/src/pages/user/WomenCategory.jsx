@@ -1,231 +1,217 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Heart, Search } from "lucide-react";
+import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ProductCard from "../../components/Home/ProductCard";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
 
-const WomenCollectionPage = () => {
+/* HERO TEXT */
+const HERO_TITLE = "Women’s Collection";
+const HERO_SUB =
+  "Grace in every detail — timeless ethnic, modern western and elegant styles designed for every woman, every mood.";
+
+export default function WomenCollectionPage() {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
-  const [heroImages, setHeroImages] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(["All"]);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [wishlist, setWishlist] = useState([]);
-  const [heroIndex, setHeroIndex] = useState(0);
-  const [search, setSearch] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 0]);
   const [loading, setLoading] = useState(true);
 
-  /* ================= LOAD PRODUCTS ================= */
+  /* TYPEWRITER */
 
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
+  const [typedText, setTypedText] = useState("");
+  const [done, setDone] = useState(false);
 
-      /* STEP 1 — WOMEN COLLECTION */
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setTypedText(HERO_SUB.slice(0, i + 1));
+      i++;
+      if (i === HERO_SUB.length) {
+        clearInterval(interval);
+        setDone(true);
+      }
+    }, 45);
 
-      const colRes = await API.get("/collections/?slug=women");
-      const collectionId = colRes.data?.[0]?._id;
+    return () => clearInterval(interval);
+  }, []);
 
-      if (!collectionId) return;
-
-      /* STEP 2 — PRODUCTS */
-
-      const prodRes = await API.get(`/products?collection=women`);
-
-
-      const womenProducts = Array.isArray(prodRes.data)
-        ? prodRes.data
-        : prodRes.data.products;
-
-      setProducts(womenProducts);
-
-      /* HERO */
-
-      const hero = womenProducts
-        .slice(0, 3)
-        .map(p => p.colors?.[0]?.images?.[0])
-        .filter(Boolean);
-
-      setHeroImages(hero);
-
-      /* BUILD CATEGORIES (OBJECT SAFE) */
-
-      const unique = [];
-
-      womenProducts.forEach(p => {
-        if (p.category && !unique.find(c => c._id === p.category._id)) {
-          unique.push(p.category);
-        }
-      });
-
-      setCategories([{ _id: "all", name: "All" }, ...unique]);
-
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  /* LOAD PRODUCTS */
 
   useEffect(() => {
     loadProducts();
   }, []);
 
-  /* ================= HERO AUTO ================= */
+  const loadProducts = async () => {
+    try {
+      const res = await API.get("/products?collection=women");
 
-  useEffect(() => {
-    if (!heroImages.length) return;
+      const womenProducts = Array.isArray(res.data)
+        ? res.data
+        : res.data.products;
 
-    const interval = setInterval(() => {
-      setHeroIndex(prev => (prev + 1) % heroImages.length);
-    }, 4000);
+      setProducts(womenProducts);
 
-    return () => clearInterval(interval);
-  }, [heroImages]);
+      /* Categories */
 
-  /* ================= FILTER ================= */
+      const cats = [
+        "All",
+        ...new Set(womenProducts.map(p => p.category?.name))
+      ];
 
-  const filteredProducts = useMemo(() => {
-    let list = products;
+      setCategories(cats);
 
-    if (activeCategory !== "All") {
-      list = list.filter(p => p.category?.name === activeCategory);
-    }
+      /* Auto Max Price */
 
-    if (search) {
-      list = list.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase())
+      const maxPrice = Math.max(
+        ...womenProducts.map(p => p.discountPrice || p.price || 0)
       );
+
+      setPriceRange([0, maxPrice]);
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-
-    return list;
-  }, [products, activeCategory, search]);
-
-  const toggleWishlist = id => {
-    setWishlist(prev =>
-      prev.includes(id)
-        ? prev.filter(i => i !== id)
-        : [...prev, id]
-    );
   };
 
-  if (loading) return <div className="py-40 text-center">Loading...</div>;
+  /* FILTER */
+
+  const filteredProducts = useMemo(() => {
+    return products.filter(p => {
+      const categoryMatch =
+        activeCategory === "All" ||
+        p.category?.name === activeCategory;
+
+      const priceMatch =
+        (p.discountPrice || p.price) <= priceRange[1];
+
+      return categoryMatch && priceMatch;
+    });
+  }, [products, activeCategory, priceRange]);
 
   return (
     <div className="bg-[#faf7f2] min-h-screen">
-  <Navbar/>
-      {/* ================= HERO ================= */}
+      <Navbar />
 
-      <section className="relative h-[70vh] overflow-hidden">
+      {/* HERO */}
 
-        {heroImages.map((img, i) => (
-          <div
-            key={i}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              heroIndex === i ? "opacity-100" : "opacity-0"
+      <section
+        className="relative h-[70vh] bg-cover bg-top flex items-center"
+        style={{
+          backgroundImage:
+            "url(https://res.cloudinary.com/dttjgnypq/image/upload/v1770404161/female_pj10ap.jpg)",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/40" />
+
+        <div className="relative z-10 px-8 max-w-3xl text-white">
+          <h1
+            className={`text-5xl md:text-6xl font-serif mb-4 ${
+              done ? "animate-zoom-once" : ""
             }`}
-            style={{
-              backgroundImage: `url(${img})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center"
-            }}
-          />
-        ))}
+          >
+            {HERO_TITLE}
+          </h1>
 
-        <div className="absolute inset-0 bg-black/30" />
-
-        <div className="relative z-10 h-full flex flex-col justify-center px-6 max-w-7xl mx-auto text-white">
-          <h1 className="text-5xl font-serif mb-3">Women’s Collection</h1>
-
-          <div className="bg-white rounded-full flex items-center px-5 py-3 max-w-md">
-            <Search size={18} className="text-gray-500 mr-2" />
-            <input
-              placeholder="Search products..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="flex-1 outline-none text-gray-700"
-            />
-          </div>
+          <p className="text-lg md:text-xl leading-relaxed">
+            {typedText}
+          </p>
         </div>
-
       </section>
 
-      {/* ================= CONTENT ================= */}
+      {/* CONTENT */}
 
-      <section className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-10">
+      <section className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
 
-        {/* CATEGORIES */}
+        {/* FILTERS */}
 
-        <aside className="sticky top-24">
-          {categories.map(cat => (
-            <div
-              key={cat._id}
-              onClick={() => setActiveCategory(cat.name)}
-              className={`cursor-pointer px-4 py-2 rounded mb-2 transition
-              ${
-                activeCategory === cat.name
-                  ? "bg-black text-white"
-                  : "hover:pl-4"
-              }`}
-            >
-              {cat.name}
+        <aside className="sticky top-24 h-fit">
+          <div className="bg-white rounded-2xl shadow p-6 space-y-8">
+
+            <h3 className="flex items-center gap-2 font-semibold text-lg">
+              <SlidersHorizontal size={18} /> Filters
+            </h3>
+
+            <div>
+              <h4 className="font-medium mb-3">Category</h4>
+
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`block w-full text-left px-4 py-2 rounded-lg mb-2 ${
+                    activeCategory === cat
+                      ? "bg-black text-white"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
-          ))}
+
+            <div>
+              <h4 className="font-medium mb-3 flex items-center gap-2">
+                <ArrowUpDown size={16} /> Price Range
+              </h4>
+
+              <div className="flex justify-between text-sm mb-2">
+                <span>₹0</span>
+                <span>₹{priceRange[1]}</span>
+              </div>
+
+              <input
+                  type="range"
+                  min="0"
+                  max={Math.max(...products.map(p => p.discountPrice || p.price || 0))}
+                  step="100"
+                  value={priceRange[1]}
+                  onChange={e =>
+                    setPriceRange([0, Number(e.target.value)])
+                  }
+                  className="w-full accent-black"
+                  />
+
+            </div>
+
+          </div>
         </aside>
 
-        {/* PRODUCTS */}
+        {/* PRODUCTS GRID */}
 
-        <div className="md:col-span-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-6">
 
-          {filteredProducts.map(product => (
-            <div
-              key={product._id}
-              onClick={() => navigate(`/product/${product._id}`)}
-              className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg cursor-pointer"
-            >
+          {loading && <p>Loading...</p>}
 
-              <div className="relative">
-
-                <img
-                  src={product.colors?.[0]?.images?.[0]}
-                  className="h-72 w-full object-cover"
-                  alt=""
-                />
-
-                <button
-                  onClick={e => {
-                    e.stopPropagation();
-                    toggleWishlist(product._id);
-                  }}
-                  className="absolute top-3 right-3 bg-white p-2 rounded-full"
-                >
-                  <Heart
-                    size={18}
-                    className={
-                      wishlist.includes(product._id)
-                        ? "fill-red-500 text-red-500"
-                        : "text-gray-500"
-                    }
-                  />
-                </button>
-
-              </div>
-
-              <div className="p-4">
-                <h4>{product.name}</h4>
-                <p className="text-gray-600">₹{product.price}</p>
-              </div>
-
-            </div>
+          {filteredProducts.map(p => (
+            <ProductCard
+              key={p._id}
+              product={p}
+              onClick={() => navigate(`/product/${p._id}`)}
+            />
           ))}
 
         </div>
-
       </section>
+
+      {/* ZOOM ANIMATION */}
+
+      <style>{`
+        @keyframes zoomOnce {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+          100% { transform: scale(1); }
+        }
+
+        .animate-zoom-once {
+          animation: zoomOnce 1.2s ease-in-out 1;
+        }
+      `}</style>
 
     </div>
   );
-};
-
-export default WomenCollectionPage;
+}

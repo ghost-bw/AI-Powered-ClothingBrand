@@ -48,6 +48,8 @@ inventory: [
 
  isTrending:{type:Boolean,default:false},
  isBrandStory:{type:Boolean,default:false},
+  isPremium:{type:Boolean,default:false},
+ isLimited:{type:Boolean,default:false},
 
  details:{
   fabric:String,

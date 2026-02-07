@@ -70,6 +70,13 @@ export default function OrderHistory() {
 
               {/* Middle */}
               <div className="text-sm text-gray-600 space-y-1">
+
+                <p>
+                  <span className="font-medium text-gray-800">Product name:</span>{" "}
+                  {order.items?.map((item, i) => (
+                        <p key={i}>{item.name}</p>
+                      ))}
+                </p>
                 <p>
                   <span className="font-medium text-gray-800">Items:</span>{" "}
                   {order.items?.length || 0}

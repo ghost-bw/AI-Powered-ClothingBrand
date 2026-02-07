@@ -50,7 +50,7 @@ useEffect(() => {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl
           bg-white border shadow-sm text-sm font-semibold text-gray-700
           transition-all duration-300
-          hover:bg-purple-500 hover:text-white hover:shadow-md group"
+          hover:bg-black hover:text-white hover:shadow-md group"
         >
           <FaArrowLeft className="transition-transform group-hover:-translate-x-1" />
           Back to Orders

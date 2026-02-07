@@ -12,17 +12,21 @@ export default function CustomerTable({ data = [], onSelect }) {
   }, [data, search]);
 
   return (
-    <div className="bg-white no-border rounded-2xl p-6">
+
+    <div className="bg-white rounded-2xl border border-gray-200 p-6
+    shadow-md transition-all hover:-translate-y-1 hover:shadow-xl">
 
       <input
         placeholder="Search by name or email..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full mb-4 px-4 py-3 no-border rounded-xl"
+        className="w-full mb-4 px-4 py-3 border border-gray-300 rounded-xl
+        transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
       />
 
       <table className="w-full text-sm">
-        <thead className="text-gray-500">
+
+        <thead className="text-gray-500 border-b">
           <tr>
             <th className="pb-3 text-left">Customer</th>
             <th>Email</th>
@@ -33,12 +37,15 @@ export default function CustomerTable({ data = [], onSelect }) {
         </thead>
 
         <tbody>
+
           {filteredCustomers.map((c, i) => (
+
             <tr
               key={i}
               onClick={() => onSelect(c)}
-              className="border-t cursor-pointer hover:bg-gray-50"
+              className="cursor-pointer transition hover:bg-gray-50"
             >
+
               <td className="py-3 font-semibold text-blue-600">
                 {c.name}
               </td>
@@ -60,10 +67,16 @@ export default function CustomerTable({ data = [], onSelect }) {
                   {c.status}
                 </span>
               </td>
+
             </tr>
+
           ))}
+
         </tbody>
+
       </table>
+
     </div>
+
   );
 }

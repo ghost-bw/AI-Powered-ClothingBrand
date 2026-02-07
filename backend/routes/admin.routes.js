@@ -1,20 +1,46 @@
 import express from "express";
-import { adminLogin } from "../controllers/admin.controller.js";
-import  protect  from "../middlewares/auth.middleware.js";
+import upload from "../middlewares/upload.middleware.js";
+
+import {
+ adminLogin,
+ getAdminProfile,
+ updateAdminEmail,
+ updateAdminPassword,
+ updateAdminAvatar
+} from "../controllers/admin.controller.js";
+
+import protect from "../middlewares/auth.middleware.js";
 import { isAdmin } from "../middlewares/admin.middleware.js";
 
-const router = express.Router();
-
-// router.post("/signup", adminSignup);
-router.post("/login", adminLogin);
-
-
-
-// Example protected admin route
 import Order from "../models/order.model.js";
 import User from "../models/user.model.js";
 import Product from "../models/product.model.js";
 import Category from "../models/category.model.js";
+
+const router = express.Router();
+
+
+/* ================= AUTH ================= */
+
+router.post("/login", adminLogin);
+
+/* ================= PROFILE ================= */
+
+router.get("/profile", protect, isAdmin, getAdminProfile);
+
+router.put("/email", protect, isAdmin, updateAdminEmail);
+
+router.put("/password", protect, isAdmin, updateAdminPassword);
+
+router.put(
+ "/avatar",
+ protect,
+ isAdmin,
+ upload.single("avatar"),
+ updateAdminAvatar
+);
+
+/* ================= DASHBOARD ================= */
 
 router.get("/dashboard", protect, isAdmin, async (req, res) => {
  try {
@@ -39,8 +65,5 @@ router.get("/dashboard", protect, isAdmin, async (req, res) => {
   res.status(500).json({ message: err.message });
  }
 });
-
-
-
 
 export default router;

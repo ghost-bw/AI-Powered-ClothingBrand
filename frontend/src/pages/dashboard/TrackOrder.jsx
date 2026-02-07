@@ -50,36 +50,96 @@ export default function TrackOrder() {
   /* ================= LIST MODE ================= */
 
   if (!orderId) {
-    return (
-      <div className="space-y-6">
-        <h2 className="text-xl font-semibold">Track Your Orders</h2>
+  return (
+  <div className="bg-white rounded-3xl shadow-xl p-8 space-y-8">
 
-        {orders.map((o) => (
-          <div
-            key={o._id}
-            className="bg-white no-border rounded-xl p-5 flex justify-between items-center"
-          >
+    {/* HEADER */}
+    <div className="flex items-center gap-4">
+      <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center shadow-md">
+        <FaTruck />
+      </div>
+
+      <h2 className="text-2xl font-bold text-gray-900">
+        Track Your Orders
+      </h2>
+    </div>
+
+    {/* ORDERS */}
+    <div className="space-y-6">
+
+      {orders.map((o) => (
+        <div
+          key={o._id}
+          className="bg-gray-50 rounded-2xl p-6 border border-gray-200
+          transition-all duration-300 hover:shadow-lg hover:bg-white"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+
+            {/* LEFT */}
             <div>
-              <p className="font-medium">Order #{o._id.slice(-6)}</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-lg font-semibold text-gray-900">
+                Order #{o._id.slice(-6)}
+              </p>
+
+              <p className="text-sm text-gray-500 mt-1">
                 {new Date(o.createdAt).toLocaleDateString()}
               </p>
-              <p className="font-semibold mt-1">₹{o.total}</p>
+
+              <p className="font-bold mt-2">₹{o.total}</p>
             </div>
 
-            <button
-              onClick={() =>
-                navigate(`/user/dashboard/track-order/${o._id}`)
-              }
-              className="bg-black text-white px-4 py-2 rounded-lg text-sm"
-            >
-              Track
-            </button>
+            {/* CENTER */}
+            <div className="text-sm text-gray-600 space-y-1">
+
+              <p>
+                <span className="font-medium text-gray-800">Product:</span>{" "}
+                {o.items?.map((item, i) => (
+                  <span key={i} className="block">
+                    {item.name}
+                  </span>
+                ))}
+              </p>
+
+              <p>
+                <span className="font-medium text-gray-800">Items:</span>{" "}
+                {o.items?.length || 0}
+              </p>
+
+              <p>
+                <span className="font-medium text-gray-800">Payment:</span>{" "}
+                {o.paymentMethod || "Online"}
+              </p>
+
+              <p>
+                <span className="font-medium text-gray-800">Deliver to:</span>{" "}
+                {o.shipping?.city || o.shipping?.address || "—"}
+              </p>
+            </div>
+
+            {/* RIGHT */}
+            <div className="flex lg:justify-end">
+              <button
+                onClick={() =>
+                  navigate(`/user/dashboard/track-order/${o._id}`)
+                }
+                className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white
+                bg-black transition-all duration-300
+                hover:bg-gray-800 hover:shadow-lg hover:-translate-y-0.5"
+              >
+                Track →
+              </button>
+            </div>
+
           </div>
-        ))}
-      </div>
-    );
-  }
+        </div>
+      ))}
+
+    </div>
+  </div>
+);
+
+}
+
 
   if (!order) return <p>Order not found.</p>;
 
@@ -104,10 +164,10 @@ export default function TrackOrder() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Order Summary */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300">
-        <h2 className="text-2xl font-semibold">Track Your Order</h2>
+      <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+        <h2 className="text-2xl font-bold">Track Your Order</h2>
         <div className="mt-3 flex flex-wrap gap-4 text-sm text-gray-600">
           <span>
             Order ID: <b>#{order._id.slice(-6)}</b>
@@ -117,6 +177,31 @@ export default function TrackOrder() {
           </span>
         </div>
       </div>
+
+     <div
+  className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200
+  transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+>
+  <div className="text-sm text-gray-600 space-y-2">
+
+    <p>
+      <span className="font-medium text-gray-800">Items:</span>{" "}
+      {order.items?.length || 0}
+    </p>
+
+    <p>
+      <span className="font-medium text-gray-800">Payment:</span>{" "}
+      {order.paymentMethod || "Online"}
+    </p>
+
+    <p>
+      <span className="font-medium text-gray-800">Deliver to:</span>{" "}
+      {order.shipping?.city || order.shipping?.address || "—"}
+    </p>
+
+  </div>
+</div>
+
 
       {/* Order Status */}
       <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300">

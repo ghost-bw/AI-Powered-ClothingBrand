@@ -125,7 +125,7 @@ export default function Address() {
               hover:shadow-2xl hover:-translate-y-1 transition-all"
             >
               {item.default && (
-                <span className="absolute top-4 right-4 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
+                <span className="absolute top-4 right-4 bg-black text-white text-xs px-3 py-1 rounded-full">
                   Default
                 </span>
               )}
@@ -135,8 +135,8 @@ export default function Address() {
                   className={`w-12 h-12 rounded-xl flex items-center justify-center text-white
                   ${
                     item.type === "Office"
-                      ? "bg-gradient-to-br from-blue-500 to-indigo-600"
-                      : "bg-gradient-to-br from-emerald-500 to-green-600"
+                      ? "bg-black"
+                      : "bg-black"
                   }`}
                 >
                   <Icon size={20} />

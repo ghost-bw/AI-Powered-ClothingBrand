@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import API from "../../api/axios";
 
 const AddProduct = () => {
+
   const [formData, setFormData] = useState({
     name: "",
     category: "",
     price: "",
     discountPercent: "",
     discountPrice: "",
-    stock: "",
-    sku: "",
     description: "",
     fabric: "",
     material: "",
@@ -21,19 +20,31 @@ const AddProduct = () => {
     collections: [],
     isTrending: false,
     isBrandStory: false,
+    isPremium:false,
+    isLimited:false
   });
 
   const [colors, setColors] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [filteredCategories,setFilteredCategories]=useState([]);
   const [collectionsList, setCollectionsList] = useState([]);
   const [gender, setGender] = useState("");
   const [selectedCollectionName,setSelectedCollectionName]=useState("");
 
-
   useEffect(() => {
-    fetch("/api/categories").then((r) => r.json()).then(setCategories);
-    fetch("/api/collections").then((r) => r.json()).then(setCollectionsList);
+    fetch("/api/categories").then(r=>r.json()).then(setCategories);
+    fetch("/api/collections").then(r=>r.json()).then(setCollectionsList);
   }, []);
+
+  /* FILTER CATEGORY WHEN COLLECTION CHANGES */
+
+  useEffect(()=>{
+    if(formData.collections.length){
+      setFilteredCategories(
+        categories.filter(c=>c.collection===formData.collections[0])
+      );
+    }
+  },[formData.collections,categories]);
 
   /* ================= SUBMIT ================= */
 
@@ -57,222 +68,168 @@ const AddProduct = () => {
 
     data.append("gender", gender);
 
-    data.append(
-      "details",
-      JSON.stringify({
-        fabric: formData.fabric,
-        material: formData.material,
-        care: formData.care,
-        weight: formData.weight,
-        dimensions: formData.dimensions,
-        origin: formData.origin,
-        // stock: formData.stock,
-      })
-    );
+    data.append("details",JSON.stringify({
+      fabric: formData.fabric,
+      material: formData.material,
+      care: formData.care,
+      weight: formData.weight,
+      dimensions: formData.dimensions,
+      origin: formData.origin,
+    }));
 
-    data.append(
-      "colors",
-      JSON.stringify(
-        colors.map((c) => ({
-          name: c.name,
-          hex: c.hex,
-        }))
-      )
-    );
+    data.append("colors",JSON.stringify(
+      colors.map(c=>({name:c.name,hex:c.hex}))
+    ));
 
-    colors.forEach((color, i) => {
-      color.images.forEach((img) => {
-        data.append(`colorImages_${i}`, img);
+    colors.forEach((color,i)=>{
+      color.images.forEach(img=>{
+        data.append(`colorImages_${i}`,img);
       });
     });
-console.log("FORM DATA COLLECTIONS:", formData.collections);
 
     await API.post("/products", data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
-      },
+      headers: { Authorization:`Bearer ${localStorage.getItem("admin_token")}` }
     });
 
     alert("✅ Product Added Successfully");
   };
 
-  /* ================= CHANGE ================= */
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
 
-    let updated = { ...formData, [name]: value };
+    let updated = { ...formData, [name]: type==="checkbox"?checked:value };
 
     if (name === "price" || name === "discountPercent") {
       const price = Number(name === "price" ? value : updated.price);
-      const percent = Number(
-        name === "discountPercent" ? value : updated.discountPercent
-      );
-
+      const percent = Number(name === "discountPercent" ? value : updated.discountPercent);
       updated.discountPrice = Math.round(price - (price * percent) / 100);
     }
 
     setFormData(updated);
   };
 
-  const addColor = () => {
-    setColors([...colors, { name: "", hex: "", images: [] }]);
-  };
+  const addColor = () => setColors([...colors,{name:"",hex:"",images:[]}]);
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white shadow rounded-lg">
-      <h1 className="text-3xl font-bold mb-8">Add Product</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+<div className="bg-gray-100 py-16">
 
-        {/* COLLECTION FIRST */}
-      <select
- className="border-2 p-3 rounded w-full"
- onChange={(e)=>{
+<div className="max-w-4xl mx-auto bg-white rounded-2xl border border-gray-200 p-8
+shadow-md transition-all hover:-translate-y-1 hover:shadow-xl">
 
-  const selected = collectionsList.find(c=>c._id===e.target.value);
+<h1 className="text-3xl font-bold mb-8 text-center">Add Product</h1>
 
-  setFormData({
-   ...formData,
-   collections:[e.target.value]
-  });
+<form onSubmit={handleSubmit} className="space-y-6">
 
+{/* COLLECTION */}
+
+<select className="input" onChange={(e)=>{
+  const selected=collectionsList.find(c=>c._id===e.target.value);
+  setFormData({...formData,collections:[e.target.value]});
   setSelectedCollectionName(selected?.name?.toLowerCase());
-  setGender(""); // reset gender when collection changes
- }}
->
-
+  setGender("");
+}}>
 <option value="">Select Collection</option>
-
 {collectionsList.map(c=>(
- <option key={c._id} value={c._id}>
-  {c.name}
- </option>
+<option key={c._id} value={c._id}>{c.name}</option>
 ))}
-
 </select>
 
+{/* KIDS */}
 
-
-        {/* KIDS GENDER */}
-       {selectedCollectionName === "kids" && (
-<select
- className="border p-3 rounded w-full"
- onChange={e=>setGender(e.target.value)}
->
+{selectedCollectionName==="kids" && (
+<select className="input" onChange={e=>setGender(e.target.value)}>
 <option value="">Select Gender</option>
 <option value="boys">Boys</option>
 <option value="girls">Girls</option>
 </select>
 )}
 
-        {/* CATEGORY */}
-        <select
-          name="category"
-          onChange={handleChange}
-          className="border p-3 rounded w-full"
-        >
-          <option>Select Category</option>
-          {categories.map((c) => (
-            <option key={c._id} value={c._id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+{/* CATEGORY */}
 
-        <input name="name" placeholder="Product Name" onChange={handleChange} className="border p-3 rounded w-full" />
+<select name="category" onChange={handleChange} className="input">
+<option value="">Select Category</option>
+{filteredCategories.map(c=>(
+<option key={c._id} value={c._id}>{c.name}</option>
+))}
+</select>
 
-        <textarea name="description" placeholder="Description" onChange={handleChange} className="border p-3 rounded w-full" />
+<input name="name" placeholder="Product Name" onChange={handleChange} className="input"/>
 
-        {/* PRICE */}
-        <div className="grid grid-cols-4 gap-4">
-          <input name="price" placeholder="Price" onChange={handleChange} className="border p-3 rounded" />
-          <input name="discountPercent" placeholder="Discount %" onChange={handleChange} className="border p-3 rounded" />
-          <input value={formData.discountPrice} placeholder="Discounted Price" readOnly className="border p-3 rounded bg-gray-100" />
-          <input name="sizes" placeholder="Sizes S,M,L" onChange={handleChange} className="border p-3 rounded" />
-        </div>
+<textarea name="description" placeholder="Description" onChange={handleChange} className="input"/>
 
-        {/* DETAILS */}
-        <div className="grid grid-cols-2 gap-4">
-          <input name="fabric" placeholder="Fabric" onChange={handleChange} className="border p-3 rounded" />
-          <input name="material" placeholder="Material" onChange={handleChange} className="border p-3 rounded" />
-          <input name="care" placeholder="Care" onChange={handleChange} className="border p-3 rounded" />
-          <input name="weight" placeholder="Weight" onChange={handleChange} className="border p-3 rounded" />
-          <input name="dimensions" placeholder="Dimensions" onChange={handleChange} className="border p-3 rounded" />
-          <input name="origin" placeholder="Origin" onChange={handleChange} className="border p-3 rounded" />
-          {/* <input name="stock" placeholder="Stock" onChange={handleChange} className="border p-3 rounded" /> */}
-        </div>
+<div className="grid grid-cols-4 gap-4">
+<input name="price" placeholder="Price" onChange={handleChange} className="input"/>
+<input name="discountPercent" placeholder="Discount %" onChange={handleChange} className="input"/>
+<input value={formData.discountPrice} readOnly className="input bg-gray-100"/>
+<input name="sizes" placeholder="Sizes S,M,L" onChange={handleChange} className="input"/>
+</div>
 
-        {/* FLAGS */}
-        <div className="flex gap-6">
-          <label className="flex gap-2">
-            <input type="checkbox" onChange={(e) => setFormData({ ...formData, isTrending: e.target.checked })} />
-            Trending
-          </label>
+<div className="grid grid-cols-2 gap-4">
+{["fabric","material","care","weight","dimensions","origin"].map(f=>(
+<input key={f} name={f} placeholder={f} onChange={handleChange} className="input"/>
+))}
+</div>
 
-          <label className="flex gap-2">
-            <input type="checkbox" onChange={(e) => setFormData({ ...formData, isBrandStory: e.target.checked })} />
-            Brand Story
-          </label>
-        </div>
+{/* FLAGS */}
 
-        {/* COLORS */}
-        <h2 className="text-xl font-semibold">Colors & Images</h2>
+<div className="flex gap-6">
+{["isTrending","isBrandStory","isPremium","isLimited"].map(f=>(
+<label key={f} className="flex gap-2 items-center">
+<input type="checkbox" name={f} onChange={handleChange}/>
+{f.replace("is","")}
+</label>
+))}
+</div>
 
-        {colors.map((c, i) => (
-          <div key={i} className="border p-4 rounded bg-gray-50">
+<h2 className="text-xl font-semibold">Colors & Images</h2>
 
-            <div className="grid grid-cols-3 gap-3 mb-3">
-              <input
-                placeholder="Color Name"
-                className="border p-2 rounded"
-                onChange={(e) => {
-                  const updated = [...colors];
-                  updated[i].name = e.target.value;
-                  setColors(updated);
-                }}
-              />
+{colors.map((c,i)=>(
+<div key={i} className="border p-4 rounded-xl bg-gray-50">
 
-              <input
-                type="color"
-                onChange={(e) => {
-                  const updated = [...colors];
-                  updated[i].hex = e.target.value;
-                  setColors(updated);
-                }}
-              />
+<input placeholder="Color Name" className="input mb-2" onChange={e=>{
+const u=[...colors];u[i].name=e.target.value;setColors(u);
+}}/>
 
-              <div className="border-2 border-dashed rounded-lg p-4 text-center">
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  hidden
-                  id={`img-${i}`}
-                  onChange={(e) => {
-                    const updated = [...colors];
-                    updated[i].images = Array.from(e.target.files);
-                    setColors(updated);
-                  }}
-                />
+<input type="color" onChange={e=>{
+const u=[...colors];u[i].hex=e.target.value;setColors(u);
+}}/>
 
-                <label htmlFor={`img-${i}`} className="cursor-pointer">
-                  Click to upload images (min 5)
-                </label>
-              </div>
-            </div>
-          </div>
-        ))}
+<div className="mt-3 border-dashed border-2 p-4 rounded text-center">
 
-        <button type="button" onClick={addColor} className="bg-gray-200 px-4 py-2 rounded">
-          + Add Color
-        </button>
+<input hidden id={`img-${i}`} type="file" multiple accept="image/*"
+onChange={e=>{
+const u=[...colors];
+u[i].images=Array.from(e.target.files);
+setColors(u);
+}}/>
 
-        <button type="submit" className="w-full bg-black text-white py-3 rounded">
-          Save Product
-        </button>
-      </form>
-    </div>
+<label htmlFor={`img-${i}`} className="cursor-pointer block">
+Upload Images
+</label>
+
+<p className="text-sm mt-2 text-gray-600">
+{c.images.length} images selected
+</p>
+
+</div>
+
+</div>
+))}
+
+<button type="button" onClick={addColor} className="bg-gray-200 px-4 py-2 rounded-xl">
++ Add Color
+</button>
+
+<button type="submit" className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-900">
+Save Product
+</button>
+
+</form>
+
+</div>
+
+</div>
   );
 };
 

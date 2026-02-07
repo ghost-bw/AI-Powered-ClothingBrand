@@ -54,6 +54,15 @@ function ProductDetails() {
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+const selectedVariant = product?.inventory?.find(
+  i => i.size === selectedSize && i.color === selectedColor?.name
+);
+
+
+const variantStock = selectedVariant?.stock || 0;
+
+
+
   useEffect(() => {
     loadProduct();
   }, [id]);
@@ -181,7 +190,7 @@ function ProductDetails() {
       originalPrice: product.originalPrice,
       discount: product.discount,
       rating: product.rating,
-      stock: product.stock,
+      stock: variantStock,
       colors: product.colors,
       // variants: product.variants,
       details: product.details,
@@ -253,7 +262,8 @@ function ProductDetails() {
 
   const handleQuantityChange = (change) => {
     const newQuantity = quantity + change;
-    if (newQuantity >= 1 && newQuantity <= (product?.stock || 10)) {
+    if (newQuantity >= 1 && newQuantity <= variantStock)
+ {
       setQuantity(newQuantity);
     }
   };
@@ -470,12 +480,12 @@ function ProductDetails() {
                   {product.discount}% OFF
                 </span>
               )}
-              {product.stock < 10 && product.stock > 0 && (
+              {variantStock < 10 && variantStock > 0 && (
                 <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
-                  Only {product.stock} left
+                  Only {variantStock} left
                 </span>
               )}
-              {product.stock === 0 && (
+              {variantStock === 0 && (
                 <span className="bg-gray-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
                   Out of Stock
                 </span>
@@ -563,20 +573,21 @@ function ProductDetails() {
 
             <div className="flex items-center gap-4 mt-3">
               <div className="flex items-center">
-                <span className="text-2xl font-bold text-gray-900">
-                  ₹{product.price.toLocaleString()}
-                </span>
-                {product.originalPrice &&
-                  product.originalPrice > product.price && (
+               <span className="text-2xl font-bold text-gray-900">
+  ₹{(product.discountPrice || product.price).toLocaleString()}
+                      </span>
+
+                {product.discountPrice && product.discountPrice < product.price && (
                     <>
                       <span className="ml-3 text-gray-500 line-through">
-                        ₹{product.originalPrice.toLocaleString()}
+                        ₹{product.price.toLocaleString()}
                       </span>
-                      <span className="ml-2 bg-red-100 text-red-600 text-sm font-semibold px-2 py-0.5 rounded">
+                      <span className="ml-2 bg-red-100 text-green-600 text-sm font-semibold px-2 py-0.5 rounded">
                         Save ₹
-                        {(
-                          product.originalPrice - product.price
+                       {(
+                          product.price - product.discountPrice
                         ).toLocaleString()}
+
                       </span>
                     </>
                   )}
@@ -715,9 +726,9 @@ function ProductDetails() {
             <div className="flex justify-between items-center">
               <h3 className="font-medium text-gray-900">Quantity</h3>
               <span
-                className={`text-sm ${product.stock < 10 ? "text-amber-600" : "text-green-600"}`}
+                className={`text-sm ${variantStock < 10 ? "text-amber-600" : "text-green-600"}`}
               >
-                {product.stock} items in stock
+                {variantStock} items in stock
               </span>
             </div>
             <div className="flex items-center space-x-4">
@@ -735,7 +746,7 @@ function ProductDetails() {
                 </span>
                 <button
                   onClick={() => handleQuantityChange(1)}
-                  disabled={quantity >= product.stock}
+                  disabled={quantity >= variantStock}
                   className="px-4 py-3 text-gray-600 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   aria-label="Increase quantity"
                 >
@@ -754,7 +765,7 @@ function ProductDetails() {
                   Delivery Estimate
                 </p>
                 <p className="text-sm text-gray-600">
-                  {product.stock > 0
+                  {variantStock > 0
                     ? `Free delivery by ${new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "short" })}`
                     : "Available for pre-order. Ships in 2-3 weeks"}
                 </p>
@@ -800,32 +811,42 @@ function ProductDetails() {
           {/* Action Buttons */}
           <div className="space-y-4 pt-4 border-t">
             <button
-              onClick={handleBuyNow}
-              disabled={!selectedSize || product.stock === 0}
-              className={`w-full py-4 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl ${
-                !selectedSize || product.stock === 0
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-linear-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800"
-              }`}
-            >
-              {product.stock === 0 ? "Out of Stock" : "Buy Now"}
-            </button>
+  onClick={handleBuyNow}
+  disabled={!selectedSize || !selectedColor || variantStock === 0}
+  className={`w-full py-4 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl ${
+    !selectedSize || !selectedColor || variantStock === 0
+      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+      : "bg-linear-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800"
+  }`}
+>
+  {variantStock === 0 ? "Out of Stock" : "Buy Now"}
+</button>
 
-            <button
-              onClick={() => navigate("/ai-try-on")}
-              className="w-full py-4 rounded-xl font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md"
-            >
-              👕 Try with AI
-            </button>
+                              <button
+                      onClick={() => {
+                        console.log("SENDING PRODUCT:", product._id);
+
+                        navigate("/tryon", {
+                          state: {
+                            productId: product._id,
+                          },
+                        });
+                      }}
+                      className="w-full py-4 rounded-xl font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md"
+                    >
+                      👕 Try with AI
+                    </button>
+
+
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <button
                 onClick={handleAddToCart}
-                disabled={!selectedSize || product.stock === 0 || isInCart}
+                disabled={!selectedSize || variantStock === 0 || isInCart}
                 className={`py-4 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-3 shadow-md hover:shadow-lg ${
                   isInCart
                     ? "bg-green-100 text-green-700 border-2 border-green-300"
-                    : !selectedSize || product.stock === 0
+                    : !selectedSize || variantStock === 0
                       ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                       : "bg-gray-900 text-white hover:bg-black"
                 }`}

@@ -29,6 +29,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import Header from "../../components/admin/Header";
 
 export default function ProductManagement() {
   const [activeFilter, setActiveFilter] = useState("ALL");
@@ -144,12 +145,16 @@ export default function ProductManagement() {
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
+ <div className="flex-1 flex flex-col">
+        <Header />
+
       <motion.main
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         className="flex-1 px-10 py-8 max-w-[1500px] mx-auto"
       >
+       
         {/* HEADER */}
         <div className="mb-8">
           <h1 className="text-3xl font-black">Product Management</h1>
@@ -256,6 +261,7 @@ export default function ProductManagement() {
         {activeTab === "DELETE_COLLECTION" && <DeleteCollection />}
         {activeTab === "DELETE_CATEGORY" && <DeleteCategory />}
       </motion.main>
+    </div>
     </div>
   );
 }

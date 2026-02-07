@@ -213,7 +213,9 @@ const CollectionsPage = () => {
 
             {viewMode === "grid" ? (
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+
+
                 {filteredProducts.map(product => (
                   <div key={product._id} onClick={() => handleProductClick(product._id)} className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
 
@@ -231,10 +233,7 @@ const CollectionsPage = () => {
       {product.discountPercent}% OFF
     </div>
   )}
-
 </div>
-
-
                     <div className="p-4">
 
                       <div className="flex flex-wrap gap-1 mb-1">

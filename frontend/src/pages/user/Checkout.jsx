@@ -6,6 +6,8 @@ import gpay from "../../assets/payment/gpay.webp";
 import phonepe from "../../assets/payment/phonepe.webp";
 import paytm from "../../assets/payment/paytm.webp";
 import API from "../../api/axios";
+import { toast } from "react-hot-toast";
+
 
 import {
   CreditCard,
@@ -244,26 +246,34 @@ const total = subtotal - discountAmount + estimatedShipping + gst;
   };
 
   // Handle promo code
- const handleApplyPromo = () => {
+const handleApplyPromo = async () => {
   if (!promoCode.trim()) return;
 
-  const validPromoCodes = {
-    WELCOME15: 0.15,
-    SAVE10: 0.1,
-    FASHION20: 0.2,
-  };
+  try {
+    const res = await API.get(`/coupons/validate/${promoCode}`);
 
-  const code = promoCode.toUpperCase();
+    if (!res.data.valid) {
+      alert("Invalid promo code");
+      setDiscountPercent(0);
+      return;
+    }
 
-  if (validPromoCodes[code]) {
-    setDiscountPercent(validPromoCodes[code]);
-    alert(`Promo applied! You saved ${validPromoCodes[code] * 100}%`);
-  } else {
+    // ✅ Minimum spend check
+    if (cartTotal < res.data.minSpend) {
+      alert(`Minimum spend ₹${res.data.minSpend} required`);
+      return;
+    }
+
+    // ✅ Apply discount
+    setDiscountPercent(res.data.discount / 100);
+    toast(`Promo applied! You saved ${res.data.discount}%`);
+
+     await API.put(`/coupons/use/${promoCode}`);
+  } catch (err) {
     alert("Invalid promo code");
     setDiscountPercent(0);
   }
 };
-
 
   // --- HANDLERS ---
   const handleInputChange = async (e) => {
@@ -339,8 +349,8 @@ const handlePlaceOrder = async (e) => {
       }
     );
 
-    console.log("✅ FULL RESPONSE:", res);
-    console.log("🆔 ORDER:", res.data.order);
+    // console.log("✅ FULL RESPONSE:", res);
+    // console.log("🆔 ORDER:", res.data.order);
 
     const id =
   res.data.order.orderId ||
@@ -357,16 +367,22 @@ setTimeout(() => {
 }, 1000);
 
 
-  } catch (err) {
-    console.log("❌ AXIOS ERROR:", err);
-    console.log("❌ MESSAGE:", err.message);
-    console.log("❌ RESPONSE:", err.response);
+  }  catch (err) {
 
-    setPaymentStatus("failed");
-    setPaymentError(err.message || "Payment Failed");
-    setCurrentStep(3);
-    setIsProcessing(false);
-  }
+  const backendMessage =
+    err.response?.data?.message || "Order failed";
+
+  console.log("❌ BACKEND MESSAGE:", backendMessage);
+
+  toast.error(backendMessage);   // 🔥 SHOW TOAST
+
+  setPaymentStatus("failed");
+  setPaymentError(backendMessage);
+  setCurrentStep(3);
+  setIsProcessing(false);
+  setShowPaymentModal(false);
+}
+
 };
 
 

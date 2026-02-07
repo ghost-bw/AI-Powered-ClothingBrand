@@ -5,18 +5,32 @@ export default function CustomerDetail({ customer }) {
 
   const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    if (customer?._id) fetchOrders();
-  }, [customer]);
+ useEffect(() => {
+  if (customer?._id) fetchOrders();
+}, [customer?._id]);
 
-  const fetchOrders = async () => {
-    try {
-      const res = await API.get(`/admin/dashboard/customer-orders/${customer._id}`);
-      setOrders(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
+ const fetchOrders = async () => {
+  try {
+    const token = localStorage.getItem("admin_token");
+
+    const res = await API.get(
+      `/orders/admin/dashboard/customer-orders/${customer._id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setOrders(res.data || []);
+    console.log("CUSTOMER ORDERS:", res.data);
+
+  } catch (err) {
+    console.log("Customer orders fetch error:", err);
+  }
+};
+
 
   if (!customer) {
     return (
@@ -32,27 +46,34 @@ export default function CustomerDetail({ customer }) {
       : 0;
 
   return (
-    <div className="bg-white border rounded-2xl p-6">
+    <div className="bg-white no-border rounded-2xl p-6">
 
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center text-xl font-bold">
-          {customer.name?.[0]}
-        </div>
+     {/* Header */}
+<div className="flex items-center gap-4 mb-6">
 
-        <div>
-          <h2 className="text-xl font-bold">{customer.name}</h2>
-          <p className="text-sm text-gray-500">{customer.email}</p>
+  <div className="w-14 h-14 rounded-full bg-black text-white
+  flex items-center justify-center text-2xl font-semibold uppercase shadow">
 
-          <span className={`inline-block mt-1 text-xs px-2 py-1 rounded-full ${
-            customer.status === "Active"
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}>
-            {customer.status}
-          </span>
-        </div>
-      </div>
+    {customer.name?.charAt(0)}
+
+  </div>
+
+  <div>
+    <h2 className="text-xl font-bold">{customer.name}</h2>
+    <p className="text-sm text-gray-500">{customer.email}</p>
+
+    <span className={`inline-block mt-1 text-xs px-2 py-1 rounded-full ${
+      customer.status === "Active"
+        ? "bg-green-100 text-green-700"
+        : "bg-red-100 text-red-700"
+    }`}>
+      {customer.status}
+    </span>
+  </div>
+
+</div>
+
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
@@ -63,20 +84,30 @@ export default function CustomerDetail({ customer }) {
 
       {/* Order History */}
       <h3 className="font-semibold mb-2">Order History</h3>
-
-      <ul className="text-sm space-y-2">
-        {orders.map(o => (
-          <li key={o._id} className="flex justify-between">
-            <span>#{o._id.slice(-6)}</span>
-            <span className="text-gray-600">₹{Math.round(o.total)}</span>
-          </li>
-        ))}
-
-        {!orders.length && (
-          <p className="text-gray-400">No orders yet</p>
-        )}
-      </ul>
-
+   <div className="max-h-48 overflow-y-auto pr-2">
+  <ul className="text-sm space-y-2">
+    {orders && orders.length > 0 ? (
+      orders.map(o => (
+        <li
+          key={o._id}
+          className="flex justify-between items-center p-2 rounded-lg
+          hover:bg-gray-50 transition"
+        >
+          <span className="font-medium text-blue-600">
+            #{o._id.slice(-6)}
+          </span>
+          <span className="text-gray-600">
+            ₹{Math.round(o.total)}
+          </span>
+        </li>
+      ))
+    ) : (
+      <p className="text-gray-400 text-center py-4">
+        No orders yet
+      </p>
+    )}
+  </ul>
+</div>
     </div>
   );
 }

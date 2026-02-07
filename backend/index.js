@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+dotenv.config();
 // import path  from "path";
 
 // import authRoutes from "./routes/auth.routes.js";
@@ -16,14 +17,10 @@ import orderRoutes from "./routes/order.routes.js";
 import userdashboardRoutes from "./routes/userdashboard.routes.js";
 import collectionRoutes from "./routes/collection.routes.js"
 import inventoryRoutes from "./routes/inventory.routes.js";
+import tryOnRoutes from "./routes/tryon.routes.js";
+import whatsappRoutes from "./routes/whatsapp.routes.js";
+import couponRoutes from "./routes/coupons.routes.js"
 
-
-
-
-
-
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -52,6 +49,13 @@ app.use("/api/orders",orderRoutes);
 app.use("/api/user/dashboard",userdashboardRoutes);
 app.use("/api", collectionRoutes); 
 app.use("/api/admin/dashboard/inventory", inventoryRoutes);
+app.use("/api", tryOnRoutes);
+app.use("/api/admin/whatsapp", whatsappRoutes);
+app.use("/api/coupons", couponRoutes);
+
+
+
+
 
 
 

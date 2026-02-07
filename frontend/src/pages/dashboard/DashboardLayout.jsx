@@ -119,10 +119,10 @@ const logout = async () => {
                 href="/"
                 className="
                   flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium
-                  text-gray-700
-                  bg-gray-100
+                  text-white-700
+                  bg-black-300
                   transition-all duration-300
-                  hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600
+                  hover:bg-black
                   hover:text-white
                   hover:shadow-lg
                   hover:-translate-y-0.5
@@ -167,19 +167,19 @@ const logout = async () => {
                 <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-3 p-1 rounded-lg hover:bg-gray-100">
                   <span>Hello, <strong>{user?.name}</strong></span>
 
-                  <div className="w-9 h-9 rounded-full bg-indigo-500 text-white flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center">
                     {user?.name?.[0]}
                   </div>
                 </button>
 
                      {profileOpen && (
                   <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl text-sm overflow-hidden">
-                    <button className="w-full px-4 py-3 flex items-center gap-2 hover:bg-gray-100">
+                    {/* <button className="w-full px-4 py-3 flex items-center gap-2 hover:bg-gray-100">
                       <FaUserCircle /> Profile
                     </button>
                     <button className="w-full px-4 py-3 flex items-center gap-2 hover:bg-gray-100">
                       <FaCog /> Settings
-                    </button>
+                    </button> */}
                     <button onClick={logout} className="w-full px-4 py-3 flex items-center gap-2 text-red-500 hover:bg-red-50">
                       <FaSignOutAlt /> Logout
                     </button>
@@ -209,7 +209,7 @@ const SidebarLink = ({ to, title, close, icon }) => (
       `flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all
        ${
          isActive
-           ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md"
+           ? "bg-gradient-to-r bg-black text-white shadow-md"
            : "text-gray-700 hover:bg-gray-200 hover:translate-x-1"
        }`
     }

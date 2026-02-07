@@ -50,33 +50,41 @@ export default function DeleteCollection() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-xl border p-6">
+  <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-gray-200 p-6
+  shadow-md transition-all hover:-translate-y-1 hover:shadow-xl">
 
-      <h2 className="text-2xl font-bold mb-6">Manage Collections</h2>
+    <h2 className="text-2xl font-bold mb-6 text-center">Delete Collections</h2>
 
-      <div className="space-y-3">
+    <div className="space-y-3">
 
-        {collections.map(c => (
-          <div key={c._id} className="flex justify-between items-center border p-3 rounded">
+      {collections.map(c => (
 
-            <span className="font-medium">{c.name}</span>
+        <div
+          key={c._id}
+          className="flex justify-between items-center border border-gray-200
+          p-3 rounded-xl hover:bg-gray-50 transition"
+        >
 
-            <button
-              onClick={() => handleDelete(c._id)}
-              className="text-red-600 hover:underline"
-            >
-              Delete
-            </button>
+          <span className="font-medium">{c.name}</span>
 
-          </div>
-        ))}
+          <button
+            onClick={() => handleDelete(c._id)}
+            className="text-red-600 hover:underline"
+          >
+            Delete
+          </button>
 
-        {collections.length === 0 && (
-          <p className="text-gray-500 text-center">No collections</p>
-        )}
+        </div>
 
-      </div>
+      ))}
+
+      {collections.length === 0 && (
+        <p className="text-gray-500 text-center">No collections</p>
+      )}
 
     </div>
-  );
+
+  </div>
+);
+
 }

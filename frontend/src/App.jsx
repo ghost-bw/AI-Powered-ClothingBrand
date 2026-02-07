@@ -13,7 +13,7 @@ import UserLogin from "./pages/user/UserLogin";
 import UserDashboard from "./pages/user/UserDashboard";
 import AddCategory from "./pages/admin/AddCategory";
 import NotFound from "./pages/NotFound";
-
+import AITryOn from "./pages/user/AItryon";
 // Admin pages
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminSignup from "./pages/admin/AdminSignup";
@@ -26,6 +26,11 @@ import AddCollection from "./pages/admin/AddCollection";
 import DeleteCollection from "./pages/admin/DeleteCollection";
 import DeleteCategory from "./pages/admin/DeleteCategory";
 import CustomerManagement from "./pages/admin/CustomerManagement";
+import WhatsAppAutomation from "./pages/admin/WhatsAppAutomation";
+import Coupans from "./pages/admin/Coupons";
+
+
+
 
 
 
@@ -50,6 +55,7 @@ import OrderManagement from "./pages/admin/OrderManagement";
 import MenCategoryPage from "./pages/user/MenCategory";
 import WomenCategoryPage from "./pages/user/WomenCategory";
 import Inventory from "./pages/admin/Inventory";
+import Settings from "./pages/admin/Settings";
 // import OrderDetails from "./pages/admins/OrderDetails";
 
 
@@ -71,6 +77,7 @@ const App = () => {
         <Route path="/kids" element={<KidsCategory />} />
         <Route path="/men" element={<MenCategoryPage />} />
         <Route path="/women" element={<WomenCategoryPage />} />
+        <Route path="tryon" element={<AITryOn />} />
 
         {/* User Auth */}
 
@@ -95,6 +102,8 @@ const App = () => {
           <Route path="track-order/:orderId" element={<TrackOrder />} />
           <Route path="address" element={<Address />} />
           <Route path="invoices" element={<Invoices />} />
+          
+
         </Route>
 
         {/* Admin Auth */}
@@ -114,14 +123,15 @@ const App = () => {
           }
         />
 
-        <Route
-  path="/admin/customers"
-  element={
-    <ProtectedRoute role="admin">
-      <CustomerManagement />
-    </ProtectedRoute>
-  }
+      <Route
+ path="/admin/customers"
+ element={
+  <AdminProtectedRoute role="admin">
+   <CustomerManagement />
+  </AdminProtectedRoute>
+ }
 />
+
 
 
 <Route path="/admin/categories/delete" element={<DeleteCategory/>}/>
@@ -152,6 +162,23 @@ const App = () => {
             </AdminProtectedRoute>
           }
         />
+        <Route
+          path="/admin/settings"
+          element={
+            <AdminProtectedRoute role="admin">
+              <Settings />
+            </AdminProtectedRoute>
+          }
+        />
+      
+        <Route
+  path="/admin/whatsapp"
+  element={
+    <AdminProtectedRoute role="admin">
+      <WhatsAppAutomation />
+    </AdminProtectedRoute>
+  }
+/>
 
         <Route
           path="/admin/orders/:id"
@@ -161,6 +188,16 @@ const App = () => {
             </AdminProtectedRoute>
           }
         />
+
+        <Route
+  path="/admin/coupons"
+  element={
+    <AdminProtectedRoute role="admin">
+      <Coupans />
+    </AdminProtectedRoute>
+  }
+/>
+
 
         <Route
           path="/admin/products"

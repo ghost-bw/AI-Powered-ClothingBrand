@@ -81,7 +81,7 @@ const stats = {
       <Sidebar />
 
       <div className="flex-1 flex flex-col">
-        {/* <Header /> */}
+        <Header />
 
         <motion.main
           initial={{ opacity: 0, y: 20 }}

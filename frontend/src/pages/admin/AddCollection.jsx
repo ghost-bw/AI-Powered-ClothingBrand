@@ -6,11 +6,13 @@ export default function AddCollection() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const makeSlug = (text) =>
-    text
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
+const makeSlug = (text) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")     // multiple spaces → single dash
+    .replace(/[^\w-]/g, "")  // remove special chars
+
 
   const submit = async (e) => {
     e.preventDefault();
@@ -47,23 +49,30 @@ export default function AddCollection() {
     }
   };
 
-  return (
-    <div className="bg-white rounded-2xl border p-6 max-w-md">
+ return (
+  <div className="bg-gray-100  flex justify-center pt-16">
 
-      <h2 className="text-xl font-bold mb-4">Add Collection</h2>
+    <div className="inline-block bg-white rounded-2xl border border-gray-200 p-6 max-w-md
+shadow-md transition-all hover:-translate-y-1 hover:shadow-xl">
+
+      <h2 className="text-3xl font-bold mb-8 text-center">Add Collection</h2>
 
       <form onSubmit={submit} className="space-y-4">
 
         <input
           value={name}
           placeholder="Collection Name"
-          className="border p-3 rounded w-full"
+          className="border border-gray-300 bg-white p-3 rounded-xl w-full
+          transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
           onChange={e => setName(e.target.value)}
+          required
         />
 
         <button
           disabled={loading}
-          className="bg-black text-white px-6 py-2 rounded disabled:opacity-50"
+          className="bg-black text-white px-6 py-3 rounded-xl w-full
+          transition transform hover:-translate-y-0.5 hover:bg-gray-900
+          disabled:opacity-50"
         >
           {loading ? "Saving..." : "Save Collection"}
         </button>
@@ -71,5 +80,9 @@ export default function AddCollection() {
       </form>
 
     </div>
-  );
+
+  </div>
+);
+
+
 }

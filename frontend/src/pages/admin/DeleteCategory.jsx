@@ -53,49 +53,65 @@ const handleCollection = (e) => {
   loadCategories(collection,gender);
  };
 
- return(
+return (
 
- <div className="max-w-xl mx-auto bg-white border p-6 rounded">
+  <div className="max-w-xl mx-auto bg-white border border-gray-200 p-6 rounded-2xl
+  shadow-md transition-all hover:-translate-y-1 hover:shadow-xl">
 
-  <h2 className="text-2xl font-bold mb-6">Delete Category</h2>
+    <h2 className="text-2xl font-bold mb-6 text-center">Delete Category</h2>
 
-  <select className="border p-3 w-full mb-4" onChange={handleCollection}>
-   <option value="">Select Collection</option>
-   {collections.map(c=>(
-    <option key={c._id} value={c._id}>{c.name}</option>
-   ))}
-  </select>
+    <select
+      className="border border-gray-300 bg-white p-3 rounded-xl w-full mb-4
+      transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
+      onChange={handleCollection}
+    >
+      <option value="">Select Collection</option>
+      {collections.map(c => (
+        <option key={c._id} value={c._id}>{c.name}</option>
+      ))}
+    </select>
 
-  {selectedCollectionName==="kids" && (
+    {selectedCollectionName === "kids" && (
 
-   <select className="border p-3 w-full mb-4" onChange={e=>handleGender(e.target.value)}>
-    <option value="">Select Gender</option>
-    <option value="boys">Boys</option>
-    <option value="girls">Girls</option>
-   </select>
+      <select
+        className="border border-gray-300 bg-white p-3 rounded-xl w-full mb-4
+        transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
+        onChange={e => handleGender(e.target.value)}
+      >
+        <option value="">Select Gender</option>
+        <option value="boys">Boys</option>
+        <option value="girls">Girls</option>
+      </select>
 
-  )}
+    )}
 
-  <div className="space-y-2">
+    <div className="space-y-2">
 
-   {categories.map(cat=>(
-    <div key={cat._id} className="flex justify-between border p-2 rounded">
+      {categories.map(cat => (
 
-     <span>{cat.name}</span>
+        <div
+          key={cat._id}
+          className="flex justify-between items-center border border-gray-200
+          p-3 rounded-xl hover:bg-gray-50 transition"
+        >
 
-     <button
-      onClick={()=>deleteCategory(cat._id)}
-      className="text-red-600"
-     >
-      Delete
-     </button>
+          <span>{cat.name}</span>
+
+          <button
+            onClick={() => deleteCategory(cat._id)}
+            className="text-red-600 hover:underline"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      ))}
 
     </div>
-   ))}
 
   </div>
 
- </div>
+);
 
- );
 }

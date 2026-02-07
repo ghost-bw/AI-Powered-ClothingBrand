@@ -13,9 +13,7 @@ export default function OrderTable({ orders = [] }) {
   const updateStatus = async (id, status) => {
     try {
       await API.put(`/orders/admin/${id}/status`, { status });
-
       safeOrders.find(o => o._id === id).status = status;
-      window.location.reload();
     } catch {
       alert("Failed to update status");
     }
@@ -29,24 +27,32 @@ export default function OrderTable({ orders = [] }) {
   );
 
   return (
+
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-white rounded-2xl no-border p-6"
+      className="bg-white rounded-2xl border border-gray-200 p-6
+      shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
     >
+
       {/* SEARCH */}
+
       <input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search Order ID or Customer..."
-        className="w-full mb-4 px-4 py-3 no-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full mb-4 px-4 py-3 border border-gray-300 rounded-xl
+        transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
       />
 
       {/* TABLE */}
+
       <div className="overflow-x-auto">
+
         <table className="w-full text-left text-sm">
-          <thead className="text-gray-500">
+
+          <thead className="text-gray-500 border-b">
             <tr>
               <th className="pb-3">Order ID</th>
               <th className="pb-3">Customer</th>
@@ -59,14 +65,17 @@ export default function OrderTable({ orders = [] }) {
           </thead>
 
           <tbody>
+
             {filteredOrders.map((order, i) => (
+
               <motion.tr
                 key={order._id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="border-t hover:bg-gray-50 transition"
+                className="cursor-pointer transition hover:bg-gray-50"
               >
+
                 <td className="py-3 font-medium text-blue-600">
                   #{order._id.slice(-6)}
                 </td>
@@ -89,7 +98,8 @@ export default function OrderTable({ orders = [] }) {
                     onChange={(e) =>
                       updateStatus(order._id, e.target.value)
                     }
-                    className="border rounded-xl px-3 py-1 text-sm"
+                    className="border border-gray-300 rounded-xl px-3 py-1 text-sm
+                    transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
                   >
                     <option>Processing</option>
                     <option>Shipped</option>
@@ -108,7 +118,9 @@ export default function OrderTable({ orders = [] }) {
                     View Order
                   </Link>
                 </td>
+
               </motion.tr>
+
             ))}
 
             {filteredOrders.length === 0 && (
@@ -121,9 +133,13 @@ export default function OrderTable({ orders = [] }) {
                 </td>
               </tr>
             )}
+
           </tbody>
+
         </table>
+
       </div>
+
     </motion.div>
   );
 }

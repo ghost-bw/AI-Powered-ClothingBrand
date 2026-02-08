@@ -17,7 +17,7 @@ export default function CreateCouponModal({ open, onClose, refresh }) {
       code: couponCode.toUpperCase(),
       type: discountType === "percentage" ? "Percentage" : "Fixed Amount",
       discountValue: Number(discountValue),
-      minSpend: minSpend ? 500 : 0,
+      minSpend: minSpend ? 1000 : 0,
       status: "Active",
       validity: "Permanent",
       usage: "0 / 1000",
@@ -146,12 +146,12 @@ export default function CreateCouponModal({ open, onClose, refresh }) {
             )}
 
             <div className="flex justify-end gap-3 pt-4 border-t">
-              <button
+              {/* <button
                 onClick={onClose}
                 className="px-4 py-2 border rounded-xl"
               >
                 Save as Draft
-              </button>
+              </button> */}
 
               <button
                 onClick={handlePublish}
@@ -189,9 +189,9 @@ export default function CreateCouponModal({ open, onClose, refresh }) {
               <p className="mt-2 font-semibold flex items-center gap-2">
                 <Sparkles size={16} /> Estimated Reach: 12,400
               </p>
-              <p className="text-sm text-gray-500">
+              {/* <p className="text-sm text-gray-500">
                 Projected Cost: ₹1.2L
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

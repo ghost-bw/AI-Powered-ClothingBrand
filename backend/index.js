@@ -20,6 +20,13 @@ import inventoryRoutes from "./routes/inventory.routes.js";
 import tryOnRoutes from "./routes/tryon.routes.js";
 import whatsappRoutes from "./routes/whatsapp.routes.js";
 import couponRoutes from "./routes/coupons.routes.js"
+import paymentRoutes from"./routes/payment.routes.js"
+import refundRoutes from "./routes/refund.routes.js";
+import adminRefundRoutes from "./routes/adminrefund.routes.js"
+import adminNotificationRoutes from "./routes/adminnotification.routes.js";
+
+
+
 
 
 const app = express();
@@ -36,22 +43,32 @@ app.use(
   })
 );
 
-/* ================= ROUTES ================= */
-// app.use("/api/auth", authRoutes);
-// app.use("/api/products", productRoutes);
+//* ================= ROUTES ================= */
+
+// PUBLIC / USER
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/admin/dashboard", dashboardRoutes);
-app.use("/api/cart",cartRoutes);
-app.use("/api/orders",orderRoutes);
-app.use("/api/user/dashboard",userdashboardRoutes);
-app.use("/api", collectionRoutes); 
-app.use("/api/admin/dashboard/inventory", inventoryRoutes);
-app.use("/api", tryOnRoutes);
-app.use("/api/admin/whatsapp", whatsappRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/user/dashboard", userdashboardRoutes);
 app.use("/api/coupons", couponRoutes);
+app.use("/api/payment", paymentRoutes);
+app.use("/api/refunds", refundRoutes);
+app.use("/api", collectionRoutes);
+app.use("/api", tryOnRoutes);
+
+// 🔥 ADMIN – SPECIFIC ROUTES FIRST
+app.use("/api/admin/notifications", adminNotificationRoutes);
+app.use("/api/admin/refunds", adminRefundRoutes);
+app.use("/api/admin/dashboard/inventory", inventoryRoutes);
+app.use("/api/admin/dashboard", dashboardRoutes);
+app.use("/api/admin/whatsapp", whatsappRoutes);
+
+// 🔥 ADMIN ROOT – ALWAYS LAST
+app.use("/api/admin", adminRoutes);
+
+
 
 
 

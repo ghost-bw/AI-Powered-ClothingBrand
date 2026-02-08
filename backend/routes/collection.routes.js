@@ -8,7 +8,7 @@ const router = express.Router();
 /* ================= CREATE COLLECTION (ADMIN) ================= */
 
 router.post("/collections", protect, isAdmin, async (req, res) => {
-     console.log("REQ BODY:", req.body);
+    //  console.log("REQ BODY:", req.body);
   try {
     const { name } = req.body;
 

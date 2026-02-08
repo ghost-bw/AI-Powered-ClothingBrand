@@ -131,11 +131,11 @@ const stats = {
               onChange={(e) => setStatus(e.target.value)}
             >
               <option>All</option>
-              <option>Pending</option>
               <option>Processing</option>
               <option>Shipped</option>
               <option>Delivered</option>
               <option>Returned</option>
+               <option>Cancelled</option>
             </select>
           </div>
 

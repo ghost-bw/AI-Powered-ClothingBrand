@@ -84,22 +84,19 @@ const fetchAnalytics = async () => {
     const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
     /* ===== STATS ===== */
+const revenue = statsRes.data.revenue || 0;
+const orders = statsRes.data.orders || 0;
+const users = statsRes.data.users || 0;
 
-    setStats({
-      revenue: statsRes.data.revenue,
-      orders: statsRes.data.orders,
-      customers: statsRes.data.users,
-      conversion: ((statsRes.data.orders / statsRes.data.visitors) * 100 || 0).toFixed(1),
-      todayOrders: statsRes.data.todayOrders || 0,
+setStats({
+  revenue,
+  orders,
+  customers: users,
+  avgOrderValue: orders > 0 ? Math.round(revenue / orders) : 0,
+  todayOrders: statsRes.data.todayOrders || 0,
+});
 
-      // funnel: [
-      //   { label: "Visitors", value: statsRes.data.visitors || 0 },
-      //   { label: "Views", value: statsRes.data.views || 0 },
-      //   { label: "Cart", value: statsRes.data.cart || 0 },
-      //   { label: "Checkout", value: statsRes.data.checkout || 0 },
-      //   { label: "Orders", value: statsRes.data.orders || 0 },
-      // ],
-    });
+  
 
     /* ===== REVENUE ===== */
 
@@ -167,7 +164,7 @@ const fetchAnalytics = async () => {
             <StatsCard title="Total Revenue" value={`₹${stats.revenue || 0}`} badge={stats.revenueGrowth} icon={<IndianRupee size={16} />} />
             <StatsCard title="Total Orders" value={stats.orders || 0} badge={stats.ordersGrowth} icon={<ShoppingBag size={16} />} />
             <StatsCard title="Customers" value={stats.customers || 0} badge={stats.customerGrowth} icon={<Users size={16} />} />
-            <StatsCard title="Conversion Rate" value={`${stats.conversion || 0}%`} badge={stats.conversionGrowth} icon={<Percent size={16} />} />
+            <StatsCard title="Avg Order Value"  value={`₹${stats.avgOrderValue || 0}`}  icon={<Percent size={16} />} />
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">

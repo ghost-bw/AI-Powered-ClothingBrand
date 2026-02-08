@@ -43,7 +43,6 @@ function ProductDetails() {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
@@ -53,6 +52,19 @@ function ProductDetails() {
   const [activeTab, setActiveTab] = useState("description");
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedSize, setSelectedSize] = useState("");
+
+useEffect(() => {
+  if (!product?.sizes?.length) return;
+
+  if (product.sizes.includes("M")) {
+    setSelectedSize("M");
+  } else {
+    setSelectedSize(product.sizes[0]); // first available size
+  }
+}, [product]);
+
+
 
 const selectedVariant = product?.inventory?.find(
   i => i.size === selectedSize && i.color === selectedColor?.name

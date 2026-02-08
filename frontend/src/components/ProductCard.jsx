@@ -1,59 +1,102 @@
-
-import { Heart } from "lucide-react";  // Changed from react-icons/fi
+import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function ProductCard({ product, onWishlistToggle, isWishlisted }) {
+const ProductCard = ({
+  product,
+  onWishlistToggle,
+  isWishlisted = false,
+  showViewButton = true, // ✅ DEFAULT TRUE
+}) => {
   const navigate = useNavigate();
 
-  const handleProductClick = () => {
-    navigate(`/product/${product.id}`);
+  const goToDetails = () => {
+    navigate(`/product/${product._id}`);
+  };
+
+  const handleViewClick = (e) => {
+    e.stopPropagation();
+    goToDetails();
   };
 
   const handleWishlistClick = (e) => {
     e.stopPropagation();
-    onWishlistToggle(product);
+    onWishlistToggle?.(product);
   };
 
+  const hasDiscount = product.discountPercent > 0;
+  const finalPrice = product.discountPrice || product.price;
+
   return (
-    <div 
-      className="group cursor-pointer"
-      onClick={handleProductClick}
-      role="button"
-      tabIndex={0}
-      onKeyPress={(e) => e.key === 'Enter' && handleProductClick()}
+    <div
+      onClick={goToDetails}
+      className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all"
     >
-      <div className="relative overflow-hidden rounded-xl mb-4">
-        <img 
-          src={product.image} 
+      {/* IMAGE */}
+      <div className="relative aspect-[3/4] overflow-hidden">
+        <img
+          src={product.colors?.[0]?.images?.[0] || "/placeholder.jpg"}
           alt={product.name}
-          className="w-full aspect-3/4 object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
         />
-        
-        <button 
+
+        {/* DISCOUNT STRIP */}
+        {hasDiscount && (
+          <span className="absolute top-3 left-3 bg-black text-white text-xs px-3 py-1 rounded-full">
+            {product.discountPercent}% OFF
+          </span>
+        )}
+
+        {/* HEART */}
+        <button
           onClick={handleWishlistClick}
-          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-sm transition-all ${isWishlisted ? 'bg-red-100 text-red-500' : 'bg-white/80 hover:bg-white'}`}
-          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          className={`absolute top-3 right-3 bg-white p-2 rounded-full shadow ${
+            isWishlisted ? "text-red-500" : "text-gray-600"
+          }`}
         >
-          <Heart className={`text-lg ${isWishlisted ? 'fill-red-500' : ''}`} />
+          <Heart
+            size={16}
+            className={isWishlisted ? "fill-red-500" : ""}
+          />
         </button>
-        
-        {product.rating && (
-          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium">
-            ⭐ {product.rating}
-          </div>
-        )}
       </div>
-      
-      <div className="space-y-1">
-        {product.category && (
-          <p className="text-xs text-gray-500 uppercase tracking-wider">{product.category}</p>
-        )}
-        <h4 className="font-medium text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-1">
+
+      {/* CONTENT */}
+      <div className="p-4 text-center">
+        <h3 className="font-medium text-sm line-clamp-2">
           {product.name}
-        </h4>
-        <p className="text-gray-900 font-medium">₹{product.price.toLocaleString()}</p>
+        </h3>
+
+        {product.category?.name && (
+          <p className="text-gray-500 text-xs mt-1">
+            {product.category.name}
+          </p>
+        )}
+
+        {/* PRICE */}
+        <div className="flex justify-center items-center gap-2 mt-2">
+          <span className="font-semibold">
+            ₹{finalPrice.toLocaleString()}
+          </span>
+
+          {product.discountPrice && (
+            <span className="text-sm text-gray-400 line-through">
+              ₹{product.price.toLocaleString()}
+            </span>
+          )}
+        </div>
+
+        {/* ✅ VIEW PRODUCT — ALWAYS VISIBLE */}
+        {showViewButton && (
+          <button
+            onClick={handleViewClick}
+            className="mt-3 w-full py-2 rounded-full text-sm border border-black hover:bg-black hover:text-white transition"
+          >
+            View Product
+          </button>
+        )}
       </div>
     </div>
   );
-}
+};
+
+export default ProductCard;

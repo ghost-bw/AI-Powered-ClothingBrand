@@ -1,5 +1,5 @@
 import express from "express";
-import { signup, login ,googleLogin } from "../controllers/auth.controller.js";
+import { signup, login ,googleLogin,updateProfile } from "../controllers/auth.controller.js";
 import protect  from "../middlewares/auth.middleware.js";
 import { getMe } from "../controllers/auth.controller.js";
 
@@ -9,6 +9,8 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/google", googleLogin);
 router.get("/me", protect, getMe);
+router.put("/me", protect, updateProfile);
+
 
 // Example protected route
 // router.get("/profile", protect, (req, res) => {

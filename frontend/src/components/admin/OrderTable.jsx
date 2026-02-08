@@ -105,6 +105,7 @@ export default function OrderTable({ orders = [] }) {
                     <option>Shipped</option>
                     <option>Delivered</option>
                     <option>Returned</option>
+                    <option>Cancelled</option>
                   </select>
                 </td>
 

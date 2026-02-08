@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import ProductCard from "../../components/Home/ProductCard";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
@@ -11,16 +10,16 @@ const HERO_SUB =
   "Grace in every detail — timeless ethnic, modern western and elegant styles designed for every woman, every mood.";
 
 export default function WomenCollectionPage() {
-  const navigate = useNavigate();
-
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState(["All"]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [priceRange, setPriceRange] = useState([0, 0]);
   const [loading, setLoading] = useState(true);
 
-  /* TYPEWRITER */
+  /* ❤️ Wishlist state — SAME AS MEN */
+  const [wishlist, setWishlist] = useState([]);
 
+  /* TYPEWRITER */
   const [typedText, setTypedText] = useState("");
   const [done, setDone] = useState(false);
 
@@ -39,7 +38,6 @@ export default function WomenCollectionPage() {
   }, []);
 
   /* LOAD PRODUCTS */
-
   useEffect(() => {
     loadProducts();
   }, []);
@@ -54,23 +52,17 @@ export default function WomenCollectionPage() {
 
       setProducts(womenProducts);
 
-      /* Categories */
-
       const cats = [
         "All",
-        ...new Set(womenProducts.map(p => p.category?.name))
+        ...new Set(womenProducts.map(p => p.category?.name)),
       ];
-
       setCategories(cats);
-
-      /* Auto Max Price */
 
       const maxPrice = Math.max(
         ...womenProducts.map(p => p.discountPrice || p.price || 0)
       );
 
       setPriceRange([0, maxPrice]);
-
     } catch (err) {
       console.error(err);
     } finally {
@@ -79,7 +71,6 @@ export default function WomenCollectionPage() {
   };
 
   /* FILTER */
-
   const filteredProducts = useMemo(() => {
     return products.filter(p => {
       const categoryMatch =
@@ -93,12 +84,20 @@ export default function WomenCollectionPage() {
     });
   }, [products, activeCategory, priceRange]);
 
+  /* ❤️ Wishlist toggle — SAME AS MEN */
+  const handleWishlistToggle = product => {
+    setWishlist(prev =>
+      prev.includes(product._id)
+        ? prev.filter(id => id !== product._id)
+        : [...prev, product._id]
+    );
+  };
+
   return (
     <div className="bg-[#faf7f2] min-h-screen">
       <Navbar />
 
       {/* HERO */}
-
       <section
         className="relative h-[70vh] bg-cover bg-top flex items-center"
         style={{
@@ -124,11 +123,9 @@ export default function WomenCollectionPage() {
       </section>
 
       {/* CONTENT */}
-
       <section className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
 
         {/* FILTERS */}
-
         <aside className="sticky top-24 h-fit">
           <div className="bg-white rounded-2xl shadow p-6 space-y-8">
 
@@ -165,53 +162,39 @@ export default function WomenCollectionPage() {
               </div>
 
               <input
-                  type="range"
-                  min="0"
-                  max={Math.max(...products.map(p => p.discountPrice || p.price || 0))}
-                  step="100"
-                  value={priceRange[1]}
-                  onChange={e =>
-                    setPriceRange([0, Number(e.target.value)])
-                  }
-                  className="w-full accent-black"
-                  />
-
+                type="range"
+                min="0"
+                max={Math.max(
+                  ...products.map(p => p.discountPrice || p.price || 0)
+                )}
+                step="100"
+                value={priceRange[1]}
+                onChange={e =>
+                  setPriceRange([0, Number(e.target.value)])
+                }
+                className="w-full accent-black"
+              />
             </div>
 
           </div>
         </aside>
 
-        {/* PRODUCTS GRID */}
-
+        {/* PRODUCTS GRID — SAME AS MEN */}
         <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-6">
 
           {loading && <p>Loading...</p>}
 
-          {filteredProducts.map(p => (
+          {filteredProducts.map(product => (
             <ProductCard
-              key={p._id}
-              product={p}
-              onClick={() => navigate(`/product/${p._id}`)}
+              key={product._id}
+              product={product}
+              onWishlistToggle={handleWishlistToggle}
+              isWishlisted={wishlist.includes(product._id)}
             />
           ))}
 
         </div>
       </section>
-
-      {/* ZOOM ANIMATION */}
-
-      <style>{`
-        @keyframes zoomOnce {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.08); }
-          100% { transform: scale(1); }
-        }
-
-        .animate-zoom-once {
-          animation: zoomOnce 1.2s ease-in-out 1;
-        }
-      `}</style>
-
     </div>
   );
 }

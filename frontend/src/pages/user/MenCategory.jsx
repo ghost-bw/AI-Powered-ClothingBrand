@@ -1,20 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { Heart, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
+import ProductCard from "../../components/Home/ProductCard";
 
 const MenCategoryPage = () => {
-  const navigate = useNavigate();
-
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState(["All"]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [loading, setLoading] = useState(true);
 
-  /* FETCH PRODUCTS */
+  /* ❤️ Wishlist state */
+  const [wishlist, setWishlist] = useState([]);
 
+  /* -------- HERO TYPEWRITER -------- */
+  const headingText = "Men's Clothing Collection";
+  const subText =
+    "Elevate your everyday style with premium fits, timeless designs and confident comfort.";
+
+  const [typed, setTyped] = useState("");
+  const [index, setIndex] = useState(0);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (index < headingText.length) {
+      const t = setTimeout(() => {
+        setTyped(prev => prev + headingText[index]);
+        setIndex(index + 1);
+      }, 80);
+      return () => clearTimeout(t);
+    } else {
+      setDone(true);
+    }
+  }, [index, headingText]);
+
+  /* FETCH PRODUCTS */
   useEffect(() => {
     loadProducts();
   }, []);
@@ -31,13 +52,13 @@ const MenCategoryPage = () => {
 
       const cats = [
         "All",
-        ...new Set(menProducts.map(p => p.category?.name || p.category))
+        ...new Set(menProducts.map(p => p.category?.name || p.category)),
       ];
 
       setCategories(cats);
-      setLoading(false);
     } catch (err) {
       console.error(err);
+    } finally {
       setLoading(false);
     }
   };
@@ -49,30 +70,20 @@ const MenCategoryPage = () => {
           p => (p.category?.name || p.category) === activeCategory
         );
 
-  /* HERO TEXT ANIMATION */
-
-  const text = "MEN COLLECTION";
-
-  const container = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.05 } },
-  };
-
-  const letter = {
-    hidden: { y: 40, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
+  /* ❤️ Wishlist toggle */
+  const handleWishlistToggle = product => {
+    setWishlist(prev =>
+      prev.includes(product._id)
+        ? prev.filter(id => id !== product._id)
+        : [...prev, product._id]
+    );
   };
 
   return (
     <div className="bg-[#faf7f2] min-h-screen">
       <Navbar />
 
-      {/* HERO — SAME BACKGROUND IMAGE */}
-
+      {/* ================= HERO ================= */}
       <div
         className="relative h-[70vh] bg-cover bg-top"
         style={{
@@ -80,28 +91,29 @@ const MenCategoryPage = () => {
             "url(https://res.cloudinary.com/dttjgnypq/image/upload/v1770404996/male_k752dv.jpg)",
         }}
       >
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <motion.h1
-            variants={container}
-            initial="hidden"
-            animate="visible"
-            className="text-white text-4xl md:text-6xl font-light tracking-[0.35em] uppercase"
+        {/* shadow overlay */}
+        <div className="absolute inset-0 bg-black/35" />
+
+        <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex items-center justify-end">
+          <motion.div
+            initial={{ scale: 1 }}
+            animate={done ? { scale: [1, 1.07, 1] } : {}}
+            transition={{ duration: 1 }}
+            className="text-right max-w-xl text-white"
           >
-            {text.split("").map((char, index) => (
-              <motion.span key={index} variants={letter} className="inline-block">
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-          </motion.h1>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+              {typed}
+              {!done && <span className="animate-pulse">|</span>}
+            </h1>
+            {done && <p className="text-lg text-gray-200">{subText}</p>}
+          </motion.div>
         </div>
       </div>
 
-      {/* CONTENT */}
-
+      {/* ================= CONTENT ================= */}
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-4 gap-8">
 
         {/* SIDEBAR */}
-
         <aside>
           <div className="bg-white rounded-xl shadow p-5 sticky top-24">
             <div className="flex items-center gap-2 mb-4">
@@ -130,55 +142,24 @@ const MenCategoryPage = () => {
         </aside>
 
         {/* PRODUCTS */}
-
         <section className="lg:col-span-3">
-
           {loading && (
             <p className="text-center text-gray-500">Loading products...</p>
           )}
 
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {filteredProducts.map(product => (
-              <motion.div
-                key={product._id}
-                layout
-                whileHover={{ y: -6 }}
-                onClick={() => navigate(`/product/${product._id}`)}
-                className="cursor-pointer bg-white rounded-xl overflow-hidden shadow hover:shadow-xl transition"
-              >
-                <div className="relative aspect-3/4 overflow-hidden">
-                  <img
-                    src={product.colors?.[0]?.images?.[0]}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-
-                  <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow">
-                    <Heart size={16} />
-                  </button>
-                </div>
-
-                <div className="p-4">
-                  <h3 className="font-medium">{product.name}</h3>
-
-                  <p className="text-sm text-gray-500">
-                    {product.category?.name}
-                  </p>
-
-                  <div className="mt-2 flex justify-between items-center">
-                    <span className="font-semibold">
-                      ₹{product.discountPrice || product.price}
-                    </span>
-
-                    <button className="text-sm px-4 py-1.5 border rounded-full hover:bg-black hover:text-white">
-                      View
-                    </button>
-                  </div>
-                </div>
+              <motion.div key={product._id} layout whileHover={{ y: -6 }}>
+                <ProductCard
+                  product={product}
+                  onWishlistToggle={handleWishlistToggle}
+                  isWishlisted={wishlist.includes(product._id)}
+                />
               </motion.div>
             ))}
-
           </motion.div>
         </section>
       </div>

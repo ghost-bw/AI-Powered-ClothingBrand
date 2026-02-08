@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import ProductCard from "../../components/Home/ProductCard";
 import API from "../../api/axios";
+import Navbar from "../../components/Home/Navbar";
 
 /* HERO TEXT */
 const TITLE_TEXT = "Little Styles. Big Smiles.";
@@ -9,8 +9,6 @@ const SUB_TEXT =
   "Playful, comfy & premium outfits made for every little moment";
 
 export default function KidsCollection() {
-  const navigate = useNavigate();
-
   const [products, setProducts] = useState([]);
   const [gender, setGender] = useState("all");
   const [category, setCategory] = useState("all");
@@ -22,8 +20,10 @@ export default function KidsCollection() {
 
   const [loading, setLoading] = useState(true);
 
-  /* TYPEWRITER */
+  /* ❤️ Wishlist — SAME AS MEN/WOMEN */
+  const [wishlist, setWishlist] = useState([]);
 
+  /* TYPEWRITER */
   const TYPING_SPEED = 90;
   const [typedText, setTypedText] = useState("");
   const [done, setDone] = useState(false);
@@ -43,7 +43,6 @@ export default function KidsCollection() {
   }, []);
 
   /* LOAD PRODUCTS */
-
   useEffect(() => {
     loadProducts();
   }, []);
@@ -58,8 +57,6 @@ export default function KidsCollection() {
 
       setProducts(kidsProducts);
 
-      /* Categories from backend */
-
       const uniqueCats = [
         ...new Set(
           kidsProducts.map(p => p.category?.name?.toLowerCase())
@@ -68,20 +65,15 @@ export default function KidsCollection() {
 
       setCategories(uniqueCats);
 
-      /* Max Price */
+      const rawMax = Math.max(
+        ...kidsProducts.map(p => p.discountPrice || p.price || 0)
+      );
 
-     const rawMax = Math.max(
-  ...kidsProducts.map(p => p.discountPrice || p.price || 0)
-);
-
-// round UP to nearest 100
-const max = Math.ceil(rawMax / 100) * 100;
-
+      const max = Math.ceil(rawMax / 100) * 100;
 
       setMaxPrice(max);
       setPriceRange([0, max]);
       setSliderValue(max);
-
     } catch (err) {
       console.error(err);
     } finally {
@@ -90,7 +82,6 @@ const max = Math.ceil(rawMax / 100) * 100;
   };
 
   /* FILTER */
-
   const filteredProducts = useMemo(() => {
     return products.filter(p => {
       const genderMatch =
@@ -107,11 +98,19 @@ const max = Math.ceil(rawMax / 100) * 100;
     });
   }, [products, gender, category, priceRange]);
 
+  /* ❤️ Wishlist toggle — SAME AS MEN/WOMEN */
+  const handleWishlistToggle = product => {
+    setWishlist(prev =>
+      prev.includes(product._id)
+        ? prev.filter(id => id !== product._id)
+        : [...prev, product._id]
+    );
+  };
+
   return (
     <div className="bg-[#fafafa] min-h-screen">
-
+    <Navbar/>
       {/* HERO */}
-
       <div
         className="relative h-[70vh] bg-cover bg-center flex flex-col items-center justify-center text-center px-4"
         style={{
@@ -143,15 +142,13 @@ const max = Math.ceil(rawMax / 100) * 100;
       </div>
 
       {/* CONTENT */}
-
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-4 gap-10">
 
+        {/* FILTERS */}
         <aside className="bg-white rounded-2xl shadow p-6 h-fit sticky top-24 space-y-6">
-
           <h3 className="font-semibold text-lg">Filters</h3>
 
           {/* Gender */}
-
           <div>
             <h4 className="mb-2 font-medium">Gender</h4>
 
@@ -172,7 +169,6 @@ const max = Math.ceil(rawMax / 100) * 100;
           </div>
 
           {/* Category */}
-
           {gender !== "all" && categories.length > 0 && (
             <div>
               <h4 className="mb-2 font-medium">Category</h4>
@@ -192,7 +188,6 @@ const max = Math.ceil(rawMax / 100) * 100;
           )}
 
           {/* Price */}
-
           <div>
             <h4 className="mb-2 font-medium">Price Range</h4>
 
@@ -210,25 +205,24 @@ const max = Math.ceil(rawMax / 100) * 100;
               onChange={e => {
                 const val = Number(e.target.value);
                 setSliderValue(val);
-                setPriceRange([0, val]); // <-- THIS fixes end issue
+                setPriceRange([0, val]);
               }}
               className="w-full accent-black"
             />
-
           </div>
         </aside>
 
-        {/* PRODUCTS */}
-
+        {/* PRODUCTS — SAME AS MEN/WOMEN */}
         <main className="lg:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-6">
 
           {loading && <p>Loading...</p>}
 
-          {filteredProducts.map(p => (
+          {filteredProducts.map(product => (
             <ProductCard
-              key={p._id}
-              product={p}
-              onClick={() => navigate(`/product/${p._id}`)}
+              key={product._id}
+              product={product}
+              onWishlistToggle={handleWishlistToggle}
+              isWishlisted={wishlist.includes(product._id)}
             />
           ))}
 
@@ -236,7 +230,6 @@ const max = Math.ceil(rawMax / 100) * 100;
       </div>
 
       {/* Animations */}
-
       <style>{`
         @keyframes zoomOnce {
           0% { transform: scale(0.96); }
@@ -257,7 +250,6 @@ const max = Math.ceil(rawMax / 100) * 100;
           animation: fadeUp 0.8s ease forwards;
         }
       `}</style>
-
     </div>
   );
 }

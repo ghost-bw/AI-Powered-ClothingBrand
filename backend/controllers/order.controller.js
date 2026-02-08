@@ -12,120 +12,128 @@ const client = twilio(
 
 
 export const placeOrder = async (req, res) => {
- try {
-  const user = req.user;
+  try {
+    const user = req.user;
 
-  if (!user.cart || user.cart.length === 0)
-    return res.status(400).json({ message: "Cart empty" });
-
-  /* ===== UPDATE VARIANT INVENTORY ===== */
-
-  for (const item of user.cart) {
-
-    const product = await Product.findById(item.product);
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    const variant = product.inventory.find(
-      v => v.size === item.size && v.color === item.color
-    );
-
-    if (!variant || variant.stock < item.quantity) {
+    // 🔐 BLOCK UNPAID ONLINE ORDERS
+    if (req.body.payment !== "cod" && !req.body.paymentVerified) {
       return res.status(400).json({
-        message: `${product.name} (${item.color}/${item.size}) out of stock`
+        message: "Payment not verified. Order not created.",
       });
     }
 
-    variant.stock -= item.quantity;
-    product.totalSold += item.quantity;
+    if (!user.cart || user.cart.length === 0) {
+      return res.status(400).json({ message: "Cart empty" });
+    }
 
-    await product.save();
+    /* ===== UPDATE INVENTORY ===== */
+    for (const item of user.cart) {
+      const product = await Product.findById(item.product);
 
-    await Inventory.create({
-      product: product._id,
-      size: item.size,
-      color: item.color,
-      change: -item.quantity,
-      updatedBy: "Customer Order",
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+
+      const variant = product.inventory.find(
+        (v) => v.size === item.size && v.color === item.color
+      );
+
+      if (!variant || variant.stock < item.quantity) {
+        return res.status(400).json({
+          message: `${product.name} (${item.color}/${item.size}) out of stock`,
+        });
+      }
+
+      variant.stock -= item.quantity;
+      product.totalSold += item.quantity;
+      await product.save();
+
+      await Inventory.create({
+        product: product._id,
+        size: item.size,
+        color: item.color,
+        change: -item.quantity,
+        updatedBy: "Customer Order",
+      });
+    }
+
+    /* ===== CREATE ORDER ===== */
+    const order = await Order.create({
+      user: user._id,
+      items: user.cart,
+      shipping: req.body.shipping,
+      paymentMethod: req.body.payment,
+      paymentStatus: req.body.payment === "cod" ? "pending" : "paid",
+      subtotal: req.body.subtotal,
+      shippingCost: req.body.shippingCost,
+      gst: req.body.gst,
+      discount: req.body.discount,
+      total: req.body.total,
+      status: "Processing",
     });
-  }
 
-  /* ===== CREATE ORDER ===== */
+    /* ===== AUTO WHATSAPP CONFIRMATION ===== */
+    let phone = order.shipping.phone;
 
-  const order = await Order.create({
-    user: user._id,
-    items: user.cart,
-    shipping: req.body.shipping,
-    paymentMethod: req.body.payment,
-    subtotal: req.body.subtotal,
-    shippingCost: req.body.shippingCost,
-    gst: req.body.gst,
-    discount: req.body.discount,
-    total: req.body.total,
-    status:"Processing"
-  });
+    if (phone.length === 10) phone = "+91" + phone;
+    else if (!phone.startsWith("+")) phone = "+" + phone;
 
-  /* ===== AUTO WHATSAPP CONFIRMATION ===== */
+    const itemNames = order.items
+      .map((i) => `${i.name} x${i.quantity}`)
+      .join(", ");
 
-  let phone = order.shipping.phone;
-  if(phone.length === 10) phone = "+91" + phone;
-  else if(!phone.startsWith("+")) phone = "+" + phone;
-
-  const itemNames = order.items
-   .map(i => `${i.name} x${i.quantity}`)
-   .join(", ");
-
-  const message = `Hello ${order.shipping.fullName},
+    const message = `Hello ${order.shipping.fullName},
 
 Thank you for your order! 🎉
 
-Order ID: ${order._id}
+🧾 Order ID: ${order._id}
 
-Items:
+📦 Items:
 ${itemNames}
 
-Total: ₹${order.total}
+💰 Total: ₹${order.total}
 
-Your order is now Processing.
+🚚 Status: Processing
 
 – Graphura`;
 
-  await client.messages.create({
-   from:"whatsapp:+14155238886",
-   to:`whatsapp:${phone}`,
-   body:message
-  });
+    try {
+      await client.messages.create({
+        from: "whatsapp:+14155238886",
+        to: `whatsapp:${phone}`,
+        body: message,
+      });
 
-  await WhatsappLog.create({
-   phone,
-   template:"Order Confirmation",
-   status:"Sent"
-  });
+      await WhatsappLog.create({
+        phone,
+        template: "Order Confirmation",
+        status: "Sent",
+      });
+    } catch (waErr) {
+      console.log("WHATSAPP ERROR:", waErr.message);
+    }
 
-  /* ===== CLEAR CART ===== */
+    /* ===== CLEAR CART ===== */
+    user.cart = [];
+    await user.save();
 
-  user.cart = [];
-  await user.save();
+    /* ===== CREATE INVOICE ===== */
+    await Invoice.create({
+      user: user._id,
+      orderId: order._id,
+      amount: order.total,
+    });
 
-  /* ===== CREATE INVOICE ===== */
-
-  await Invoice.create({
-    user: req.user._id,
-    orderId: order._id,
-    amount: order.total,
-  });
-
-  res.json({ success: true, order });
-
- } catch (err) {
-  console.log("ORDER ERROR:", err);
-  res.status(500).json({ message: err.message });
- }
+    res.json({
+      success: true,
+      orderId: order._id,
+      order,
+    });
+  } catch (err) {
+    console.log("ORDER ERROR:", err);
+    res.status(500).json({ message: err.message });
+  }
 };
-
-
 
 /* ================= MY ORDERS ================= */
 

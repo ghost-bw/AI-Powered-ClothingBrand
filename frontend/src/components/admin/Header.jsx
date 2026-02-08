@@ -120,6 +120,12 @@ export default function Header() {
     navigate("/admin/login");
   };
 
+  const goToNotificationsPage = () => {
+  setNotifOpen(false);
+  navigate("/admin/notifications");
+};
+
+
   return (
 
 <header className="sticky top-0 z-30 bg-white shadow-sm">
@@ -129,15 +135,15 @@ export default function Header() {
 {/* SEARCH */}
 
 <div className="relative" ref={searchRef}>
-<Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/>
+{/* <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/> */}
 
-<input
+{/* <input
  value={query}
  onChange={(e)=>{setQuery(e.target.value);setSearchOpen(true);}}
  placeholder="Search orders, products, customers..."
  className="pl-10 pr-4 py-2 text-sm rounded-xl border bg-gray-50
  focus:bg-white focus:ring-2 focus:ring-black outline-none w-80"
-/>
+/> */}
 
 {searchOpen && query && (
 <div className="absolute mt-2 w-full bg-white border rounded-xl shadow-xl z-50">
@@ -181,26 +187,44 @@ className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-gray-100 cursor-po
 </button>
 
 {notifOpen && (
-<div className="absolute right-0 mt-3 w-80 bg-white border rounded-xl shadow-xl">
+  <div className="absolute right-0 mt-3 w-80 bg-white border rounded-xl shadow-xl">
 
-<div className="flex justify-between items-center px-4 py-3 border-b">
-<span className="font-semibold">Notifications</span>
-<button onClick={markAllAsRead} className="text-xs text-blue-600 hover:underline">Mark all as read</button>
-</div>
+    <div className="flex justify-between items-center px-4 py-3 border-b">
+      <span className="font-semibold">Notifications</span>
+      <button
+        onClick={markAllAsRead}
+        className="text-xs text-blue-600 hover:underline"
+      >
+        Mark all as read
+      </button>
+    </div>
 
-{notifications.map(n=>(
-<div key={n.id} onClick={()=>handleNotificationClick(n.id,n.route)}
-className={`flex gap-3 px-4 py-3 text-sm cursor-pointer hover:bg-gray-100 ${n.unread?"bg-gray-50":""}`}>
-{n.icon}
-<div>
-<p className="font-medium">{n.title}</p>
-<p className="text-xs text-gray-500">{n.message}</p>
-<p className="text-xs text-gray-400 mt-1">{n.time}</p>
-</div>
-</div>
-))}
+    {notifications.map(n => (
+      <div
+        key={n.id}
+        onClick={() => handleNotificationClick(n.id, n.route)}
+        className={`flex gap-3 px-4 py-3 text-sm cursor-pointer
+        hover:bg-gray-100 ${n.unread ? "bg-gray-50" : ""}`}
+      >
+        {n.icon}
+        <div>
+          <p className="font-medium">{n.title}</p>
+          <p className="text-xs text-gray-500">{n.message}</p>
+          <p className="text-xs text-gray-400 mt-1">{n.time}</p>
+        </div>
+      </div>
+    ))}
 
-</div>
+    {/* ✅ NEW LINK */}
+    <div
+      onClick={goToNotificationsPage}
+      className="px-4 py-3 text-sm text-center font-semibold
+                 text-blue-600 hover:bg-blue-50 cursor-pointer border-t"
+    >
+      View all notifications
+    </div>
+
+  </div>
 )}
 
 </div>

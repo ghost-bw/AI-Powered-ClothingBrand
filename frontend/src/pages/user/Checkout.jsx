@@ -7,6 +7,16 @@ import phonepe from "../../assets/payment/phonepe.webp";
 import paytm from "../../assets/payment/paytm.webp";
 import API from "../../api/axios";
 import { toast } from "react-hot-toast";
+const loadRazorpay = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 
 
 import {
@@ -316,73 +326,112 @@ const handleApplyPromo = async () => {
   };
 
   
-const handlePlaceOrder = async (e) => {
-  e.preventDefault();
-
-  console.log("🚀 PLACE ORDER CLICKED");
-
+const handlePlaceOrder = async () => {
+  if (!paymentMethod) return toast.error("Select payment method");
   if (isProcessing) return;
 
-  setIsProcessing(true);
-  setShowPaymentModal(true);
-
-  try {
-    console.log("📦 CART:", cart);
-    console.log("📍 SHIPPING:", shippingInfo);
-
-    const res = await API.post(
-      "/orders",
-      {
+  /* ===== COD FLOW ===== */
+  if (paymentMethod === "cod") {
+    try {
+      const res = await API.post("/orders/cod", {
         shipping: shippingInfo,
-        payment: paymentMethod,
         items: cart,
         subtotal,
         shippingCost: estimatedShipping,
         gst,
         discount: discountAmount,
         total,
+        paymentMethod: "cod",
+      });
+
+      setOrderId(res.data.orderId);
+      setPaymentStatus("success");
+      setCurrentStep(3);
+    } catch (err) {
+      setPaymentStatus("failed");
+      setPaymentError("Order failed");
+      setCurrentStep(3);
+    }
+    return;
+  }
+
+  /* ===== ONLINE PAYMENT ===== */
+  const loaded = await loadRazorpay();
+  if (!loaded) return toast.error("Razorpay SDK failed");
+
+  try {
+    setIsProcessing(true);
+
+    const { data: razorOrder } = await API.post("/payment/razorpay-order", {
+      amount: total,
+    });
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY,
+      amount: razorOrder.amount,
+      currency: "INR",
+      name: "Graphura",
+      description: "Order Payment",
+      order_id: razorOrder.id,
+
+      handler: async (response) => {
+        try {
+          const verify = await API.post(
+            "/payment/razorpay-verify",
+            {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              shipping: shippingInfo,
+              items: cart,
+              subtotal,
+              shippingCost: estimatedShipping,
+              gst,
+              discount: discountAmount,
+              total,
+              paymentMethod,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+
+          setOrderId(verify.data.orderId);
+          setPaymentStatus("success");
+          setCurrentStep(3);
+          setIsProcessing(false);
+        } catch (err) {
+          setPaymentStatus("failed");
+          setPaymentError("Payment verification failed");
+          setCurrentStep(3);
+          setIsProcessing(false);
+        }
       },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+
+      modal: {
+        ondismiss: () => {
+          setIsProcessing(false);
+          toast.error("Payment cancelled");
         },
-      }
-    );
+      },
 
-    // console.log("✅ FULL RESPONSE:", res);
-    // console.log("🆔 ORDER:", res.data.order);
+      prefill: {
+        name: shippingInfo.fullName || "Customer",
+        email: shippingInfo.email,
+        contact: shippingInfo.phone,
+      },
 
-    const id =
-  res.data.order.orderId ||
-  res.data.order._id ||
-  res.data.order.id;
+      theme: { color: "#16a34a" },
+    };
 
-setOrderId(id);
-
-setTimeout(() => {
-  setPaymentStatus("success");
-  setCurrentStep(3);
-  setIsProcessing(false);   // 👈 ADD THIS
-  setShowPaymentModal(false); // 👈 ALSO ADD THIS
-}, 1000);
-
-
-  }  catch (err) {
-
-  const backendMessage =
-    err.response?.data?.message || "Order failed";
-
-  console.log("❌ BACKEND MESSAGE:", backendMessage);
-
-  toast.error(backendMessage);   // 🔥 SHOW TOAST
-
-  setPaymentStatus("failed");
-  setPaymentError(backendMessage);
-  setCurrentStep(3);
-  setIsProcessing(false);
-  setShowPaymentModal(false);
-}
-
+    new window.Razorpay(options).open();
+  } catch (err) {
+    setIsProcessing(false);
+    setPaymentStatus("failed");
+    setCurrentStep(3);
+  }
 };
 
 

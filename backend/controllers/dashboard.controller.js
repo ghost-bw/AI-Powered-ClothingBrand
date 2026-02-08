@@ -2,6 +2,8 @@ import Product from "../models/product.model.js";
 import Order from "../models/order.model.js";
 import User from "../models/user.model.js";
 import Category from "../models/category.model.js";
+import Payment from "../models/payment.model.js";
+
 
 /* ================= DASHBOARD STATS ================= */
 
@@ -253,6 +255,55 @@ export const getCustomersAnalytics = async (req, res) => {
 
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getCustomerOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.params.id })
+      .sort({ createdAt: -1 })
+      .select("_id total status createdAt");
+
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/* ================= PAYMENTS LIST ================= */
+
+export const getAllPayments = async (req, res) => {
+  try {
+    const payments = await Payment.find()
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      payments,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+/* ================= PAYMENT STATS ================= */
+
+export const getPaymentStats = async (req, res) => {
+  try {
+    const orders = await Order.find({ status: { $ne: "Cancelled" } });
+
+    const totalRevenue = orders.reduce(
+      (sum, o) => sum + o.total,
+      0
+    );
+
+    res.json({
+      success: true,
+      totalRevenue,
+    });
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };

@@ -5,7 +5,9 @@ import {
   getMonthlyRevenue,
   getCategorySales,
   getRecentOrders,
-  getRegionalDemand,exportAllOrders,getTopProducts,getCustomersAnalytics
+  getRegionalDemand,exportAllOrders,getTopProducts,getCustomersAnalytics,getCustomerOrders,
+  getAllPayments,getPaymentStats
+
 } from "../controllers/dashboard.controller.js";
 import  protect  from "../middlewares/auth.middleware.js";
 import { isAdmin } from "../middlewares/admin.middleware.js";
@@ -23,6 +25,11 @@ router.get("/recent-orders", isAdmin, getRecentOrders);
 router.get("/export-orders", isAdmin, exportAllOrders);
 router.get("/top-products", isAdmin, getTopProducts);
 router.get("/customers", isAdmin, getCustomersAnalytics);
+router.get("/customer-orders/:id", getCustomerOrders);
+router.get("/payments", getAllPayments);
+router.get("/payments/stats", getPaymentStats);
+router.get("/payments/revenue-chart", getMonthlyRevenue);
+
 
 
 

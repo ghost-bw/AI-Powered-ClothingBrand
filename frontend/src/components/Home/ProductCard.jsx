@@ -14,15 +14,17 @@ export default function ProductCard({
   const hasDiscount =
     product.discountPrice && product.discountPrice < product.price;
 
+  const goToDetails = () => {
+    navigate(`/product/${product._id || product.id}`);
+  };
+
   return (
     <div
-      onClick={() => navigate(`/product/${product._id || product.id}`)}
+      onClick={goToDetails}
       className="cursor-pointer group"
     >
       {/* IMAGE */}
-
       <div className="relative overflow-hidden rounded-xl shadow bg-white">
-
         <img
           src={product.image || product.colors?.[0]?.images?.[0]}
           alt={product.name}
@@ -30,7 +32,6 @@ export default function ProductCard({
         />
 
         {/* DISCOUNT BADGE */}
-
         {hasDiscount && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
             {Math.round(
@@ -40,32 +41,30 @@ export default function ProductCard({
           </span>
         )}
 
-        {/* Wishlist */}
-
+        {/* ❤️ WISHLIST */}
         {onWishlistToggle && (
           <button
-            onClick={e => {
-              e.stopPropagation();
-              onWishlistToggle(product);
-            }}
-            className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur ${
-              isWishlisted
-                ? "bg-red-100 text-red-500"
-                : "bg-white/80 hover:bg-white"
-            }`}
-          >
-            <Heart
-              size={16}
-              className={isWishlisted ? "fill-red-500" : ""}
-            />
-          </button>
+  onClick={e => {
+    e.stopPropagation();
+    onWishlistToggle?.(product); // safe optional call
+  }}
+  className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur ${
+    isWishlisted
+      ? "bg-red-100 text-red-500"
+      : "bg-white/80 hover:bg-white"
+  }`}
+>
+  <Heart
+    size={16}
+    className={isWishlisted ? "fill-red-500" : ""}
+  />
+</button>
+
         )}
       </div>
 
       {/* INFO */}
-
-      <div className="pt-3 space-y-1">
-
+      <div className="pt-3 space-y-2">
         {product.category && (
           <p className="text-xs text-gray-500 uppercase tracking-wide">
             {product.category?.name || product.category}
@@ -77,26 +76,28 @@ export default function ProductCard({
         </h4>
 
         {/* PRICE */}
-
         <div className="flex items-center gap-2">
-
           <span className="font-semibold text-gray-900">
             ₹{sellingPrice.toLocaleString()}
           </span>
 
           {hasDiscount && (
-            <>
-              <span className="text-sm text-gray-500 line-through">
-                ₹{originalPrice.toLocaleString()}
-              </span>
-
-              {/* <span className="text-xs text-red-600 font-medium">
-                Save ₹{(originalPrice - sellingPrice).toLocaleString()}
-              </span> */}
-            </>
+            <span className="text-sm text-gray-500 line-through">
+              ₹{originalPrice.toLocaleString()}
+            </span>
           )}
-
         </div>
+
+        {/* 👁 VIEW BUTTON */}
+        <button
+          onClick={e => {
+            e.stopPropagation();
+            goToDetails();
+          }}
+          className="w-full mt-2 py-2 rounded-full text-sm border border-black hover:bg-black hover:text-white transition"
+        >
+          View Product
+        </button>
       </div>
     </div>
   );

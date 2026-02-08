@@ -42,6 +42,7 @@ export default function Sidebar() {
     { name: "Customers", icon: Users, path: "/admin/customers" },
     { name: "Analytics", icon: BarChart2, path: "/admin/analytics" },
     { name: "Inventory", icon: Package, path: "/admin/inventory" },
+     { name: "Payments", icon: ShoppingBag, path: "/admin/payments" },
   ];
 
   return (

@@ -1,92 +1,135 @@
 import React from "react";
 import philosophyImg from "../../assets/BrandStory/BrandStory.webp";
 
-const BrandStory = () => {
+const PhilosophySection = () => {
   return (
-    <section className="relative py-10 px-4 sm:px-6 lg:px-12 bg-white overflow-hidden">
-
-      {/* SILK LIGHT BACKGROUND */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-black/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-black/10 rounded-full blur-[140px]" />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-        {/* IMAGE SIDE */}
-        <div className="relative group">
-          <div className="relative aspect-[5/3] rounded-[2.5rem] overflow-hidden shadow-[0_40px_120px_-30px_rgba(0,0,0,0.4)]">
-            <img
-              src={philosophyImg}
-              alt="Our Philosophy"
-              className="
-                w-full h-full object-cover
-                transition-transform duration-700
-                group-hover:scale-105
-              "
-            />
-          </div>
-
-          {/* FLOATING CAPTION */}
-          <div className="
-            absolute -bottom-6 left-8
-            bg-white/90 backdrop-blur-xl
-            px-6 py-3
-            rounded-full
-            text-xs tracking-widest
-            shadow-lg
-          ">
-            HANDCRAFTED IN INDIA
-          </div>
-        </div>
-
-        {/* CONTENT SIDE */}
-        <div className="max-w-xl">
-
-          <p className="text-xs tracking-[0.35em] uppercase text-gray-500">
+    <section className=" py-15 px-6 lg:px-15">
+      <div className="flex justify-center mb-4"> 
+          <p className="tracking-[0.4em] text-2xl permanent-marker-regular text-gray-600 uppercase mb-6 border-b-2 border-gray-600">
             Our Philosophy
           </p>
+        </div>
 
-          <h2 className="
-            mt-6
-            font-serif
-            text-4xl sm:text-5xl lg:text-6xl
-            text-gray-900
-            leading-tight
-          ">
-            Crafted in India, <br /> Worn Globally
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        {/* LEFT IMAGE CARD */}
+        
+        <div className="relative group w-full">
+          <div className="w-full 
+                  rounded-[36px] overflow-hidden 
+                  border border-gray-100
+                  shadow-[0_30px_60px_rgba(0,0,0,0.55)]
+                  transition-all duration-700 ease-out
+                  group-hover:-translate-y-4
+                  group-hover:shadow-[0_50px_100px_rgba(0,0,0,0.75)]">
+
+  
+
+    <img
+      src={philosophyImg}
+      alt="Craftsmanship"
+      className="w-full 
+           aspect-[4/5] 
+           max-h-[450px]
+           object-cover
+           transition-transform duration-700
+           group-hover:scale-105"
+    />
+  
+</div>
+
+
+          {/* Floating Badge */}
+          <div className="absolute 
+                bottom-4 left-4 
+                sm:bottom-6 sm:left-6 
+                lg:bottom-8 lg:left-8 
+                group">
+
+  <div className="relative 
+                  bg-white/70 backdrop-blur-xl
+                  px-5 py-2
+                  sm:px-7 sm:py-3
+                  lg:px-10 lg:py-4
+                  rounded-full
+                  border border-white/40
+                  shadow-[0_12px_30px_rgba(0,0,0,0.12)]
+                  sm:shadow-[0_16px_40px_rgba(0,0,0,0.15)]
+                  lg:shadow-[0_20px_50px_rgba(0,0,0,0.18)]
+                  tracking-[0.25em]
+                  sm:tracking-[0.3em]
+                  lg:tracking-[0.35em]
+                  text-[9px]
+                  sm:text-[10px]
+                  lg:text-[11px]
+                  font-semibold
+                  transition-all duration-500
+                  group-hover:-translate-y-2
+                  lg:group-hover:-translate-y-3
+                  group-hover:shadow-[0_30px_60px_rgba(0,0,0,0.25)]">
+
+    <span className="relative z-10 whitespace-nowrap">
+      HANDCRAFTED IN INDIA
+    </span>
+
+    
+    <div className="absolute inset-0 rounded-full 
+                    bg-gradient-to-r 
+                    from-white/30 via-transparent to-white/30
+                    opacity-0 group-hover:opacity-100
+                    transition-opacity duration-700">
+    </div>
+
+  </div>
+</div>
+
+
+        </div>
+
+        {/* RIGHT CONTENT */}
+        <div className="text-left">
+
+          <h2 className=" cinzel text-3xl sm:text-5xl lg:text-6xl 
+                         leading-[1.1] text-gray-900 mb-8 text-center md:text-left">
+            Crafted in India,
+            <br />
+            <span className="italic">Worn Globally</span>
           </h2>
 
-          {/* DIVIDER */}
-          <div className="mt-8 mb-10 h-px w-20 bg-black/20" />
+          <div className=" w-50 h-[3px] bg-gray-300 mb-10"></div>
 
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            Graphura is a tribute to the timeless artistry of Indian weavers —
-            refined for a global audience. From the historic looms of Maheshwar
-            to the natural dye traditions of Bagru, each piece carries the soul
-            of craftsmanship forward.
+          <p className= "cormorant-garamond text-2xl text-gray-700 text-base sm:text-lg leading-relaxed mb-4 max-w-xl">
+            Experience the timeless artistry of Indian craftsmanship,
+            refined for a global audience.
           </p>
 
-          <p className="mt-5 text-gray-600 text-sm sm:text-base leading-relaxed">
-            Our silhouettes are intentionally minimal, allowing heritage,
-            sustainability, and uncompromising quality to take center stage.
-            This isn’t trend-led fashion — it’s design meant to endure.
+          <p className="cormorant-garamond text-2xl text-gray-700 text-base sm:text-lg leading-relaxed mb-12 max-w-xl">
+            We design minimalist, enduring silhouettes that embody
+            quiet luxury — timeless fashion that stands the test of time.
           </p>
 
-          {/* CTA */}
-          <button className="
-            mt-12
-            inline-flex items-center gap-3
-            text-xs tracking-[0.3em] uppercase
-            text-black
-            border-b border-black
-            pb-1
-            hover:opacity-60
-            transition
-          ">
-            Discover Our Process
-            <span className="text-lg">→</span>
-          </button>
+          {/* BUTTONS */}
+          <div className="flex flex-wrap gap-6">
+
+        
+            <button className="group relative inline-flex items-center gap-3
+                               bg-black text-white
+                               px-10 py-4 rounded-full
+                               text-xs tracking-[0.3em] uppercase
+                               shadow-[0_15px_35px_rgba(0,0,0,0.55)]
+                               transition-all duration-500
+                               hover:-translate-y-2
+                               hover:shadow-[0_25px_60px_rgba(0,0,0,0.75)]
+                               active:translate-y-0">
+
+              <span>Discover Process</span>
+
+              <span className="transition-all duration-500 
+                               group-hover:translate-x-2">
+                →
+              </span>
+            </button>
+
+          </div>
 
         </div>
       </div>
@@ -94,4 +137,4 @@ const BrandStory = () => {
   );
 };
 
-export default BrandStory;
+export default PhilosophySection;

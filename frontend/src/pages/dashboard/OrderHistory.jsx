@@ -44,7 +44,7 @@ export default function OrderHistory() {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">My Orders</h2>
           <p className="text-sm text-gray-500">
-            Track, return or view your order history
+            Return or view your order history
           </p>
         </div>
       </div>

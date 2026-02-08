@@ -41,6 +41,52 @@ useEffect(() => {
 
   if (!order) return null;
 
+  /* ================= ACTION HANDLERS ================= */
+
+/* ================= ACTION HANDLERS ================= */
+
+const handleCancel = async () => {
+  try {
+    if (order.paymentMethod === "cod") {
+      await axios.put(
+        `http://localhost:4000/api/orders/${order._id}/cancel`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setStatus("Cancelled");
+    } else {
+      // 🔗 ROUTE TO REFUND FORM (CANCEL)
+      navigate(`/user/dashboard/refund-request/${order._id}?type=cancel`);
+    }
+  } catch (error) {
+    console.error("Cancel order error:", error);
+    alert("Unable to cancel order");
+  }
+};
+
+const handleReturn = async () => {
+  try {
+    if (order.paymentMethod === "cod") {
+      await axios.put(
+        `http://localhost:4000/api/orders/${order._id}/return`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setStatus("Returned");
+    } else {
+      // 🔗 ROUTE TO REFUND FORM (RETURN)
+      navigate(`/user/dashboard/refund-request/${order._id}?type=return`);
+    }
+  } catch (error) {
+    console.error("Return order error:", error);
+    alert("Unable to return order");
+  }
+};
+
+
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8">
       <div className="max-w-lg mx-auto space-y-5">
@@ -159,50 +205,55 @@ useEffect(() => {
             </div>
           </div>
 
+
+
           {/* Actions */}
-          <div className="p-5 border-t space-y-3">
-            {status === "Shipped" && (
-              <button
-                onClick={() => setStatus("Cancelled")}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
-                border border-red-500 text-red-600 font-semibold
-                hover:bg-red-50 transition"
-              >
-                <FaTimesCircle /> Cancel Order
-              </button>
-            )}
+          {/* Actions */}
+<div className="p-5 border-t space-y-3">
 
-            {status === "Delivered" && (
-              <>
-                <button
-                  onClick={() => setStatus("Returned")}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
-                  border border-orange-500 text-orange-600 font-semibold
-                  hover:bg-orange-50 transition"
-                >
-                  <FaUndo /> Return Order
-                </button>
+  {status === "Shipped" && (
+    <button
+      onClick={handleCancel}
+      className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
+      border border-red-500 text-red-600 font-semibold
+      hover:bg-red-50 transition"
+    >
+      <FaTimesCircle /> Cancel Order
+    </button>
+  )}
 
-                <button
-                  onClick={() => setStatus("Refunded")}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
-                  border border-gray-400 text-gray-700 font-semibold
-                  hover:bg-gray-100 transition"
-                >
-                  <FaMoneyCheckAlt /> Request Refund
-                </button>
-              </>
-            )}
+  {status === "Delivered" && (
+    <>
+      <button
+        onClick={handleReturn}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
+        border border-orange-500 text-orange-600 font-semibold
+        hover:bg-orange-50 transition"
+      >
+        <FaUndo /> Return Order
+      </button>
 
-            {(status === "Returned" || status === "Refunded") && (
-              <button
-                disabled
-                className="w-full py-3 rounded-xl bg-gray-100 text-gray-400 font-semibold"
-              >
-                Action Completed
-              </button>
-            )}
-          </div>
+      {/* Keep button for UI consistency but disable */}
+      <button
+        disabled
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
+        border border-gray-400 text-gray-400 font-semibold"
+      >
+        <FaMoneyCheckAlt /> Request Refund
+      </button>
+    </>
+  )}
+
+  {(status === "Returned" || status === "Cancelled") && (
+    <button
+      disabled
+      className="w-full py-3 rounded-xl bg-gray-100 text-gray-400 font-semibold"
+    >
+      Action Completed
+    </button>
+  )}
+</div>
+
         </div>
       </div>
     </div>

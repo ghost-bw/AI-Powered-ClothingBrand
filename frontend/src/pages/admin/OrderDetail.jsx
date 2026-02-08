@@ -32,7 +32,7 @@ export default function OrderDetails() {
   return (
     <div className="flex min-h-screen bg-background-light">
       <Sidebar />
-
+      
       <motion.main className="flex-1 p-8 max-w-[1400px] mx-auto">
         <div className="flex justify-between mb-6">
           <h1 className="text-4xl font-black">Order #{order._id}</h1>

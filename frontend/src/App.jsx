@@ -14,6 +14,7 @@ import UserDashboard from "./pages/user/UserDashboard";
 import AddCategory from "./pages/admin/AddCategory";
 import NotFound from "./pages/NotFound";
 import AITryOn from "./pages/user/AItryon";
+import RefundRequest from "./pages/user/RefundRequest";
 // Admin pages
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminSignup from "./pages/admin/AdminSignup";
@@ -28,12 +29,8 @@ import DeleteCategory from "./pages/admin/DeleteCategory";
 import CustomerManagement from "./pages/admin/CustomerManagement";
 import WhatsAppAutomation from "./pages/admin/WhatsAppAutomation";
 import Coupans from "./pages/admin/Coupons";
-
-
-
-
-
-
+import Notifications from "./pages/admin/Notifications";
+import RefundRequests from "./pages/admin/RefundRequests";
 
 
 // Layout components
@@ -57,6 +54,7 @@ import WomenCategoryPage from "./pages/user/WomenCategory";
 import Inventory from "./pages/admin/Inventory";
 import Settings from "./pages/admin/Settings";
 // import OrderDetails from "./pages/admins/OrderDetails";
+import Payments from "./pages/admin/Payments";
 
 
 
@@ -102,6 +100,8 @@ const App = () => {
           <Route path="track-order/:orderId" element={<TrackOrder />} />
           <Route path="address" element={<Address />} />
           <Route path="invoices" element={<Invoices />} />
+          <Route  path="refund-request/:orderId"  element={<RefundRequest />}/>
+
           
 
         </Route>
@@ -180,6 +180,15 @@ const App = () => {
   }
 />
 
+    <Route
+  path="/admin/notifications"
+  element={
+    <AdminProtectedRoute role="admin">
+      <Notifications />
+    </AdminProtectedRoute>
+  }
+/>
+
         <Route
           path="/admin/orders/:id"
           element={
@@ -194,6 +203,31 @@ const App = () => {
   element={
     <AdminProtectedRoute role="admin">
       <Coupans />
+    </AdminProtectedRoute>
+  }
+/>
+     <Route
+  path="/admin/coupons"
+  element={
+    <AdminProtectedRoute role="admin">
+      <Coupans />
+    </AdminProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/payments"
+  element={
+    <AdminProtectedRoute role="admin">
+      <Payments />
+    </AdminProtectedRoute>
+  }
+/>
+<Route
+  path="/admin/refund-requests"
+  element={
+    <AdminProtectedRoute role="admin">
+      <RefundRequests />
     </AdminProtectedRoute>
   }
 />

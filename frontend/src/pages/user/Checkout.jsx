@@ -331,29 +331,49 @@ const handlePlaceOrder = async () => {
   if (isProcessing) return;
 
   /* ===== COD FLOW ===== */
-  if (paymentMethod === "cod") {
-    try {
-      const res = await API.post("/orders/cod", {
-        shipping: shippingInfo,
-        items: cart,
-        subtotal,
-        shippingCost: estimatedShipping,
-        gst,
-        discount: discountAmount,
-        total,
-        paymentMethod: "cod",
-      });
+if (paymentMethod === "cod") {
+  try {
+    setPaymentStatus("");
+    setPaymentError("");
 
-      setOrderId(res.data.orderId);
-      setPaymentStatus("success");
-      setCurrentStep(3);
-    } catch (err) {
-      setPaymentStatus("failed");
-      setPaymentError("Order failed");
-      setCurrentStep(3);
-    }
-    return;
+   const res = await API.post(
+  "/orders",
+  {
+    shipping: shippingInfo,
+    items: cart,
+    subtotal,
+    shippingCost: estimatedShipping,
+    gst,
+    discount: discountAmount,
+    total,
+
+    payment: "cod",          // ✅ ADD THIS LINE
+    paymentMethod: "cod",    // (keep this)
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
   }
+);
+
+
+    setOrderId(res.data.orderId || res.data._id);
+    setPaymentStatus("success");
+    setCurrentStep(3);
+  } catch (err) {
+    console.error("COD ERROR:", err.response?.data || err.message);
+
+    setPaymentStatus("failed");
+    setPaymentError(
+      err.response?.data?.message || "Order failed"
+    );
+    setCurrentStep(3);
+  }
+  return;
+}
+
+
 
   /* ===== ONLINE PAYMENT ===== */
   const loaded = await loadRazorpay();
@@ -379,18 +399,22 @@ const handlePlaceOrder = async () => {
           const verify = await API.post(
             "/payment/razorpay-verify",
             {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              shipping: shippingInfo,
-              items: cart,
-              subtotal,
-              shippingCost: estimatedShipping,
-              gst,
-              discount: discountAmount,
-              total,
-              paymentMethod,
-            },
+  razorpay_order_id: response.razorpay_order_id,
+  razorpay_payment_id: response.razorpay_payment_id,
+  razorpay_signature: response.razorpay_signature,
+  shipping: shippingInfo,
+  items: cart,
+  subtotal,
+  shippingCost: estimatedShipping,
+  gst,
+  discount: discountAmount,
+  total,
+
+  payment: paymentMethod,      // ✅ REQUIRED
+  paymentMethod,
+  paymentVerified: true,       // ✅ REQUIRED
+}
+,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -501,7 +525,7 @@ const handleRetryPayment = () => {
       </div>
 
       {/* Add this section after the Navbar for testing */}
-{process.env.NODE_ENV === 'development' && (
+{/* {process.env.NODE_ENV === 'development' && (
   <div className="fixed bottom-4 right-4 z-50 bg-white p-4 rounded-lg shadow-xl border border-gray-300">
     <h3 className="font-bold mb-2 text-sm">🧪 Developer Testing</h3>
     <div className="flex flex-col gap-2">
@@ -546,7 +570,7 @@ const handleRetryPayment = () => {
       </button>
     </div>
   </div>
-)}
+)} */}
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
@@ -1229,7 +1253,7 @@ const handleRetryPayment = () => {
                       {discountPercent > 0 && (
                         <div className="flex justify-between text-green-600">
                           <span>Discount Applied</span>
-                          <span className="font-medium">-₹{discountPercent.toFixed(0)}</span>
+                          <span className="font-medium">-₹{discountAmount.toFixed(0)}</span>
                         </div>
                       )}
                       <div className="border-t border-gray-200 pt-4">

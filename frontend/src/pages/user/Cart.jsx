@@ -137,18 +137,47 @@ const toggleWishlist=async(id)=>{
 // const totalAmount=subtotal+estimatedShipping+gst-discount;
 
 /* ================= PROMO ================= */
-const handleApplyPromo=()=>{
+const handleApplyPromo = async () => {
+  try {
+    const code = promoCode.trim().toUpperCase();
 
- const codes={
-  WELCOME15:0.15,
-  SAVE10:0.10,
-  FASHION20:0.20
- };
+    if (!code) {
+      alert("Enter a coupon code");
+      return;
+    }
 
- if(codes[promoCode]){
-  setDiscount(subtotal*codes[promoCode]);
- }else alert("Invalid Code");
+    const res = await API.get(`/coupons/validate/${code}`);
+
+    if (!res.data.valid) {
+      alert("Invalid coupon code");
+      return;
+    }
+
+    // min spend check
+    if (subtotal < res.data.minSpend) {
+      alert(`Minimum spend ₹${res.data.minSpend} required`);
+      return;
+    }
+
+    let discountAmount = 0;
+
+    if (res.data.type === "Percentage") {
+      discountAmount = (subtotal * res.data.discount) / 100;
+    } else {
+      discountAmount = res.data.discount;
+    }
+
+    setDiscount(discountAmount);
+
+    // Optional: mark coupon used
+    await API.put(`/coupons/use/${code}`);
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to apply coupon");
+  }
 };
+
 
 const handleCheckout = () => {
  console.log("CHECKOUT CLICKED");

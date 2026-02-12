@@ -3,6 +3,7 @@ import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import ProductCard from "../../components/Home/ProductCard";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
+import { useShop } from "../../context/ShopContext";
 
 /* HERO TEXT */
 const HERO_TITLE = "Women’s Collection";
@@ -16,11 +17,11 @@ export default function WomenCollectionPage() {
   const [priceRange, setPriceRange] = useState([0, 0]);
   const [loading, setLoading] = useState(true);
 
-  /* ❤️ Wishlist state — SAME AS MEN */
-  const [wishlist, setWishlist] = useState([]);
+  /* ❤️ WISHLIST FROM CONTEXT (SAME AS MEN & KIDS) */
+  // const { wishlist, toggleWishlist } = useShop();
 
   /* TYPEWRITER */
-  const [typedText, setTypedText] = useState("");
+   const [typedText, setTypedText] = useState("");
   const [done, setDone] = useState(false);
 
   useEffect(() => {
@@ -36,6 +37,8 @@ export default function WomenCollectionPage() {
 
     return () => clearInterval(interval);
   }, []);
+
+  
 
   /* LOAD PRODUCTS */
   useEffect(() => {
@@ -84,39 +87,31 @@ export default function WomenCollectionPage() {
     });
   }, [products, activeCategory, priceRange]);
 
-  /* ❤️ Wishlist toggle — SAME AS MEN */
-  const handleWishlistToggle = product => {
-    setWishlist(prev =>
-      prev.includes(product._id)
-        ? prev.filter(id => id !== product._id)
-        : [...prev, product._id]
-    );
-  };
-
   return (
     <div className="bg-[#faf7f2] min-h-screen">
       <Navbar />
 
       {/* HERO */}
-      <section
-        className="relative h-[70vh] bg-cover bg-top flex items-center"
+     <section
+        className="relative h-[65vh] sm:h-[75vh] lg:h-[80vh] bg-cover bg-center flex items-center justify-center"
         style={{
           backgroundImage:
-            "url(https://res.cloudinary.com/dttjgnypq/image/upload/v1770404161/female_pj10ap.jpg)",
+            "url(https://res.cloudinary.com/dttjgnypq/image/upload/v1770530846/FemailCollection_lqgld1.png)",
         }}
       >
         <div className="absolute inset-0 bg-black/40" />
 
-        <div className="relative z-10 px-8 max-w-3xl text-white">
+        <div className="relative z-10 px-4 sm:px-8 max-w-3xl text-white text-center">
           <h1
-            className={`text-5xl md:text-6xl font-serif mb-4 ${
+            className={`text-3xl permanent-marker-regular sm:text-5xl md:text-6xl font-serif mb-4 ${
               done ? "animate-zoom-once" : ""
             }`}
           >
             {HERO_TITLE}
           </h1>
 
-          <p className="text-lg md:text-xl leading-relaxed">
+
+          <p className=" lg:text-3xl mt-3 text-3xl sm:text-xs font-dancing text-gray-200">
             {typedText}
           </p>
         </div>
@@ -126,73 +121,96 @@ export default function WomenCollectionPage() {
       <section className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
 
         {/* FILTERS */}
-        <aside className="sticky top-24 h-fit">
-          <div className="bg-white rounded-2xl shadow p-6 space-y-8">
+       <aside className="md:col-span-1">
+  <div
+    className="
+      bg-white rounded-2xl shadow
+      p-4 sm:p-6
+      md:sticky md:top-24
+      space-y-6
+    "
+  >
+    {/* HEADER */}
+    <h3 className="flex items-center gap-2 permanent-marker-regular text-xl tracking-wide">
+      <SlidersHorizontal size={18} />
+      Filters
+    </h3>
 
-            <h3 className="flex items-center gap-2 font-semibold text-lg">
-              <SlidersHorizontal size={18} /> Filters
-            </h3>
+    {/* ================= CATEGORY ================= */}
+    <div>
+      <h4 className="mb-3 cinzel font-semibold tracking-wide">
+        Category
+      </h4>
 
-            <div>
-              <h4 className="font-medium mb-3">Category</h4>
+      <div
+        className="
+          flex md:flex-col gap-2
+          overflow-x-auto md:overflow-visible
+          pb-2 md:pb-0
+        "
+      >
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            className={`
+              cinzel whitespace-nowrap
+              px-4 py-2 rounded-lg
+              text-sm sm:text-base tracking-wide
+              transition
+              ${
+                activeCategory === cat
+                  ? "bg-black text-white"
+                  : "bg-gray-100 hover:bg-gray-200"
+              }
+            `}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+    </div>
 
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`block w-full text-left px-4 py-2 rounded-lg mb-2 ${
-                    activeCategory === cat
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
+    {/* ================= PRICE ================= */}
+    <div>
+      <h4 className="mb-3 cinzel font-semibold tracking-wide flex items-center gap-2">
+        <ArrowUpDown size={16} />
+        Price Range
+      </h4>
 
-            <div>
-              <h4 className="font-medium mb-3 flex items-center gap-2">
-                <ArrowUpDown size={16} /> Price Range
-              </h4>
+      <div className="flex justify-between text-sm mb-2 cinzel">
+        <span>₹0</span>
+        <span>₹{priceRange[1]}</span>
+      </div>
 
-              <div className="flex justify-between text-sm mb-2">
-                <span>₹0</span>
-                <span>₹{priceRange[1]}</span>
-              </div>
+      <input
+        type="range"
+        min="0"
+        max={Math.max(
+          ...products.map((p) => p.discountPrice || p.price || 0)
+        )}
+        step="100"
+        value={priceRange[1]}
+        onChange={(e) =>
+          setPriceRange([0, Number(e.target.value)])
+        }
+        className="w-full accent-black"
+      />
+    </div>
+  </div>
+</aside>
 
-              <input
-                type="range"
-                min="0"
-                max={Math.max(
-                  ...products.map(p => p.discountPrice || p.price || 0)
-                )}
-                step="100"
-                value={priceRange[1]}
-                onChange={e =>
-                  setPriceRange([0, Number(e.target.value)])
-                }
-                className="w-full accent-black"
-              />
-            </div>
 
-          </div>
-        </aside>
-
-        {/* PRODUCTS GRID — SAME AS MEN */}
+        {/* PRODUCTS GRID */}
         <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-6">
-
           {loading && <p>Loading...</p>}
 
           {filteredProducts.map(product => (
             <ProductCard
               key={product._id}
               product={product}
-              onWishlistToggle={handleWishlistToggle}
-              isWishlisted={wishlist.includes(product._id)}
-            />
+              />
           ))}
-
         </div>
       </section>
     </div>

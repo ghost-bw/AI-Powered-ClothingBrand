@@ -1,4 +1,5 @@
 import { Gift, Tag, Bell } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const InnerCircle = () => {
   return (
@@ -59,43 +60,24 @@ const InnerCircle = () => {
           <div className="w-16 sm:w-24 h-[1px] bg-[#d6c2a8]"></div>
         </div>
 
-        <div className="flex justify-center mt-2">
-          <div
-            className="flex items-center 
-                  w-full max-w-xl
-                  bg-white
-                  rounded-2xl
-                  border border-[#e5ded2]
-                  shadow-[0_10px_30px_rgba(0,0,0,0.38)]
-                  overflow-hidden"
-          >
-            {/* Input */}
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              className="flex-1 px-6 py-4 
-                 text-sm sm:text-base
-                 bg-transparent
-                 outline-none
-                 text-gray-700
-                 placeholder-gray-400"
-            />
+       
 
-            {/* Button */}
-            <button
-              className="bg-[#1f1f1f] 
-             text-white 
-             px-8 sm:px-10 
-             py-4
-             text-sm tracking-wider uppercase
-             rounded-r-2xl
-             transition-all duration-300
-             hover:bg-black cursor-pointer"
-            >
-              Join Now
-            </button>
-          </div>
-        </div>
+<div className="flex items-center justify-center gap-6 my-6">
+  <div className="w-16 sm:w-24 h-[1px] bg-[#d6c2a8]"></div>
+
+  <Link
+    to="/user/login"
+    className="px-6 py-2 text-xs tracking-widest uppercase
+               border border-[#d6c2a8]
+               text-gray-700 hover:bg-black hover:text-white
+               transition whitespace-nowrap rounded-full"
+  >
+    Join Now
+  </Link>
+
+  <div className="w-16 sm:w-24 h-[1px] bg-[#d6c2a8]"></div>
+</div>
+
         <div className="w-70 h-[1px] bg-[#ffd59e] mt-4 mb-4 mx-auto"></div>
 
         {/* Bottom Note */}

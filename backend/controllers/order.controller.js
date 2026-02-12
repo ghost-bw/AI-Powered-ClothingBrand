@@ -118,11 +118,20 @@ ${itemNames}
     await user.save();
 
     /* ===== CREATE INVOICE ===== */
-    await Invoice.create({
-      user: user._id,
-      orderId: order._id,
-      amount: order.total,
-    });
+   /* ===== CREATE INVOICE ===== */
+if (
+  order.paymentMethod === "cod" ||
+  order.paymentStatus === "paid"
+) {
+  await Invoice.create({
+    user: user._id,
+    orderId: order._id,          // 🔥 LINK ORDER
+    amount: order.total,
+    paymentMethod: order.paymentMethod,
+    paymentStatus: order.paymentStatus,
+  });
+}
+
 
     res.json({
       success: true,

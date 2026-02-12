@@ -5,10 +5,11 @@ import Order from "../models/order.model.js";
 export const generateInvoicePDF = async (invoiceId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const invoice = await Invoice.findById(invoiceId);
-      if (!invoice) throw new Error("Invoice not found");
+     const invoice = await Invoice.findById(invoiceId);
+const order = await Order.findById(invoice.orderId).populate("user");
 
-      const order = await Order.findById(invoice.orderId).populate("user");
+
+
       if (!order) throw new Error("Order not found");
 
       const doc = new PDFDocument({ margin: 40 });
@@ -72,12 +73,12 @@ export const generateInvoicePDF = async (invoiceId) => {
 
       doc.moveDown(2);
 
-      doc.fontSize(10).text("Thank you for shopping with Graphura!", {
-        align: "center",
-      });
+      doc.fontSize(10).text(
+        "Thank you for shopping with Graphura!",
+        { align: "center" }
+      );
 
       doc.end();
-
     } catch (err) {
       reject(err);
     }

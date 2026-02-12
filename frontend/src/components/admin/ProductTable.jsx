@@ -25,7 +25,6 @@ export default function ProductTable() {
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem("token");
-
       const res = await API.get("/products", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -74,7 +73,6 @@ export default function ProductTable() {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this product?")) return;
-
     try {
       await API.delete(`/products/${id}`);
       fetchProducts();
@@ -86,18 +84,14 @@ export default function ProductTable() {
   const resetPage = () => setCurrentPage(1);
 
   return (
-
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-md
-    transition-all hover:-translate-y-1 hover:shadow-xl overflow-hidden">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-md overflow-y-auto">
 
       {/* HEADER */}
-
-      <div className="p-4 border-b flex flex-wrap gap-3 justify-between">
+      <div className="p-4 border-b flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
 
         <h3 className="font-bold text-lg">Products</h3>
 
-        <div className="flex gap-3 flex-wrap">
-
+        <div className="flex flex-wrap gap-2">
           <input
             placeholder="Search product..."
             value={search}
@@ -106,7 +100,7 @@ export default function ProductTable() {
               resetPage();
             }}
             className="border border-gray-300 rounded-xl px-4 py-2 text-sm
-            transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
+            focus:outline-none focus:ring-2 focus:ring-black"
           />
 
           <select
@@ -115,8 +109,7 @@ export default function ProductTable() {
               setCategory(e.target.value);
               resetPage();
             }}
-            className="border border-gray-300 rounded-xl px-3 py-2 text-sm
-            transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
+            className="border border-gray-300 rounded-xl px-3 py-2 text-sm"
           >
             <option value="All">All Categories</option>
             {[...new Set(safeProducts.map(p => p.category?.name).filter(Boolean))].map(cat => (
@@ -130,8 +123,7 @@ export default function ProductTable() {
               setStockFilter(e.target.value);
               resetPage();
             }}
-            className="border border-gray-300 rounded-xl px-3 py-2 text-sm
-            transition focus:outline-none focus:ring-2 focus:ring-black hover:border-black"
+            className="border border-gray-300 rounded-xl px-3 py-2 text-sm"
           >
             <option value="All">All Stock</option>
             <option value="Low">Low Stock</option>
@@ -140,132 +132,154 @@ export default function ProductTable() {
 
           <button
             onClick={() => navigate("/admin/products/add")}
-            className="bg-black text-white px-4 py-2 rounded-xl text-sm font-semibold
-            transition hover:bg-gray-900"
+            className="bg-black text-white px-4 py-2 rounded-xl text-sm font-semibold"
           >
             + Add Product
           </button>
-
         </div>
-
       </div>
 
-      {/* TABLE */}
+      {/* ================= DESKTOP TABLE ================= */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50 border-b">
+            <tr>
+              <th className="p-4">✓</th>
+              <th className="p-4 text-left">Product</th>
+              <th className="p-4">Category</th>
+              <th className="p-4">Price</th>
+              <th className="p-4">Stock</th>
+              <th className="p-4 text-right">Action</th>
+            </tr>
+          </thead>
 
-      <table className="w-full text-sm">
+          <tbody>
+            {paginatedProducts.map((product) => {
+              const totalStock = getTotalStock(product);
 
-        <thead className="bg-gray-50 text-left border-b">
-          <tr>
-            <th className="p-4">✓</th>
-            <th className="p-4">Product</th>
-            <th className="p-4">Category</th>
-            <th className="p-4">Price</th>
-            <th className="p-4">Stock</th>
-            <th className="p-4 text-right">Action</th>
-          </tr>
-        </thead>
+              return (
+                <tr key={product._id} className="hover:bg-gray-50">
+                  <td className="p-4">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(product._id)}
+                      onChange={() => toggleSelect(product._id)}
+                    />
+                  </td>
 
-        <tbody>
+                  <td className="p-4 flex items-center gap-4">
+                    <img
+                      src={
+                        product.colors?.find(c => c.images?.length)?.images?.[0] ||
+                        "/products/placeholder.png"
+                      }
+                      className="w-14 h-14 rounded-lg object-cover"
+                    />
 
-          {paginatedProducts.map(product => {
+                    <div>
+                      <p className="font-semibold">{product.name}</p>
+                      <p className="text-xs text-gray-500">
+                        SKU: {product.sku || "N/A"}
+                      </p>
+                    </div>
+                  </td>
 
-            const totalStock = getTotalStock(product);
+                  <td className="p-4">{product.category?.name || "N/A"}</td>
+                  <td className="p-4 font-semibold">₹{product.price || 0}</td>
 
-            return (
+                  <td className="p-4">
+                    <span className={totalStock < 10 ? "text-red-500 font-bold" : "text-green-600 font-bold"}>
+                      {totalStock}
+                    </span>
+                  </td>
 
-              <tr key={product._id} className="transition hover:bg-gray-50">
+                  <td className="p-4 text-right">
+                    <button
+                      onClick={() => navigate(`/admin/products/edit/${product._id}`)}
+                      className="text-blue-600 text-sm font-semibold hover:underline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product._id)}
+                      className="text-red-500 text-sm font-semibold ml-4 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
-                <td className="p-4">
-                  <input
-                    type="checkbox"
-                    checked={selectedIds.includes(product._id)}
-                    onChange={() => toggleSelect(product._id)}
-                  />
-                </td>
+      {/* ================= MOBILE CARDS ================= */}
+      <div className="md:hidden p-4 space-y-4">
+        {paginatedProducts.map((product) => {
+          const totalStock = getTotalStock(product);
 
-                <td className="p-4 flex items-center gap-4">
+          return (
+            <div key={product._id} className="border rounded-xl p-4">
+              <div className="flex gap-4">
+                <img
+                  src={
+                    product.colors?.find(c => c.images?.length)?.images?.[0] ||
+                    "/products/placeholder.png"
+                  }
+                  className="w-16 h-16 rounded-lg object-cover"
+                />
 
-                  <img
-                    src={
-                      product.colors?.find(c => c.images?.length)?.images?.[0] ||
-                      "/products/placeholder.png"
-                    }
-                    className="w-14 h-14 rounded-lg object-cover"
-                  />
+                <div className="flex-1">
+                  <p className="font-semibold">{product.name}</p>
+                  <p className="text-xs text-gray-500">
+                    {product.category?.name || "N/A"}
+                  </p>
+                  <p className="font-semibold mt-1">₹{product.price}</p>
+                </div>
 
-                  <div>
-                    <p className="font-semibold">{product.name}</p>
-                    <p className="text-xs text-gray-500">
-                      SKU: {product.sku || "N/A"}
-                    </p>
-                  </div>
+                <span className={totalStock < 10 ? "text-red-500 font-bold" : "text-green-600 font-bold"}>
+                  {totalStock}
+                </span>
+              </div>
 
-                </td>
-
-                <td className="p-4">{product.category?.name || "N/A"}</td>
-
-                <td className="p-4 font-semibold">₹{product.price || 0}</td>
-
-                <td className="p-4">
-                  <span className={totalStock < 10 ? "text-red-500 font-bold" : "text-green-600 font-bold"}>
-                    {totalStock}
-                  </span>
-                </td>
-
-                <td className="p-4 text-right">
-
-                  <button
-                    onClick={() => navigate(`/admin/products/edit/${product._id}`)}
-                    className="text-blue-600 text-sm font-semibold hover:underline"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(product._id)}
-                    className="text-red-500 text-sm font-semibold ml-4 hover:underline"
-                  >
-                    Delete
-                  </button>
-
-                </td>
-
-              </tr>
-
-            );
-
-          })}
-
-        </tbody>
-
-      </table>
+              <div className="flex justify-end gap-4 mt-3 text-sm">
+                <button
+                  onClick={() => navigate(`/admin/products/edit/${product._id}`)}
+                  className="text-blue-600 font-semibold"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(product._id)}
+                  className="text-red-500 font-semibold"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       {/* PAGINATION */}
-
       {totalPages > 1 && (
-
         <div className="p-4 flex justify-center gap-2">
-
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
               onClick={() => setCurrentPage(page)}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+              className={`px-4 py-2 rounded-lg text-sm font-semibold ${
                 page === currentPage
                   ? "bg-black text-white"
-                  : "border border-gray-300 hover:border-black"
+                  : "border border-gray-300"
               }`}
             >
               {page}
             </button>
-
           ))}
-
         </div>
-
       )}
-
     </div>
   );
 }

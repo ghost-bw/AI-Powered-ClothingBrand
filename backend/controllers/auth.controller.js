@@ -141,7 +141,7 @@ export const login = async (req, res) => {
 };
 
 export const getMe = async (req,res)=>{
- const user = await User.findById(req.user.id)
+ const user = await User.findById(req.user._id)
   .populate("cart.product")
   .populate("wishlist");
 

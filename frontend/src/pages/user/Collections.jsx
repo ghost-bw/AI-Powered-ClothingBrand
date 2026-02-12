@@ -4,6 +4,8 @@ import { Filter, Grid, List, Search } from "lucide-react";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
 import ProductCard from "../../components/Home/ProductCard";
+import Footer from "../../components/Home/Footer";
+import { useShop } from "../../context/ShopContext";
 
 /* HERO IMAGE */
 const HERO_IMAGE =
@@ -26,8 +28,8 @@ const CollectionsPage = () => {
   const [collections, setCollections] = useState([]);
   const [gender, setGender] = useState("");
 
-  /* ❤️ Wishlist */
-  const [wishlist, setWishlist] = useState([]);
+  /* ❤️ WISHLIST FROM CONTEXT (GLOBAL) */
+  // const { wishlist, toggleWishlist } = useShop();
 
   /* HERO TYPEWRITER */
   const [typedText, setTypedText] = useState("");
@@ -55,7 +57,10 @@ const CollectionsPage = () => {
 
       setProducts(data || []);
 
-      const colls = data.flatMap(p => p.collections || []).map(c => c.name);
+      const colls = data
+        .flatMap(p => p.collections || [])
+        .map(c => c.name);
+
       setCollections([...new Set(colls)]);
     };
 
@@ -67,20 +72,13 @@ const CollectionsPage = () => {
     setSelectedCategory("All");
     setGender("");
     setSelectedCollections(prev =>
-      prev.includes(name) ? prev.filter(c => c !== name) : [...prev, name]
+      prev.includes(name)
+        ? prev.filter(c => c !== name)
+        : [...prev, name]
     );
   };
 
   const isKidsSelected = selectedCollections.includes("Kids");
-
-  /* ❤️ Wishlist Toggle */
-  const handleWishlistToggle = product => {
-    setWishlist(prev =>
-      prev.includes(product._id)
-        ? prev.filter(id => id !== product._id)
-        : [...prev, product._id]
-    );
-  };
 
   /* ================= 🔒 STABLE FILTER BASE ================= */
   const filterBaseProducts = products.filter(p => {
@@ -93,7 +91,7 @@ const CollectionsPage = () => {
     return matchesCollection && matchesGender;
   });
 
-  /* ================= 🎯 CATEGORY LIST (NEVER VANISHES) ================= */
+  /* ================= 🎯 CATEGORY LIST ================= */
   const filteredCategories = [
     "All",
     ...new Set(
@@ -110,7 +108,8 @@ const CollectionsPage = () => {
       product.description?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const price = product.discountPrice || product.price;
-    const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+    const matchesPrice =
+      price >= priceRange[0] && price <= priceRange[1];
 
     const matchesCategory =
       selectedCategory === "All" ||
@@ -131,14 +130,14 @@ const CollectionsPage = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
         <div className="relative z-10 max-w-3xl">
           <h1
-            className={`text-4xl md:text-6xl font-serif font-bold text-[#FDF2E9] mb-4 ${
+            className={`permanent-marker-regular text-4xl md:text-6xl font-serif font-bold text-[#FDF2E9] mb-4 ${
               done ? "animate-zoomOnce" : ""
             }`}
           >
             {typedText}
           </h1>
           {done && (
-            <p className="text-lg md:text-xl text-[#FFE8D6] animate-fadeUp">
+            <p className=" font-dancing text-lg md:text-3xl text-[#FFE8D6] animate-fadeUp">
               {SUB_TEXT}
             </p>
           )}
@@ -150,7 +149,10 @@ const CollectionsPage = () => {
         {/* SEARCH + VIEW */}
         <div className="flex flex-col lg:flex-row gap-6 mb-8">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              size={20}
+            />
             <input
               type="text"
               placeholder="Search products..."
@@ -164,7 +166,9 @@ const CollectionsPage = () => {
             <button
               onClick={() => setViewMode("grid")}
               className={`p-2 rounded ${
-                viewMode === "grid" ? "bg-black text-white" : "text-gray-600"
+                viewMode === "grid"
+                  ? "bg-black text-white"
+                  : "text-gray-600"
               }`}
             >
               <Grid size={20} />
@@ -172,7 +176,9 @@ const CollectionsPage = () => {
             <button
               onClick={() => setViewMode("list")}
               className={`p-2 rounded ${
-                viewMode === "list" ? "bg-black text-white" : "text-gray-600"
+                viewMode === "list"
+                  ? "bg-black text-white"
+                  : "text-gray-600"
               }`}
             >
               <List size={20} />
@@ -183,29 +189,47 @@ const CollectionsPage = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* FILTERS */}
           <div className="lg:w-1/4">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24 max-h-[calc(100vh-120px)] overflow-y-auto">
-              <h3 className="font-bold text-lg mb-6 flex items-center gap-2">
+           <div className=" bg-white rounded-lg shadow-sm p-6 sticky top-24 max-h-[calc(100vh-120px)]
+                          overflow-y-auto
+                          overscroll-contain
+                          focus-within:outline-none
+                        " >
+
+              <h3 className="permanent-marker-regular font-bold text-lg mb-6 flex items-center gap-2">
                 <Filter size={20} /> Filters
               </h3>
 
               {/* Collections */}
-              <div className="mb-6">
-                {collections.map((c, i) => (
-                  <label key={i} className="flex items-center gap-2 text-sm mb-1">
-                    <input
-                      type="checkbox"
-                      checked={selectedCollections.includes(c)}
-                      onChange={() => toggleCollection(c)}
-                    />
-                    {c}
-                  </label>
-                ))}
-              </div>
+           <div className="mb-6">
+  <div className="
+    flex lg:flex-col gap-2
+    overflow-x-auto lg:overflow-visible
+    pb-2
+  ">
+    {collections.map((c) => (
+      <label
+        key={c}
+        className="cinzel whitespace-nowrap flex items-center gap-2 
+          text-sm px-3 py-2 rounded-lg
+          bg-gray-100 hover:bg-gray-200 cursor-pointer"
+      >
+        <input
+          type="checkbox"
+          checked={selectedCollections.includes(c)}
+          onChange={() => toggleCollection(c)}
+          onMouseDown={(e) => e.preventDefault()}
+        />
+        {c}
+      </label>
+    ))}
+  </div>
+</div>
+
 
               {/* Kids Gender */}
               {isKidsSelected && (
                 <select
-                  className="border p-2 rounded w-full mb-6"
+                  className="permanent-marker-regular border p-2 rounded w-full mb-6"
                   value={gender}
                   onChange={e => {
                     setGender(e.target.value);
@@ -219,30 +243,46 @@ const CollectionsPage = () => {
               )}
 
               {/* Categories */}
-              {filteredCategories.map(c => (
-                <button
-                  key={c}
-                  onClick={() => setSelectedCategory(c)}
-                  className={`block w-full text-left px-3 py-2 rounded mb-1 ${
-                    selectedCategory === c
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
+             <div className="
+  flex lg:flex-col gap-2
+  overflow-x-auto lg:overflow-visible
+  pb-2
+">
+  {filteredCategories.map((c) => (
+    <button
+      key={c}
+      type="button"
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => setSelectedCategory(c)}
+      className={`cinzel whitespace-nowrap
+        px-4 py-2 rounded-lg text-sm sm:text-base
+        ${
+          selectedCategory === c
+            ? "bg-black text-white"
+            : "bg-gray-100 hover:bg-gray-200"
+        }`}
+    >
+      {c}
+    </button>
+  ))}
+</div>
+
 
               {/* Price Slider */}
               <div className="mt-6">
-                <label className="text-sm">Max Price: ₹{priceRange[1]}</label>
+                <label className="cinzel text-sm">
+                  Max Price: ₹{priceRange[1]}
+                </label>
                 <input
                   type="range"
                   min="0"
                   max="50000"
                   step="1000"
                   value={priceRange[1]}
-                  onChange={e => setPriceRange([0, Number(e.target.value)])}
+                  onChange={(e) =>
+                    setPriceRange([0, Number(e.target.value)])
+                  }
+                  onMouseDown={(e) => e.preventDefault()}
                   className="w-full accent-black"
                 />
               </div>
@@ -270,13 +310,11 @@ const CollectionsPage = () => {
             </p>
 
             {viewMode === "grid" ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
                 {filteredProducts.map(product => (
-                  <ProductCard
+                 <ProductCard
                     key={product._id}
                     product={product}
-                    onWishlistToggle={handleWishlistToggle}
-                    isWishlisted={wishlist.includes(product._id)}
                   />
                 ))}
               </div>
@@ -285,13 +323,15 @@ const CollectionsPage = () => {
                 {filteredProducts.map(product => (
                   <div
                     key={product._id}
-                    onClick={() => navigate(`/product/${product._id}`)}
+                    onClick={() =>
+                      navigate(`/product/${product._id}`)
+                    }
                     className="bg-white rounded-xl shadow-sm p-4 hover:shadow-lg transition cursor-pointer flex gap-4"
                   >
                     <img
                       src={product.colors?.[0]?.images?.[0]}
                       alt={product.name}
-                      className="w-24 h-24 object-cover rounded-lg"
+                      className="Cinzel w-24 h-24 object-cover rounded-lg"
                     />
                     <div>
                       <h3 className="font-medium">{product.name}</h3>
@@ -299,7 +339,9 @@ const CollectionsPage = () => {
                         {product.description}
                       </p>
                       <p className="font-bold mt-1">
-                        ₹{(product.discountPrice || product.price).toLocaleString()}
+                        ₹{(
+                          product.discountPrice || product.price
+                        ).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -328,6 +370,8 @@ const CollectionsPage = () => {
           animation: fadeUp 0.8s ease forwards;
         }
       `}</style>
+
+      <Footer />
     </div>
   );
 };

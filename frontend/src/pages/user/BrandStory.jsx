@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import philosophyImg from "../../assets/BrandStory/BrandStory.webp";
 
 const PhilosophySection = () => {
+   const navigate = useNavigate();
   return (
     <section className=" py-15 px-6 lg:px-15">
       <div className="flex justify-center mb-4">
@@ -105,24 +107,22 @@ const PhilosophySection = () => {
           </p>
 
           {/* BUTTONS */}
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-6 pointer-events-auto">
             <button
+              onClick={() => navigate("/philosophy")}
               className="group relative inline-flex items-center gap-3
-                               bg-black text-white
-                               px-10 py-4 rounded-full
-                               text-xs tracking-[0.3em] uppercase
-                               shadow-[0_15px_35px_rgba(0,0,0,0.55)]
-                               transition-all duration-500
-                               hover:-translate-y-2
-                               hover:shadow-[0_25px_60px_rgba(0,0,0,0.75)]
-                               active:translate-y-0 cursor-pointer"
+                         bg-black text-white
+                         px-10 py-4 rounded-full
+                         text-xs tracking-[0.3em] uppercase
+                         shadow-[0_15px_35px_rgba(0,0,0,0.55)]
+                         transition-all duration-500
+                         hover:-translate-y-2
+                         hover:shadow-[0_25px_60px_rgba(0,0,0,0.75)]
+                         active:translate-y-0
+                         pointer-events-auto"
             >
               <span>Discover Process</span>
-
-              <span
-                className="transition-all duration-500 
-                               group-hover:translate-x-2"
-              >
+              <span className="transition-all duration-500 group-hover:translate-x-2">
                 →
               </span>
             </button>

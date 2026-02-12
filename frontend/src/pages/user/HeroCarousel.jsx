@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import API from "../../api/axios"; // adjust path if needed
+import API from "../../api/axios";
 
 const HeroCarousel = () => {
   const navigate = useNavigate();
@@ -11,12 +11,26 @@ const HeroCarousel = () => {
   const [index, setIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
 
-  /* 🔹 FETCH CAROUSEL PRODUCTS */
+  /* 🔹 FETCH + FILTER CAROUSEL PRODUCTS */
   useEffect(() => {
     const fetchCarouselProducts = async () => {
       try {
-        const res = await API.get("/products?isCarousel=true");
-        setProducts(res.data.products || res.data); 
+        const res = await API.get("/products");
+
+        const data = Array.isArray(res.data)
+          ? res.data
+          : res.data.products;
+
+        /* ✅ ONLY PRODUCTS WITH CAROUSEL TEXT */
+        const carouselProducts = data
+          .filter(p =>
+            p.carouselTitle ||
+            p.carouselSubtitle ||
+            p.carouselPriceText
+          )
+          .slice(0, 7); // ✅ MAX 7 PRODUCTS
+
+        setProducts(carouselProducts);
       } catch (err) {
         console.error("Carousel fetch error:", err);
       }
@@ -32,15 +46,20 @@ const HeroCarousel = () => {
       : [];
 
   /* AUTO SLIDE */
-  useEffect(() => {
-    if (!products.length) return;
+ /* AUTO SLIDE (FASTER ON MOBILE) */
+useEffect(() => {
+  if (!products.length) return;
 
-    const interval = setInterval(() => {
-      setIndex((prev) => prev + 1);
-    }, 3000);
+  const isMobile = window.innerWidth < 640; // Tailwind sm breakpoint
+  const intervalTime = isMobile ? 2000 : 3000; // faster on mobile
 
-    return () => clearInterval(interval);
-  }, [products]);
+  const interval = setInterval(() => {
+    setIndex(prev => prev + 1);
+  }, intervalTime);
+
+  return () => clearInterval(interval);
+}, [products]);
+
 
   /* LOOP RESET */
   useEffect(() => {
@@ -61,22 +80,28 @@ const HeroCarousel = () => {
       <div className="w-full mx-auto px-4 overflow-hidden relative">
 
         {/* LEFT */}
-        <button
-          onClick={() => index > 0 && setIndex(index - 1)}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-10
-          bg-white/80 backdrop-blur-md p-3 rounded-full shadow-md hover:bg-white"
-        >
-          <ChevronLeft size={22} />
-        </button>
+       <button
+  onClick={() => index > 0 && setIndex(index - 1)}
+  className="absolute left-2 top-1/2 -translate-y-1/2 z-10
+    bg-white/80 backdrop-blur-md
+    p-2 sm:p-3
+    rounded-full shadow-md hover:bg-white transition"
+>
+  <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+</button>
+
 
         {/* RIGHT */}
-        <button
-          onClick={() => setIndex(index + 1)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-10
-          bg-white/80 backdrop-blur-md p-3 rounded-full shadow-md hover:bg-white"
-        >
-          <ChevronRight size={22} />
-        </button>
+       <button
+  onClick={() => setIndex(index + 1)}
+  className="absolute right-2 top-1/2 -translate-y-1/2 z-10
+    bg-white/80 backdrop-blur-md
+    p-2 sm:p-3
+    rounded-full shadow-md hover:bg-white transition"
+>
+  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+</button>
+
 
         {/* TRACK */}
         <div

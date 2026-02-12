@@ -51,7 +51,7 @@ const RefundRequest = () => {
       });
 
       alert("Refund request submitted successfully");
-      navigate("/orders");
+      navigate("/user/dashboard/orders/my");
     } catch (error) {
       console.error("Refund request error:", error);
       alert(error.response?.data?.message || "Something went wrong");

@@ -9,6 +9,7 @@ import AddCollection from "./AddCollection";
 import DeleteCollection from "./DeleteCollection";
 import DeleteCategory from "./DeleteCategory";
 import StatsCard from "../../components/admin/StatsCard";
+import Header from "../../components/admin/Header";
 
 import API from "../../api/axios";
 
@@ -29,7 +30,6 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import Header from "../../components/admin/Header";
 
 export default function ProductManagement() {
   const [activeFilter, setActiveFilter] = useState("ALL");
@@ -46,11 +46,11 @@ export default function ProductManagement() {
     livePercent: 0,
   });
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     fetchDashboard();
   }, []);
-
-  const token = localStorage.getItem("token");
 
   /* ================= DASHBOARD ================= */
 
@@ -73,9 +73,10 @@ export default function ProductManagement() {
       setRevenueData(
         revenueRes.data.map((m) => ({
           month:
-            ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][
-              m._id - 1
-            ],
+            [
+              "Jan","Feb","Mar","Apr","May","Jun",
+              "Jul","Aug","Sep","Oct","Nov","Dec"
+            ][m._id - 1],
           revenue: m.revenue,
         }))
       );
@@ -106,30 +107,10 @@ export default function ProductManagement() {
   /* ================= CARDS ================= */
 
   const cards = [
-    {
-      title: "TOTAL SALES",
-      value: `₹${stats.totalSales}`,
-      icon: IndianRupee,
-      filter: "ALL",
-    },
-    {
-      title: "OUT OF STOCK",
-      value: stats.outOfStock,
-      icon: PackageX,
-      filter: "OUT_OF_STOCK",
-    },
-    {
-      title: "NEW ARRIVALS",
-      value: stats.newArrivals,
-      icon: Sparkles,
-      filter: "NEW",
-    },
-    {
-      title: "LIVE PRODUCTS",
-      value: `${stats.livePercent}%`,
-      icon: CheckCircle2,
-      filter: "LIVE",
-    },
+    { title: "TOTAL SALES", value: `₹${stats.totalSales}`, icon: IndianRupee, filter: "ALL" },
+    { title: "OUT OF STOCK", value: stats.outOfStock, icon: PackageX, filter: "OUT_OF_STOCK" },
+    { title: "NEW ARRIVALS", value: stats.newArrivals, icon: Sparkles, filter: "NEW" },
+    { title: "LIVE PRODUCTS", value: `${stats.livePercent}%`, icon: CheckCircle2, filter: "LIVE" },
   ];
 
   const tabs = [
@@ -145,32 +126,37 @@ export default function ProductManagement() {
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
- <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <Header />
 
-      <motion.main
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="flex-1 px-10 py-8 max-w-[1500px] mx-auto"
-      >
-       
-        {/* HEADER */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-black">Product Management</h1>
-          <p className="text-gray-500 mt-1">
-            Manage your clothing brand products & inventory
-          </p>
-        </div>
+        <motion.main
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex-1 px-4 sm:px-6 lg:px-10 py-6 sm:py-8 max-w-[1500px] mx-auto w-full"
+        >
+          {/* HEADER */}
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-black">
+              Product Management
+            </h1>
+            <p className="text-sm sm:text-base text-gray-500 mt-1">
+              Manage your clothing brand products & inventory
+            </p>
+          </div>
 
-        {/* TABS */}
-        <div className="flex gap-3 mb-10 overflow-x-auto whitespace-nowrap scrollbar-hide">
+          {/* TABS */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex gap-3 mb-8">
   {tabs.map((tab) => (
     <button
       key={tab}
       onClick={() => setActiveTab(tab)}
-      className={`px-5 py-2 rounded-xl border border-gray-200 font-semibold transition hover:opacity-90 flex-shrink-0 ${
-        activeTab === tab ? "bg-black text-white" : "bg-white"
+      className={`px-4 py-2 rounded-xl border border-gray-200 font-semibold
+      text-xs sm:text-sm transition
+      ${
+        activeTab === tab
+          ? "bg-black text-white"
+          : "bg-white hover:bg-gray-100"
       }`}
     >
       {tab.replace("_", " ")}
@@ -179,89 +165,84 @@ export default function ProductManagement() {
 </div>
 
 
-        {activeTab === "MANAGE" && (
-          <>
-            {/* STATS */}
-         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-  {cards.map((card, i) => (
-    <div
-      key={i}
-      onClick={() => setActiveFilter(card.filter)}
-      className={`cursor-pointer transition ${
-        activeFilter === card.filter
-          }`}
-    >
-      <StatsCard
-        title={card.title}
-        value={card.value}
-        badge={card.badge}
-        badgeType={card.badgeType}
-        icon={<card.icon size={16} />}
-        accent={card.accent}
-      />
-    </div>
-  ))}
-</div>
+          {activeTab === "MANAGE" && (
+            <>
+              {/* STATS */}
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-10">
+                {cards.map((card, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setActiveFilter(card.filter)}
+                    className="cursor-pointer"
+                  >
+                    <StatsCard
+                      title={card.title}
+                      value={card.value}
+                      icon={<card.icon size={16} />}
+                    />
+                  </div>
+                ))}
+              </div>
 
+              {/* REVENUE */}
+              <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 mb-8 sm:mb-10">
+                <h2 className="font-bold mb-4 text-sm sm:text-base">
+                  Monthly Revenue
+                </h2>
 
+                <div className="h-[220px] sm:h-[260px]">
+                  <ResponsiveContainer>
+                    <LineChart data={revenueData}>
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line
+                        dataKey="revenue"
+                        stroke="#22c55e"
+                        strokeWidth={3}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
 
-            {/* REVENUE */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-10">
-  <h2 className="font-bold mb-4">Monthly Revenue</h2>
+              {/* CATEGORY SALES */}
+              <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 mb-8 sm:mb-10">
+                <h2 className="font-bold mb-4 text-sm sm:text-base">
+                  Category-wise Sales
+                </h2>
 
-  <div className="h-[260px]">
-    <ResponsiveContainer>
-      <LineChart data={revenueData}>
-        <XAxis dataKey="month" />
-        <YAxis />
-        <Tooltip />
-        <Line
-          dataKey="revenue"
-          stroke="#22c55e"   // GREEN
-          strokeWidth={3}
-        />
-      </LineChart>
-    </ResponsiveContainer>
-  </div>
-</div>
+                <div className="h-[220px] sm:h-[260px]">
+                  <ResponsiveContainer>
+                    <BarChart data={categorySales}>
+                      <XAxis dataKey="category" />
+                      <YAxis />
+                      <Tooltip />
 
+                      <defs>
+                        <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#60a5fa" />
+                          <stop offset="100%" stopColor="#2563eb" />
+                        </linearGradient>
+                      </defs>
 
-            {/* CATEGORY */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-10">
-  <h2 className="font-bold mb-4">Category-wise Sales</h2>
+                      <Bar dataKey="sales" fill="url(#blueGradient)" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
 
-  <div className="h-[260px]">
-    <ResponsiveContainer>
-      <BarChart data={categorySales}>
-        <XAxis dataKey="category" />
-        <YAxis />
-        <Tooltip />
+              <ProductTable filter={activeFilter} products={products} />
+            </>
+          )}
 
-        <defs>
-          <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#60a5fa" />
-            <stop offset="100%" stopColor="#2563eb" />
-          </linearGradient>
-        </defs>
-
-        <Bar dataKey="sales" fill="url(#blueGradient)" />
-      </BarChart>
-    </ResponsiveContainer>
-  </div>
-</div>
-
-
-            <ProductTable filter={activeFilter} products={products} />
-          </>
-        )}
-
-        {activeTab === "ADD_PRODUCT" && <AddProduct refresh={fetchDashboard} />}
-        {activeTab === "ADD_CATEGORY" && <AddCategory />}
-        {activeTab === "ADD_COLLECTION" && <AddCollection />}
-        {activeTab === "DELETE_COLLECTION" && <DeleteCollection />}
-        {activeTab === "DELETE_CATEGORY" && <DeleteCategory />}
-      </motion.main>
-    </div>
+          {activeTab === "ADD_PRODUCT" && <AddProduct refresh={fetchDashboard} />}
+          {activeTab === "ADD_CATEGORY" && <AddCategory />}
+          {activeTab === "ADD_COLLECTION" && <AddCollection />}
+          {activeTab === "DELETE_COLLECTION" && <DeleteCollection />}
+          {activeTab === "DELETE_CATEGORY" && <DeleteCategory />}
+        </motion.main>
+      </div>
     </div>
   );
 }

@@ -130,19 +130,19 @@ const saveProfile = async () => {
 
       {/* Hero */}
       <div
-        className="rounded-3xl p-7 md:p-9 text-white
-bg-black shadow-[0_25px_70px_rgba(124,58,237,0.45)]"
+        className="rounded-3xl p-7 md:p-9 text-black
+bg-white shadow-[0_25px_70px_rgba(124,58,237,0.45)]"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <div className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center text-2xl font-bold">
+            <div className="h-16 w-16 rounded-full bg-black text-white/80 flex items-center justify-center text-2xl font-bold">
               {profile.name.charAt(0)}
             </div>
             <div>
               <h2 className="text-2xl font-semibold">
                 Welcome, {profile.name}
               </h2>
-              <p className="text-sm text-white/80">
+              <p className="text-sm text-black/80">
                 Manage your account & orders
               </p>
             </div>
@@ -154,7 +154,7 @@ bg-black shadow-[0_25px_70px_rgba(124,58,237,0.45)]"
               setEditOpen(true);
             }}
             className="px-6 py-2.5 rounded-xl text-sm flex items-center gap-2
-            bg-white text-black font-semibold
+            bg-black text-white font-semibold
             hover:bg-white transition"
           >
             <FiEdit /> Edit Profile

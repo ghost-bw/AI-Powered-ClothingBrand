@@ -147,141 +147,131 @@ setStats({
   const downloadReport = () => alert("Report Downloaded (demo)");
 
   return (
-    <div className="flex bg-gray-50 min-h-screen">
-      <Sidebar />
+  <div className="flex bg-gray-50 min-h-screen">
+    {/* Sidebar stays as-is (assumed responsive internally) */}
+    <Sidebar />
 
-      <div className="flex-1 flex flex-col">
-        <Header />
+    <div className="flex-1 flex flex-col min-w-0">
+      <Header />
 
-        <main className="flex-1 px-10 py-8 max-w-[1400px] mx-auto">
+      <main className="flex-1 px-4 sm:px-6 lg:px-10 py-6 sm:py-8 max-w-[1400px] mx-auto w-full">
 
-          <div className="mb-8">
-            <h1 className="text-4xl font-extrabold text-gray-900">Analytics</h1>
-            <p className="text-gray-500 mt-1">Track performance & business insights</p>
-          </div>
+        {/* PAGE TITLE */}
+        <div className="mb-6 sm:mb-8">
+         <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">
+            Analytics
+          </h1>
+          <p className="text-sm sm:text-base text-gray-500 mt-1">
+            Track performance & business insights
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10 ">
-            <StatsCard title="Total Revenue" value={`₹${stats.revenue || 0}`} badge={stats.revenueGrowth} icon={<IndianRupee size={16} />} />
-            <StatsCard title="Total Orders" value={stats.orders || 0} badge={stats.ordersGrowth} icon={<ShoppingBag size={16} />} />
-            <StatsCard title="Customers" value={stats.customers || 0} badge={stats.customerGrowth} icon={<Users size={16} />} />
-            <StatsCard title="Avg Order Value"  value={`₹${stats.avgOrderValue || 0}`}  icon={<Percent size={16} />} />
-          </div>
+        {/* STATS */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-6 sm:mb-10">
+          <StatsCard title="Total Revenue" value={`₹${stats.revenue || 0}`} badge={stats.revenueGrowth} icon={<IndianRupee size={16} />} />
+          <StatsCard title="Total Orders" value={stats.orders || 0} badge={stats.ordersGrowth} icon={<ShoppingBag size={16} />} />
+          <StatsCard title="Customers" value={stats.customers || 0} badge={stats.customerGrowth} icon={<Users size={16} />} />
+          <StatsCard title="Avg Order Value" value={`₹${stats.avgOrderValue || 0}`} icon={<Percent size={16} />} />
+        </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
-            <LineChartBox title="Revenue Trend" data={revenueData} xKey="month" yKey="revenue" height={280} />
-            <BarChartBox title="Orders by Category" data={categoryOrders} xKey="name" yKey="orders" height={280} />
-          </div>
+        {/* CHARTS */}
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-10">
+          <LineChartBox title="Revenue Trend" data={revenueData} xKey="month" yKey="revenue" height={260} />
+          <BarChartBox title="Orders by Category" data={categoryOrders} xKey="name" yKey="orders" height={260} />
+        </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
+        {/* PIE + CALENDAR */}
+       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 mb-10">
 
-            <div className="bg-white rounded-2xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg">
-              <h2 className="font-bold mb-4">Traffic Sources</h2>
+          {/* PIE */}
+          <div className="bg-white rounded-2xl p-4 sm:p-6 transition-all hover:shadow-lg">
+            <h2 className="font-bold mb-4 text-sm sm:text-base">Traffic Sources</h2>
 
-              <div className="h-[260px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie data={trafficData} dataKey="value" innerRadius={60} outerRadius={100}>
-                      {trafficData.map((_, i) => (
-                        <Cell key={i} fill={COLORS[i]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg">
-              <h2 className="font-bold mb-4">Calendar Snapshot</h2>
-
-              <div className="border rounded-xl p-4">
-
-                <div className="flex justify-between items-center mb-4">
-                  <ChevronLeft onClick={prevMonth} className="cursor-pointer" />
-                  <span className="font-semibold">
-                    {currentDate.toLocaleString("default", { month: "long" })} {year}
-                  </span>
-                  <ChevronRight onClick={nextMonth} className="cursor-pointer" />
-                </div>
-
-                <div className="grid grid-cols-7 text-xs text-gray-500 mb-2">
-                  {weekDays.map(d => (
-                    <div key={d} className="text-center">{d}</div>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-7 gap-2 text-sm">
-                  {[...Array(firstDay)].map((_, i) => <div key={i} />)}
-
-                  {[...Array(daysInMonth)].map((_, i) => {
-                    const day = i + 1;
-                    const isToday =
-                      day === today.getDate() &&
-                      month === today.getMonth() &&
-                      year === today.getFullYear();
-
-                    return (
-                      <div
-                        key={day}
-                        className={`h-9 flex items-center justify-center rounded-lg
-                        ${isToday ? "bg-blue-600 text-white font-bold" : "hover:bg-gray-100"}`}
-                      >
-                        {day}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className="flex justify-between text-xs text-gray-500 mt-5">
-                  <span>Total Orders Today</span>
-                  <span className="font-semibold text-gray-900">{stats.todayOrders || 0}</span>
-                </div>
-
-              </div>
+            <div className="h-[220px] sm:h-[260px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={trafficData} dataKey="value" innerRadius={50} outerRadius={90}>
+                    {trafficData.map((_, i) => (
+                      <Cell key={i} fill={COLORS[i]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          {/* <div className="bg-white border rounded-2xl p-6 mb-12">
-            <h2 className="font-bold mb-6">Conversion Funnel</h2>
+          {/* CALENDAR */}
+          <div className="bg-white rounded-2xl p-4 sm:p-6 transition-all hover:shadow-lg">
+            <h2 className="font-bold mb-4 text-sm sm:text-base">Calendar Snapshot</h2>
 
-            {stats.funnel?.map((f, i) => (
-              <div key={i} className="mb-3">
-                <div className="flex justify-between text-sm mb-1">
-                  <span>{f.label}</span>
-                  <b>{f.value}</b>
-                </div>
+            <div className="border rounded-xl p-3 sm:p-4">
 
-                <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full"
-                  style={{ width: `${100 - i * 15}%` }}
-                />
+              <div className="flex justify-between items-center mb-4 text-sm">
+                <ChevronLeft onClick={prevMonth} className="cursor-pointer" />
+                <span className="font-semibold text-center">
+                  {currentDate.toLocaleString("default", { month: "long" })} {year}
+                </span>
+                <ChevronRight onClick={nextMonth} className="cursor-pointer" />
               </div>
+
+              <div className="grid grid-cols-7 text-[10px] sm:text-xs text-gray-500 mb-2">
+                {weekDays.map(d => (
+                  <div key={d} className="text-center">{d}</div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-1 sm:gap-2 text-xs sm:text-sm">
+                {[...Array(firstDay)].map((_, i) => <div key={i} />)}
+
+                {[...Array(daysInMonth)].map((_, i) => {
+                  const day = i + 1;
+                  const isToday =
+                    day === today.getDate() &&
+                    month === today.getMonth() &&
+                    year === today.getFullYear();
+
+                  return (
+                    <div
+                      key={day}
+                       className={`h-7 sm:h-9 flex items-center justify-center rounded-md sm:rounded-lg
+                      ${isToday ? "bg-blue-600 text-white font-bold" : "hover:bg-gray-100"}`}
+                    >
+                      {day}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex justify-between text-xs text-gray-500 mt-4 sm:mt-5">
+                <span>Total Orders Today</span>
+                <span className="font-semibold text-gray-900">
+                  {stats.todayOrders || 0}
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        {/* TOP PRODUCTS */}
+        <div className="bg-white rounded-2xl p-4 sm:p-6 mb-10 transition-all hover:shadow-lg">
+          <h2 className="font-bold mb-4 sm:mb-6 text-sm sm:text-base">
+            Top Products
+          </h2>
+
+          <div className="space-y-2 sm:space-y-4">
+            {topProducts.map((p, i) => (
+              <ProductRow key={i} {...p} />
             ))}
-          </div> */}
-
-          <div className="bg-white rounded-2xl p-6 mb-12 transition-all hover:-translate-y-1 hover:shadow-lg">
-            <h2 className="font-bold mb-6">Top Products</h2>
-
-            <div className="space-y-4">
-              {topProducts.map((p, i) => (
-                <ProductRow key={i} {...p} />
-              ))}
-            </div>
           </div>
+        </div>
 
-          {/* <div className="flex gap-4">
-            <button onClick={exportCSV} className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm">
-              Export CSV
-            </button>
-
-            <button onClick={downloadReport} className="px-6 py-2.5 border rounded-lg text-sm">
-              Download Report
-            </button>
-          </div> */}
-
-        </main>
-      </div>
+      </main>
     </div>
-  );
+  </div>
+);
+
 }
 
 /* ================= PRODUCT ROW ================= */

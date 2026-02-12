@@ -54,30 +54,51 @@ export const updateProfile = async (req, res) => {
 
 export const getInvoices = async (req, res) => {
   try {
-    const invoices = await Invoice.find({ user: req.user._id }).sort({
-      createdAt: -1,
-    });
+    const invoices = await Invoice.find({ user: req.user._id })
+      .populate("orderId")   // ✅ MATCHES SCHEMA
+      .sort({ createdAt: -1 });
 
     res.json({
       success: true,
       invoices,
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
 
-
-
 /* DOWNLOAD */
+
+// export const downloadInvoice = async (req, res) => {
+//   try {
+//     const invoiceId = req.params.id;
+
+//     const pdfBuffer = await generateInvoicePDF(invoiceId);
+
+//     res.set({
+//       "Content-Type": "application/pdf",
+//       "Content-Disposition": `attachment; filename=invoice-${invoiceId}.pdf`,
+//       "Content-Length": pdfBuffer.length,
+//     });
+
+//     return res.send(pdfBuffer);
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Invoice download failed" });
+//   }
+// };
 
 export const downloadInvoice = async (req, res) => {
   try {
     const invoiceId = req.params.id;
 
     const pdfBuffer = await generateInvoicePDF(invoiceId);
+
+    if (!pdfBuffer) {
+      return res.status(404).json({ message: "Invoice not found" });
+    }
 
     res.set({
       "Content-Type": "application/pdf",
@@ -86,7 +107,6 @@ export const downloadInvoice = async (req, res) => {
     });
 
     return res.send(pdfBuffer);
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Invoice download failed" });

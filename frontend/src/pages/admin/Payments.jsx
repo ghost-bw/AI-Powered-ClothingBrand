@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import Sidebar from "../../components/admin/Sidebar";
 import Header from "../../components/admin/Header";
-
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Download,
@@ -64,10 +63,8 @@ export default function Payments() {
   const [status, setStatus] = useState("all");
   const [range, setRange] = useState("7");
   const [activePayment, setActivePayment] = useState(null);
-const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  /* ===================== FETCH DATA ===================== */
+  const monthMap = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
   useEffect(() => {
     const fetchAdminPayments = async () => {
@@ -80,37 +77,31 @@ const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
           API.get("/admin/dashboard/payments/revenue-chart"),
         ]);
 
-        /* Payments */
         setPayments(
           paymentsRes.data.payments.map((p) => ({
             id: p.paymentId,
             customer: p.userName,
             amount: p.amount,
             method: p.method.toUpperCase(),
-            status:
-              p.status.charAt(0).toUpperCase() + p.status.slice(1),
+            status: p.status.charAt(0).toUpperCase() + p.status.slice(1),
             date: p.createdAt,
           }))
         );
 
-        /* Stats */
         setStats({
           totalRevenue: statsRes.data.totalRevenue,
           netEarnings: Math.round(statsRes.data.totalRevenue * 0.95),
           refundRate: 2.1,
         });
 
-        /* Chart */
-       setRevenueData(
-  chartRes.data.map(d => ({
-    month: monthMap[d._id - 1],
-    revenue: d.revenue
-  }))
-);
-
-
+        setRevenueData(
+          chartRes.data.map((d) => ({
+            month: monthMap[d._id - 1],
+            revenue: d.revenue,
+          }))
+        );
       } catch (err) {
-        console.error("Failed to load payments:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -119,53 +110,41 @@ const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
     fetchAdminPayments();
   }, []);
 
-  /* ===================== FILTERS ===================== */
-
   const filteredPayments = useMemo(() => {
     return payments.filter((p) => {
       const matchSearch =
         p.customer.toLowerCase().includes(search.toLowerCase()) ||
         p.id.toLowerCase().includes(search.toLowerCase());
-
-      const matchMethod = method === "all" || p.method === method;
-      const matchStatus = status === "all" || p.status === status;
-      const matchDate = filterByDate(p.date, range);
-
-      return matchSearch && matchMethod && matchStatus && matchDate;
+      return (
+        matchSearch &&
+        (method === "all" || p.method === method) &&
+        (status === "all" || p.status === status) &&
+        filterByDate(p.date, range)
+      );
     });
   }, [payments, search, method, status, range]);
-
-  /* ===================== LOADER ===================== */
 
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-50">
-        <span className="text-gray-500 font-semibold">
-          Loading payments...
-        </span>
+        Loading payments...
       </div>
     );
   }
 
-  /* ===================== UI ===================== */
-
   return (
-    <div className="flex bg-gray-50 min-h-screen">
+    <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 overflow-y-auto">
         <Header />
 
-        <motion.main
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="p-8 max-w-[1400px] mx-auto"
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+        <main className="px-4 sm:px-6 lg:px-10 py-6 space-y-6 max-w-[1400px] mx-auto w-full min-h-0">
+
+          {/* HEADER */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-extrabold">
+              <h1 className="text-2xl sm:text-3xl font-extrabold">
                 Payments & Revenue
               </h1>
               <p className="text-gray-500">
@@ -174,103 +153,59 @@ const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
             </div>
 
             <button
-              onClick={() =>
-                exportToCSV(filteredPayments, "payments-report")
-              }
-              className="flex items-center gap-2 bg-black text-white px-5 py-3 rounded-xl"
+              onClick={() => exportToCSV(filteredPayments, "payments-report")}
+              className="flex items-center justify-center gap-2 bg-black text-white px-5 py-3 rounded-xl w-full sm:w-auto"
             >
-              <Download size={18} />
-              Export CSV
+              <Download size={18} /> Export CSV
             </button>
           </div>
 
-          {/* Filters */}
-          <div className="flex flex-wrap gap-4 mb-8">
+          {/* FILTERS */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex gap-3">
             <input
-              className="border rounded-xl px-4 py-2 w-64"
+              className="border rounded-xl px-4 py-2"
               placeholder="Search payment / customer"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-
-            <select
-              className="border rounded-xl px-4 py-2"
-              value={method}
-              onChange={(e) => setMethod(e.target.value)}
-            >
+            <select className="border rounded-xl px-4 py-2" value={method} onChange={(e) => setMethod(e.target.value)}>
               <option value="all">All Methods</option>
               <option value="UPI">UPI</option>
               <option value="CARD">Card</option>
               <option value="COD">COD</option>
             </select>
-
-            <select
-              className="border rounded-xl px-4 py-2"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
+            <select className="border rounded-xl px-4 py-2" value={status} onChange={(e) => setStatus(e.target.value)}>
               <option value="all">All Status</option>
               <option value="Success">Success</option>
               <option value="Pending">Pending</option>
               <option value="Failed">Failed</option>
             </select>
-
-            <select
-              className="border rounded-xl px-4 py-2"
-              value={range}
-              onChange={(e) => setRange(e.target.value)}
-            >
+            <select className="border rounded-xl px-4 py-2" value={range} onChange={(e) => setRange(e.target.value)}>
               <option value="7">Last 7 Days</option>
               <option value="30">Last 30 Days</option>
               <option value="all">All Time</option>
             </select>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <StatsCard
-              title="Total Revenue"
-              value={`₹${stats.totalRevenue.toLocaleString()}`}
-              icon={<IndianRupee size={16} />}
-            />
-            <StatsCard
-              title="Refund Rate"
-              value={`${stats.refundRate}%`}
-              icon={<RotateCcw size={16} />}
-            />
-            <StatsCard
-              title="Net Earnings"
-              value={`₹${stats.netEarnings.toLocaleString()}`}
-              icon={<Wallet size={16} />}
-            />
+          {/* STATS */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            <StatsCard title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString()}`} icon={<IndianRupee size={16} />} />
+            <StatsCard title="Refund Rate" value={`${stats.refundRate}%`} icon={<RotateCcw size={16} />} />
+            <StatsCard title="Net Earnings" value={`₹${stats.netEarnings.toLocaleString()}`} icon={<Wallet size={16} />} />
           </div>
 
-          {/* Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+          {/* CHARTS */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <LineChartBox
-                title="Revenue Trend"
-                data={revenueData}
-                xKey="month"
-                yKey="revenue"
-                height={280}
-              />
+              <LineChartBox title="Revenue Trend" data={revenueData} xKey="month" yKey="revenue" height={260} />
             </div>
 
             <div className="bg-white border rounded-2xl p-6">
               <h3 className="font-bold mb-4">Payment Methods</h3>
-              <ResponsiveContainer height={240}>
+              <ResponsiveContainer height={220}>
                 <PieChart>
-                  <Pie
-                    data={getPaymentMethodData(filteredPayments)}
-                    dataKey="value"
-                    nameKey="name"
-                    innerRadius={60}
-                    outerRadius={90}
-                  >
-                    {pieColors.map((c, i) => (
-                      <Cell key={i} fill={c} />
-                    ))}
+                  <Pie data={getPaymentMethodData(filteredPayments)} dataKey="value" nameKey="name" innerRadius={60} outerRadius={90}>
+                    {pieColors.map((c, i) => <Cell key={i} fill={c} />)}
                   </Pie>
                   <Tooltip />
                   <Legend />
@@ -279,8 +214,8 @@ const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
             </div>
           </div>
 
-          {/* Table */}
-          <div className="bg-white rounded-2xl border overflow-hidden">
+          {/* DESKTOP TABLE */}
+          <div className="hidden md:block bg-white rounded-2xl border overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-50">
                 <tr>
@@ -294,24 +229,16 @@ const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
               </thead>
               <tbody>
                 {filteredPayments.map((p) => (
-                  <tr
-                    key={p.id}
-                    className="border-t hover:bg-gray-50"
-                  >
+                  <tr key={p.id} className="border-t hover:bg-gray-50">
                     <td className="p-4 font-semibold">{p.id}</td>
                     <td className="p-4">{p.customer}</td>
-                    <td className="p-4 text-center font-bold">
-                      ₹{p.amount}
-                    </td>
+                    <td className="p-4 text-center font-bold">₹{p.amount}</td>
                     <td className="p-4 text-center">{p.method}</td>
                     <td className="p-4 text-center">
                       <StatusBadge status={p.status} />
                     </td>
                     <td className="p-4 text-center">
-                      <button
-                        onClick={() => setActivePayment(p)}
-                        className="inline-flex items-center gap-1 text-black font-semibold"
-                      >
+                      <button onClick={() => setActivePayment(p)} className="font-semibold flex items-center gap-1 justify-center">
                         <Eye size={16} /> View
                       </button>
                     </td>
@@ -320,16 +247,35 @@ const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
               </tbody>
             </table>
           </div>
-        </motion.main>
+
+          {/* MOBILE CARDS */}
+          <div className="md:hidden space-y-3">
+            {filteredPayments.map((p) => (
+              <div key={p.id} className="bg-white border rounded-xl p-4">
+                <div className="flex justify-between">
+                  <div>
+                    <p className="font-semibold">{p.customer}</p>
+                    <p className="text-xs text-gray-500">{p.id}</p>
+                  </div>
+                  <StatusBadge status={p.status} />
+                </div>
+                <div className="flex justify-between mt-3 text-sm">
+                  <span>{p.method}</span>
+                  <span className="font-bold">₹{p.amount}</span>
+                </div>
+                <button onClick={() => setActivePayment(p)} className="mt-3 text-sm font-semibold flex items-center gap-1">
+                  <Eye size={14} /> View Details
+                </button>
+              </div>
+            ))}
+          </div>
+        </main>
       </div>
 
-      {/* Modal */}
+      {/* MODAL */}
       <AnimatePresence>
         {activePayment && (
-          <PaymentModal
-            payment={activePayment}
-            onClose={() => setActivePayment(null)}
-          />
+          <PaymentModal payment={activePayment} onClose={() => setActivePayment(null)} />
         )}
       </AnimatePresence>
     </div>
@@ -344,47 +290,24 @@ function StatusBadge({ status }) {
     Pending: "bg-yellow-100 text-yellow-700",
     Failed: "bg-red-100 text-red-700",
   };
-
-  return (
-    <span
-      className={`px-3 py-1 rounded-full text-xs font-bold ${map[status]}`}
-    >
-      {status}
-    </span>
-  );
+  return <span className={`px-3 py-1 rounded-full text-xs font-bold ${map[status]}`}>{status}</span>;
 }
 
 function PaymentModal({ payment, onClose }) {
   return (
-    <motion.div
-      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      <motion.div
-        initial={{ scale: 0.9 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0.9 }}
-        className="bg-white rounded-2xl w-full max-w-md p-6"
-      >
+    <motion.div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+      <motion.div className="bg-white rounded-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold">Payment Details</h3>
-          <button onClick={onClose}>
-            <X />
-          </button>
+          <button onClick={onClose}><X /></button>
         </div>
-
         <div className="space-y-3 text-sm">
           <Detail label="Payment ID" value={payment.id} />
           <Detail label="Customer" value={payment.customer} />
           <Detail label="Amount" value={`₹${payment.amount}`} />
           <Detail label="Method" value={payment.method} />
           <Detail label="Status" value={payment.status} />
-          <Detail
-            label="Date"
-            value={new Date(payment.date).toLocaleString()}
-          />
+          <Detail label="Date" value={new Date(payment.date).toLocaleString()} />
         </div>
       </motion.div>
     </motion.div>

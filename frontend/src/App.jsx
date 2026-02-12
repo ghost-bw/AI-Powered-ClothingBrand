@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route ,Navigate} from "react-router-dom";
+import { useEffect } from "react";
+
 // import { ShopProvider } from "./context/ShopContext";
 
 // User pages/components
@@ -15,6 +17,18 @@ import AddCategory from "./pages/admin/AddCategory";
 import NotFound from "./pages/NotFound";
 import AITryOn from "./pages/user/AItryon";
 import RefundRequest from "./pages/user/RefundRequest";
+import About from "./pages/user/About";
+import PrivacyPolicy from "./pages/user/Privacy";
+import TermsOfService from "./pages/user/TermsOfService";
+import Favorites from "./pages/user/Favorites";
+import Contactus from "./pages/user/Contactus";
+import WeaversPage from "./pages/user/WeaversPage";
+import FAQPage from "./pages/user/FAQPage";
+import SustainabilityPage from "./pages/user/SustainabilityPage";
+import Careers from "./pages/user/Careers";
+import ShippingReturns from "./pages/user/ShippingReturns";
+import OurPhilosophy from "./pages/user/OurPhilosophy";
+
 // Admin pages
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminSignup from "./pages/admin/AdminSignup";
@@ -31,6 +45,8 @@ import WhatsAppAutomation from "./pages/admin/WhatsAppAutomation";
 import Coupans from "./pages/admin/Coupons";
 import Notifications from "./pages/admin/Notifications";
 import RefundRequests from "./pages/admin/RefundRequests";
+import AdminOrderDetails from "./pages/admin/OrderDetail";
+
 
 
 // Layout components
@@ -61,6 +77,19 @@ import Payments from "./pages/admin/Payments";
 
 
 const App = () => {
+
+  useEffect(() => {
+    const firstLoad = sessionStorage.getItem("app_first_load");
+
+    if (!firstLoad) {
+      // ✅ clear ONLY ONCE
+      localStorage.removeItem("token");
+      localStorage.removeItem("admin_token");
+
+      sessionStorage.setItem("app_first_load", "true");
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -76,6 +105,18 @@ const App = () => {
         <Route path="/men" element={<MenCategoryPage />} />
         <Route path="/women" element={<WomenCategoryPage />} />
         <Route path="tryon" element={<AITryOn />} />
+         <Route path="/about" element={<About />} />
+         <Route path="/privacy" element={<PrivacyPolicy />} />
+         <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/favorites" element={<Favorites />} />
+           <Route path="/contact" element={<Contactus />} />
+            <Route path="/shipping" element={<ShippingReturns />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/sustainability" element={<SustainabilityPage />} />
+            <Route path="/weavers" element={<WeaversPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/philosophy" element={<OurPhilosophy />} />
+          
 
         {/* User Auth */}
 
@@ -189,14 +230,15 @@ const App = () => {
   }
 />
 
-        <Route
-          path="/admin/orders/:id"
-          element={
-            <AdminProtectedRoute role="admin">
-              <OrderDetails />
-            </AdminProtectedRoute>
-          }
-        />
+       <Route
+  path="/admin/orders/:id"
+  element={
+    <AdminProtectedRoute role="admin">
+      <AdminOrderDetails />
+    </AdminProtectedRoute>
+  }
+/>
+
 
         <Route
   path="/admin/coupons"
@@ -228,6 +270,14 @@ const App = () => {
   element={
     <AdminProtectedRoute role="admin">
       <RefundRequests />
+    </AdminProtectedRoute>
+  }
+/>
+<Route
+  path="/admin/orders/:id"
+  element={
+    <AdminProtectedRoute role="admin">
+      <AdminOrderDetails />
     </AdminProtectedRoute>
   }
 />

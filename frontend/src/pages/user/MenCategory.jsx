@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
 import ProductCard from "../../components/Home/ProductCard";
+import { useShop } from "../../context/ShopContext";
 
 const MenCategoryPage = () => {
   const [products, setProducts] = useState([]);
@@ -11,13 +12,14 @@ const MenCategoryPage = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [loading, setLoading] = useState(true);
 
-  /* ❤️ Wishlist state */
-  const [wishlist, setWishlist] = useState([]);
+  /* ✅ GLOBAL SHOP CONTEXT */
+  // const { toggleWishlist, isWishlisted } = useShop();
 
   /* -------- HERO TYPEWRITER -------- */
-  const headingText = "Men's Clothing Collection";
+   const headingText = "Men's Clothing Collection";
+
   const subText =
-    "Elevate your everyday style with premium fits, timeless designs and confident comfort.";
+    "Elevate your everyday style with premium fits and timeless designs.";
 
   const [typed, setTyped] = useState("");
   const [index, setIndex] = useState(0);
@@ -26,16 +28,17 @@ const MenCategoryPage = () => {
   useEffect(() => {
     if (index < headingText.length) {
       const t = setTimeout(() => {
-        setTyped(prev => prev + headingText[index]);
+        setTyped((prev) => prev + headingText[index]);
         setIndex(index + 1);
-      }, 80);
+      }, 50);
+
       return () => clearTimeout(t);
     } else {
       setDone(true);
     }
-  }, [index, headingText]);
+  }, [index]);
 
-  /* FETCH PRODUCTS */
+  /* ================= FETCH PRODUCTS ================= */
   useEffect(() => {
     loadProducts();
   }, []);
@@ -54,15 +57,15 @@ const MenCategoryPage = () => {
         "All",
         ...new Set(menProducts.map(p => p.category?.name || p.category)),
       ];
-
       setCategories(cats);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Failed to load products", error);
     } finally {
       setLoading(false);
     }
   };
 
+  /* ================= FILTER ================= */
   const filteredProducts =
     activeCategory === "All"
       ? products
@@ -70,94 +73,113 @@ const MenCategoryPage = () => {
           p => (p.category?.name || p.category) === activeCategory
         );
 
-  /* ❤️ Wishlist toggle */
-  const handleWishlistToggle = product => {
-    setWishlist(prev =>
-      prev.includes(product._id)
-        ? prev.filter(id => id !== product._id)
-        : [...prev, product._id]
-    );
-  };
-
   return (
     <div className="bg-[#faf7f2] min-h-screen">
       <Navbar />
 
       {/* ================= HERO ================= */}
-      <div
-        className="relative h-[70vh] bg-cover bg-top"
+      <div className="relative h-[80vh] bg-cover bg-center"
         style={{
           backgroundImage:
-            "url(https://res.cloudinary.com/dttjgnypq/image/upload/v1770404996/male_k752dv.jpg)",
-        }}
-      >
-        {/* shadow overlay */}
-        <div className="absolute inset-0 bg-black/35" />
+            "url(https://res.cloudinary.com/dttjgnypq/image/upload/v1770530824/Men_sCollection_rhgsj6.png)",
+        }}>
+        <div className="absolute inset-0 bg-black/40" />
 
-        <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex items-center justify-end">
-          <motion.div
-            initial={{ scale: 1 }}
-            animate={done ? { scale: [1, 1.07, 1] } : {}}
-            transition={{ duration: 1 }}
-            className="text-right max-w-xl text-white"
-          >
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+        <div className="relative z-10 h-full flex items-center justify-center text-center px-4">
+          <div className="text-white">
+            <h1 className="text-3xl permanent-marker-regular md:text-5xl font-bold font-serif">
               {typed}
-              {!done && <span className="animate-pulse">|</span>}
             </h1>
-            {done && <p className="text-lg text-gray-200">{subText}</p>}
-          </motion.div>
+
+            {done && (
+              <p className="mt-3 text-4xl font-dancing text-gray-200">
+                {subText}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
       {/* ================= CONTENT ================= */}
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-4 gap-8">
-
         {/* SIDEBAR */}
-        <aside>
-          <div className="bg-white rounded-xl shadow p-5 sticky top-24">
-            <div className="flex items-center gap-2 mb-4">
-              <SlidersHorizontal size={18} />
-              <h2 className="font-semibold text-lg">Categories</h2>
-            </div>
+       <aside className="lg:col-span-1">
+  <div
+    className="
+      bg-white rounded-xl shadow 
+      p-4 sm:p-5 
+      lg:sticky lg:top-24
+    "
+  >
+    <div className="flex items-center gap-2 mb-3">
+      <SlidersHorizontal size={18} />
+      <h2 className="permanent-marker-regular text-xl tracking-wide">
+        Categories
+      </h2>
+    </div>
 
-            <ul className="space-y-2">
-              {categories.map(cat => (
-                <motion.li
-                  key={cat}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`cursor-pointer px-4 py-2 rounded-md text-sm font-medium ${
-                    activeCategory === cat
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  {cat}
-                </motion.li>
-              ))}
-            </ul>
-          </div>
-        </aside>
+    <ul
+      className="
+        flex lg:flex-col gap-2
+        overflow-x-auto lg:overflow-visible
+        pb-2 lg:pb-0
+      "
+    >
+      {categories.map((cat) => (
+        <motion.li
+          key={cat}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setActiveCategory(cat)}
+          className={`cinzel
+            whitespace-nowrap cursor-pointer 
+            px-4 py-2 rounded-md
+            text-sm sm:text-base tracking-wide
+            transition
+            ${
+              activeCategory === cat
+                ? "bg-black text-white"
+                : "bg-gray-100 hover:bg-gray-200"
+            }
+          `}
+        >
+          {cat}
+        </motion.li>
+      ))}
+    </ul>
+  </div>
+</aside>
+
 
         {/* PRODUCTS */}
         <section className="lg:col-span-3">
           {loading && (
-            <p className="text-center text-gray-500">Loading products...</p>
+            <p className="text-center text-gray-500">
+              Loading products...
+            </p>
+          )}
+
+          {!loading && filteredProducts.length === 0 && (
+            <p className="text-center text-gray-500">
+              No products found.
+            </p>
           )}
 
           <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
+  layout
+  className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+>
+
             {filteredProducts.map(product => (
-              <motion.div key={product._id} layout whileHover={{ y: -6 }}>
-                <ProductCard
-                  product={product}
-                  onWishlistToggle={handleWishlistToggle}
-                  isWishlisted={wishlist.includes(product._id)}
-                />
+              <motion.div
+                key={product._id}
+                layout
+                whileHover={{ y: -6 }}
+              >
+               <ProductCard
+                product={product}
+              />
+
               </motion.div>
             ))}
           </motion.div>

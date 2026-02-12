@@ -1,122 +1,169 @@
-// context/ShopContext.jsx
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
+import API from "../api/axios";
 
 const ShopContext = createContext();
 
 export function ShopProvider({ children }) {
+  /* =======================
+     STATE
+  ======================== */
   const [cart, setCart] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
-  const [notification, setNotification] = useState(null);
+    const [notification, setNotification] = useState(null);
 
-  // Load from localStorage on mount
+  /* =======================
+     LOAD FROM LOCAL STORAGE
+  ======================== */
   useEffect(() => {
-    const savedCart = localStorage.getItem('graphura_cart');
-    const savedWishlist = localStorage.getItem('graphura_wishlist');
-    
-    if (savedCart) setCart(JSON.parse(savedCart));
-    if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
+    try {
+      const savedCart = JSON.parse(
+        localStorage.getItem("graphura_cart")
+      );
+     
+
+      if (Array.isArray(savedCart)) setCart(savedCart);
+      
+    } catch (err) {
+      console.error("LocalStorage load failed", err);
+    }
   }, []);
 
-  // Save to localStorage on change
+  /* =======================
+     SAVE TO LOCAL STORAGE
+  ======================== */
   useEffect(() => {
-    localStorage.setItem('graphura_cart', JSON.stringify(cart));
+    localStorage.setItem(
+      "graphura_cart",
+      JSON.stringify(cart)
+    );
   }, [cart]);
 
-  useEffect(() => {
-    localStorage.setItem('graphura_wishlist', JSON.stringify(wishlist));
-  }, [wishlist]);
 
+
+  /* =======================
+     CART FUNCTIONS
+  ======================== */
   const addToCart = (product) => {
-    setCart(prev => {
-      const existingItem = prev.find(item => 
-        item.id === product.id && 
-        item.size === product.size && 
-        item.color === product.color
-      );
-      
-      if (existingItem) {
-        return prev.map(item =>
-          item.id === product.id && 
-          item.size === product.size && 
+    setCart((prev) => {
+      const existing = prev.find(
+        (item) =>
+          item._id === product._id &&
+          item.size === product.size &&
           item.color === product.color
-            ? { ...item, quantity: item.quantity + product.quantity }
+      );
+
+      if (existing) {
+        return prev.map((item) =>
+          item._id === product._id &&
+          item.size === product.size &&
+          item.color === product.color
+            ? {
+                ...item,
+                quantity: item.quantity + product.quantity,
+              }
             : item
         );
       }
-      
+
       return [...prev, product];
     });
-    
+
     showNotification(`${product.name} added to cart`);
   };
 
   const removeFromCart = (productId, size, color) => {
-    setCart(prev => prev.filter(item => 
-      !(item.id === productId && item.size === size && item.color === color)
-    ));
-    showNotification('Item removed from cart');
+    setCart((prev) =>
+      prev.filter(
+        (item) =>
+          !(
+            item._id === productId &&
+            item.size === size &&
+            item.color === color
+          )
+      )
+    );
+    showNotification("Item removed from cart");
   };
 
-  const updateQuantity = (productId, size, color, newQuantity) => {
-    setCart(prev => prev.map(item =>
-      item.id === productId && item.size === size && item.color === color
-        ? { ...item, quantity: Math.max(1, newQuantity) }
-        : item
-    ));
-  };
-
-  const toggleWishlist = (product) => {
-    setWishlist(prev => {
-      const isWishlisted = prev.find(item => item.id === product.id);
-      
-      if (isWishlisted) {
-        showNotification(`${product.name} removed from wishlist`);
-        return prev.filter(item => item.id !== product.id);
-      } else {
-        showNotification(`${product.name} added to wishlist`);
-        return [...prev, { ...product, addedAt: new Date().toISOString() }];
-      }
-    });
+  const updateQuantity = (productId, size, color, qty) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item._id === productId &&
+        item.size === size &&
+        item.color === color
+          ? { ...item, quantity: Math.max(1, qty) }
+          : item
+      )
+    );
   };
 
   const clearCart = () => {
     setCart([]);
-    showNotification('Cart cleared');
+    showNotification("Cart cleared");
   };
 
-  const showNotification = (message, type = 'success') => {
+  /* =======================
+     WISHLIST FUNCTIONS
+  ======================== */
+
+
+
+ 
+  /* =======================
+     HELPERS
+  ======================== */
+  const cartTotal = cart.reduce(
+    (total, item) =>
+      total + item.price * item.quantity,
+    0
+  );
+
+  const cartCount = cart.reduce(
+    (count, item) => count + item.quantity,
+    0
+  );
+
+  const showNotification = (
+    message,
+    type = "success"
+  ) => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const cartTotal = cart.reduce((total, item) => 
-    total + (item.price * item.quantity), 0
-  );
-
-  const cartCount = cart.reduce((count, item) => count + item.quantity, 0);
-
+  /* =======================
+     PROVIDER
+  ======================== */
   return (
-    <ShopContext.Provider value={{
-      cart,
-      wishlist,
-      notification,
-      addToCart,
-      removeFromCart,
-      updateQuantity,
-      toggleWishlist,
-      clearCart,
-      cartTotal,
-      cartCount,
-      showNotification
-    }}>
+    <ShopContext.Provider
+      value={{
+        cart,
+       
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+      
+        cartTotal,
+        cartCount,
+      }}
+    >
       {children}
+
       {notification && (
-        <div className={`fixed top-20 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transition-transform duration-300 transform translate-x-0 ${notification.type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`}>
+        <div
+          className={`fixed top-20 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transition-all
+          ${
+            notification.type === "success"
+              ? "bg-green-100 text-green-800 border border-green-200"
+              : "bg-red-100 text-red-800 border border-red-200"
+          }`}
+        >
           {notification.message}
         </div>
       )}
     </ShopContext.Provider>
   );
 }
+
 
 export const useShop = () => useContext(ShopContext);

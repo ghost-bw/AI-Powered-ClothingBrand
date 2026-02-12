@@ -92,7 +92,7 @@ const handleTryOn = async () => {
 
   } catch (err) {
     console.error(err);
-    alert("AI Try-On Failed");
+    alert("Try-On Failed");
   } finally {
     setLoading(false);
   }
@@ -116,7 +116,7 @@ const handleTryOn = async () => {
           </button>
 
           <div className="text-center flex-1">
-            <h1 className="text-3xl font-bold">Try Clothes With AI</h1>
+            <h1 className="text-3xl font-bold">Try Clothes on you</h1>
             <p className="text-gray-500 mt-1">
               Upload your photo & preview outfits instantly
             </p>

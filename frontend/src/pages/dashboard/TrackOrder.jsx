@@ -91,14 +91,14 @@ export default function TrackOrder() {
             {/* CENTER */}
             <div className="text-sm text-gray-600 space-y-1">
 
-              <p>
+              {/* <p>
                 <span className="font-medium text-gray-800">Product:</span>{" "}
                 {o.items?.map((item, i) => (
                   <span key={i} className="block">
                     {item.name}
                   </span>
                 ))}
-              </p>
+              </p> */}
 
               <p>
                 <span className="font-medium text-gray-800">Items:</span>{" "}

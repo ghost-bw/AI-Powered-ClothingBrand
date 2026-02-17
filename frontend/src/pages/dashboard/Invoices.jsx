@@ -77,22 +77,18 @@ const Invoices = () => {
               </div>
 
               <div>
-                <p className="font-semibold text-gray-900">
-                  INV-{invoice._id.slice(-5)}
-                </p>
+                <p className="font-semibold text-gray-900">{invoice.id}</p>
                 <p className="text-xs text-gray-500">
                   Order: {invoice.orderId}
                 </p>
-                <p className="text-xs text-gray-500">
-                  Date: {new Date(invoice.createdAt).toLocaleDateString()}
-                </p>
+                <p className="text-xs text-gray-500">Date: {invoice.date}</p>
               </div>
             </div>
 
             {/* Amount */}
             <div className="flex items-center gap-3">
               <span className="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">
-                Paid
+                {invoice.status}
               </span>
               <p className="text-lg font-bold text-gray-900">
                 ₹{invoice.amount}
@@ -101,7 +97,7 @@ const Invoices = () => {
 
             {/* DOWNLOAD BUTTON */}
             <button
-              onClick={() => handleDownload(invoice._id)}
+              onClick={() => handleDownload(invoice.file, invoice.id)}
               className="
     group inline-flex items-center justify-center gap-2
     px-5 py-2.5 rounded-xl text-sm font-semibold

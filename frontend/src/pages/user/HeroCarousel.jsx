@@ -78,34 +78,27 @@ useEffect(() => {
   return (
     <div className="w-full mt-10 mb-12 relative">
       <div className="w-full mx-auto px-4 overflow-hidden relative">
-
         {/* LEFT */}
-       <button
-  onClick={() => index > 0 && setIndex(index - 1)}
-  className="absolute left-2 top-1/2 -translate-y-1/2 z-10
-    bg-white/80 backdrop-blur-md
-    p-2 sm:p-3
-    rounded-full shadow-md hover:bg-white transition"
->
-  <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-</button>
-
+        <button
+          onClick={() => index > 0 && setIndex(index - 1)}
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-10
+          bg-white/80 backdrop-blur-md p-3 rounded-full shadow-md hover:bg-white"
+        >
+          <ChevronLeft size={22} />
+        </button>
 
         {/* RIGHT */}
-       <button
-  onClick={() => setIndex(index + 1)}
-  className="absolute right-2 top-1/2 -translate-y-1/2 z-10
-    bg-white/80 backdrop-blur-md
-    p-2 sm:p-3
-    rounded-full shadow-md hover:bg-white transition"
->
-  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-</button>
-
+        <button
+          onClick={() => setIndex(index + 1)}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10
+          bg-white/80 backdrop-blur-md p-3 rounded-full shadow-md hover:bg-white"
+        >
+          <ChevronRight size={22} />
+        </button>
 
         {/* TRACK */}
         <div
-          className={`flex w-[70%] ${
+          className={`flex w-[70%]  ${
             isAnimating ? "transition-transform duration-700 ease-in-out" : ""
           }`}
           style={{
@@ -128,23 +121,19 @@ useEffect(() => {
                 />
 
                 <div className="absolute inset-0 bg-black/30 flex flex-col justify-end p-6 text-white">
-                  <h2 className="permanent-marker-regular text-2xl font-bold">
+                  <h2 className="cinzel text-2xl font-bold">
                     {item.carouselTitle}
                   </h2>
-
-                  <p className="cinzel">
-                    {item.carouselSubtitle}
+                  <p className="cinzel">{item.carouselSubtitle}</p>
+                  <p className="cinzel text-xl  mt-1">
+                    <b>MRP: </b>{item.carouselPriceText}
                   </p>
-
-                  <p className="permanent-marker-regular text-xl font-extrabold mt-1">
-                    {item.carouselPriceText}
-                  </p>
+                  <p className="cinzel"><span><b>Size: </b></span>{item.size}</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );

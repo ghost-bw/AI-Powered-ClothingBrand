@@ -34,7 +34,7 @@ useEffect(() => {
 
 useEffect(() => {
   if (cart.length) loadRecommended();
-}, [cart]);
+}, []);
 
 
 const loadCart = async () => {
@@ -44,6 +44,8 @@ const loadCart = async () => {
     Authorization: `Bearer ${localStorage.getItem("token")}`
    }
   });
+
+  console.log(res)
 
   // console.log("ME:", res.data);
 
@@ -126,10 +128,19 @@ const addRecommendedItem=async(item)=>{
 };
 
 /* ================= WISHLIST ================= */
-const toggleWishlist=async(id)=>{
- await API.post(`/cart/wishlist/${id}`);
- loadWishlist();
+// const toggleWishlist=async(id)=>{
+//  await API.post(`/cart/wishlist/${id}`);
+//  loadWishlist();
+// };
+const toggleWishlist = async(id)=>{
+  try {
+    await API.post(`/wishlist/${id}`);
+    loadWishlist();
+  } catch (err) {
+    console.log(err);
+  }
 };
+
 
 // const subtotal=cartTotal;
 // const estimatedShipping=subtotal>=freeShippingThreshold?0:shippingCost;
@@ -182,6 +193,7 @@ const handleApplyPromo = async () => {
 const handleCheckout = () => {
  console.log("CHECKOUT CLICKED");
  console.log("cart before nav:", cart);
+ console.log("Navigate")
  navigate("/checkout");
 };
 
@@ -189,10 +201,16 @@ const handleCheckout = () => {
 
 const cartCount = cart.reduce((a,b)=>a + b.quantity,0);
 
-const subtotal = cart.reduce(
-  (a,b)=>a + (b.price * b.quantity),
-  0
-);
+const subtotal = cart.reduce((sum, item) => {
+  const price =
+    item.product?.discountPrice ??
+    item.product?.price ??
+    0;
+
+  return sum + price * item.quantity;
+}, 0);
+
+
 
 const estimatedShipping =
   subtotal >= freeShippingThreshold ? 0 : shippingCost;
@@ -240,10 +258,12 @@ const handleQuantityChange = async (item, delta) => {
               style={{ width: `${freeShippingProgress}%` }}
             ></div>
           </div>
-          
+
           <p className="text-sm text-gray-600">
             {subtotal >= freeShippingThreshold ? (
-              <span className="text-green-600 font-medium">🎉 You've unlocked Free Express Shipping!</span>
+              <span className="text-green-600 font-medium">
+                🎉 You've unlocked Free Express Shipping!
+              </span>
             ) : (
               `Add ₹${amountNeeded} more to unlock Free Express Shipping.`
             )}
@@ -260,9 +280,14 @@ const handleQuantityChange = async (item, delta) => {
             {cart.length === 0 ? (
               <div className="bg-white rounded-lg shadow-sm p-12 text-center">
                 <div className="text-5xl mb-4">🛒</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h3>
-                <p className="text-gray-600 mb-6">Looks like you haven't added anything to your cart yet.</p>
-                <Link to="/collections"
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Your cart is empty
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Looks like you haven't added anything to your cart yet.
+                </p>
+                <Link
+                  to="/collections"
                   className="inline-block bg-black text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
                 >
                   Start Shopping
@@ -271,16 +296,24 @@ const handleQuantityChange = async (item, delta) => {
             ) : (
               <div className="space-y-6">
                 {cart.map((item) => (
-                  <div key={`${item._id}-${item.size}-${item.color}`} className="bg-white rounded-lg shadow-sm p-6">
+                  <div
+                    key={item._id}
+                    className="bg-white rounded-lg shadow-sm p-6"
+                  >
                     <div className="flex flex-col md:flex-row gap-6">
                       {/* Product Image */}
                       <div className="md:w-1/4">
                         <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                           <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                          />
+  src={
+    item.product?.colors?.[0]?.images?.[0] ||
+    item.product?.images?.[0] ||
+    "/placeholder.jpg"
+  }
+  alt={item.product?.name || "Product"}
+  className="w-full h-full object-cover"
+/>
+
                         </div>
                       </div>
                       
@@ -289,7 +322,7 @@ const handleQuantityChange = async (item, delta) => {
                         <div className="flex justify-between">
                           <div>
                             <h3 className="text-lg font-medium text-gray-900 mb-2">
-                              {item.name}
+                              {item.product?.name || item.name}
                             </h3>
                             <p className="text-sm text-gray-600 mb-1">
                               Size: {item.size} | Color: {item.color}
@@ -317,7 +350,12 @@ const handleQuantityChange = async (item, delta) => {
                               </button>
                             </div>
                             <div className="text-lg font-bold">
-                              ₹{(item.price * item.quantity).toLocaleString()}
+                            ₹{(
+  (item.product?.discountPrice ??
+    item.product?.price ??
+    0) * item.quantity
+).toLocaleString()}
+
                             </div>
                           </div>
                         </div>
@@ -327,25 +365,32 @@ const handleQuantityChange = async (item, delta) => {
                           <button
                             onClick={() => {
                               const wishlistItem = {
-                                id: item._id,
+                                id: item.id,
                                 name: item.name,
                                 price: item.price,
                                 image: item.image,
-                                category: item.category || 'General'
+                                category: item.category || "General",
                               };
-                              toggleWishlist(item._id);
+                              toggleWishlist(wishlistItem);
                             }}
                             className={`px-4 py-2 text-sm font-medium rounded-md border flex items-center gap-2 ${
                               isInWishlist(item._id)
-                                ? 'bg-red-50 text-red-600 border-red-200' 
-                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                ? "bg-red-50 text-red-600 border-red-200"
+                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                             }`}
                           >
-                            <Heart size={16} className={isInWishlist(item._id) ? 'fill-red-600' : ''} />
-                            {isInWishlist(item._id) ? 'SAVED' : 'SAVE FOR LATER'}
+                            <Heart
+                              size={16}
+                              className={
+                                isInWishlist(item.id) ? "fill-red-600" : ""
+                              }
+                            />
+                            {isInWishlist(item.id) ? "SAVED" : "SAVE FOR LATER"}
                           </button>
                           <button
-                            onClick={() => removeFromCart(item._id)}
+                            onClick={() =>
+                              removeFromCart(item._id)
+                            }
                             className="px-4 py-2 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-md hover:bg-red-50 flex items-center gap-2"
                           >
                             <Trash2 size={16} />
@@ -362,12 +407,22 @@ const handleQuantityChange = async (item, delta) => {
             {/* Continue Shopping */}
             {cart.length > 0 && (
               <div className="mt-8">
-                <Link 
+                <Link
                   to="/collections"
                   className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
                 >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
                   </svg>
                   Continue Shopping
                 </Link>
@@ -383,11 +438,13 @@ const handleQuantityChange = async (item, delta) => {
                 <h2 className="text-xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-200">
                   Order Summary
                 </h2>
-                
+
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-700">
                     <span>Subtotal ({cartCount} items)</span>
-                    <span className="font-medium">₹{subtotal.toLocaleString()}</span>
+                    <span className="font-medium">
+                      ₹{subtotal.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between text-gray-700">
                     <span>Estimated Shipping</span>
@@ -403,14 +460,16 @@ const handleQuantityChange = async (item, delta) => {
                     <span>GST (12%)</span>
                     <span className="font-medium">₹{gst.toFixed(0)}</span>
                   </div>
-                  
+
                   {discount > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount Applied</span>
-                      <span className="font-medium">-₹{discount.toFixed(0)}</span>
+                      <span className="font-medium">
+                        -₹{discount.toFixed(0)}
+                      </span>
                     </div>
                   )}
-                  
+
                   <div className="border-t border-gray-200 pt-4">
                     <div className="flex justify-between text-lg font-bold text-gray-900">
                       <span>Total Amount</span>
@@ -418,7 +477,6 @@ const handleQuantityChange = async (item, delta) => {
                     </div>
                   </div>
                 </div>
-                
                 {/* Promo Code */}
                 <div className="mb-6">
                   <div className="flex gap-2">
@@ -437,41 +495,48 @@ const handleQuantityChange = async (item, delta) => {
                     </button>
                   </div>
                 </div>
-                
                 {/* Checkout Button */}
                 <button
                   onClick={handleCheckout}
                   disabled={cart.length === 0}
                   className={`w-full py-4 font-medium rounded-md transition-colors ${
                     cart.length === 0
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-black text-white hover:bg-gray-800'
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-black text-white hover:bg-gray-800"
                   }`}
                 >
                   PROCEED TO CHECKOUT
                 </button>
-                
+
                 {/* Trust Badges */}
                 <div className="mt-8 grid grid-cols-3 gap-4 text-center">
                   <div className="text-xs">
-                    <div className="text-gray-900 font-semibold mb-1">100% SECURE CHECKOUT</div>
+                    <div className="text-gray-900 font-semibold mb-1">
+                      100% SECURE CHECKOUT
+                    </div>
                     <div className="text-gray-500">SSL Protected</div>
                   </div>
                   <div className="text-xs">
-                    <div className="text-gray-900 font-semibold mb-1">EASY 15-DAY RETURNS</div>
+                    <div className="text-gray-900 font-semibold mb-1">
+                      EASY 15-DAY RETURNS
+                    </div>
                     <div className="text-gray-500">No Questions Asked</div>
                   </div>
                   <div className="text-xs">
-                    <div className="text-gray-900 font-semibold mb-1">FREE SHIPPING</div>
-                    <div className="text-gray-500">Over ₹7,000</div>
+                    <div className="text-gray-900 font-semibold mb-1">
+                      FREE SHIPPING
+                    </div>
+                    <div className="text-gray-500">Over ₹499</div>
                   </div>
                 </div>
-                
+
                 {/* Help Section */}
                 <div className="mt-8 pt-6 border-t border-gray-200">
-                  <p className="text-gray-700 mb-3">Need help? Contact Styling Expert</p>
-                  <a 
-                    href="tel:+911234567890" 
+                  <p className="text-gray-700 mb-3">
+                    Need help? Contact Styling Expert
+                  </p>
+                  <a
+                    href="tel:+911234567890"
                     className="text-blue-600 font-medium hover:text-blue-800"
                   >
                     +91 7378021327
@@ -485,13 +550,13 @@ const handleQuantityChange = async (item, delta) => {
                   <h3 className="text-lg font-bold text-gray-900 mb-4">
                     Complete the Look
                   </h3>
-                  
+
                   <div className="space-y-4">
                     {recommendedItems.map((item) => (
-                      <div 
-                        key={item._id} 
+                      <div
+                        key={item.id}
                         className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-md transition-colors cursor-pointer"
-                        onClick={(e) => goToProductDetail(item._id, e)}
+                        onClick={(e) => goToProductDetail(item.id, e)}
                       >
                         <div className="flex items-center">
                           <div className="w-16 h-16 bg-gray-100 rounded-md mr-3 overflow-hidden">
@@ -505,15 +570,19 @@ const handleQuantityChange = async (item, delta) => {
                             <h4 className="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors">
                               {item.name}
                             </h4>
-                          <p className="text-xs text-gray-500">{item.category?.name || ""}</p>
-
+                            <p className="text-xs text-gray-500">
+                              {item.category}
+                            </p>
                             <div className="flex items-center gap-2">
-                              <p className="text-sm font-bold text-gray-900">₹{item.price.toLocaleString()}</p>
-                              {item.originalPrice && item.originalPrice > item.price && (
-                                <p className="text-xs text-gray-500 line-through">
-                                  ₹{item.originalPrice.toLocaleString()}
-                                </p>
-                              )}
+                              <p className="text-sm font-bold text-gray-900">
+                                ₹{item.price.toLocaleString()}
+                              </p>
+                              {item.originalPrice &&
+                                item.originalPrice > item.price && (
+                                  <p className="text-xs text-gray-500 line-through">
+                                    ₹{item.originalPrice.toLocaleString()}
+                                  </p>
+                                )}
                               {item.discount > 0 && (
                                 <span className="text-xs bg-red-100 text-red-600 px-1.5 py-0.5 rounded">
                                   {item.discount}% OFF
@@ -522,8 +591,12 @@ const handleQuantityChange = async (item, delta) => {
                             </div>
                             {item.rating && (
                               <div className="flex items-center mt-1">
-                                <span className="text-xs text-yellow-500">★</span>
-                                <span className="text-xs text-gray-600 ml-1">{item.rating}</span>
+                                <span className="text-xs text-yellow-500">
+                                  ★
+                                </span>
+                                <span className="text-xs text-gray-600 ml-1">
+                                  {item.rating}
+                                </span>
                               </div>
                             )}
                           </div>
@@ -540,10 +613,10 @@ const handleQuantityChange = async (item, delta) => {
                       </div>
                     ))}
                   </div>
-                  
+
                   {/* View More Link */}
                   <div className="mt-4 pt-4 border-t border-gray-200">
-                    <Link 
+                    <Link
                       to="/collections"
                       className="text-center block text-sm text-blue-600 hover:text-blue-800 font-medium"
                     >

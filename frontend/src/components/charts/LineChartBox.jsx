@@ -8,18 +8,12 @@ import {
   CartesianGrid,
 } from "recharts";
 
-export default function LineChartBox({
-  title,
-  data,
-  xKey,
-  yKey,
-}) {
+export default function LineChartBox({ title, data, xKey, yKey }) {
   return (
-    <div className="bg-white rounded-2xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg">
+    <div className="bg-white border rounded-2xl p-4 sm:p-6">
+      <h2 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">{title}</h2>
 
-      <h2 className="font-bold mb-4">{title}</h2>
-
-      <div className="h-[280px]">
+      <div className="h-[220px] sm:h-[260px] lg:h-[280px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <defs>

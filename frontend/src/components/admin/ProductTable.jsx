@@ -1,14 +1,22 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 
+
+import { products as initialProducts } from "../../data/products";
+import ProductModal from "./ProductModal";
+
+
 const ITEMS_PER_PAGE = 5;
 
 export default function ProductTable() {
+
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
+
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
@@ -47,15 +55,19 @@ export default function ProductTable() {
     const matchCategory =
       category === "All" || product?.category?.name === category;
 
+
     const matchStock =
       stockFilter === "All"
         ? true
         : stockFilter === "Low"
+
         ? totalStock < 10
         : totalStock > 0;
 
+
     return matchSearch && matchCategory && matchStock;
   });
+
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -79,11 +91,13 @@ export default function ProductTable() {
     } catch {
       alert("Delete failed");
     }
+
   };
 
   const resetPage = () => setCurrentPage(1);
 
   return (
+
     <div className="bg-white rounded-2xl border border-gray-200 shadow-md overflow-y-auto">
 
       {/* HEADER */}
@@ -281,5 +295,6 @@ export default function ProductTable() {
         </div>
       )}
     </div>
+
   );
 }

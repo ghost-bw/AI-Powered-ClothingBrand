@@ -139,7 +139,8 @@ const OurPhilosophy = () => {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed italic px-4"
             >
-              Experience the timeless artistry of Indian craftsmanship, refined for a global audience.
+              Experience the timeless artistry of Indian craftsmanship, refined
+              for a global audience.
             </motion.p>
           </motion.div>
         </div>
@@ -175,11 +176,12 @@ const OurPhilosophy = () => {
                 HANDCRAFTED IN INDIA
               </span>
             </div>
-            
+
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-light text-gray-800 mb-6 sm:mb-8 leading-tight">
-              We design minimalist, enduring silhouettes that embody quiet luxury
+              We design minimalist, enduring silhouettes that embody quiet
+              luxury
             </h2>
-            
+
             <p className="text-lg sm:text-xl md:text-2xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
               — timeless fashion that stands the test of time.
             </p>
@@ -196,15 +198,13 @@ const OurPhilosophy = () => {
                   <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="w-2 h-2 bg-[#ECD1A8] rounded-full"></div>
                   </div>
-                  
+
                   <div className="mb-4 sm:mb-6">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#F8F3E9] to-[#ECD1A8] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
-                      <div className="text-[#B89A67]">
-                        {pillar.icon}
-                      </div>
+                      <div className="text-[#B89A67]">{pillar.icon}</div>
                     </div>
                   </div>
-                  
+
                   <h3 className="text-lg sm:text-xl font-serif font-medium text-gray-800 mb-2 sm:mb-3">
                     {pillar.title}
                   </h3>
@@ -227,7 +227,10 @@ const OurPhilosophy = () => {
           variants={containerVariants}
           className="max-w-6xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="text-center mb-12 sm:mb-16 md:mb-20">
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-12 sm:mb-16 md:mb-20"
+          >
             <div className="flex items-center justify-center gap-3 sm:gap-4 mb-6">
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#ECD1A8] to-transparent"></div>
               <span className="text-sm sm:text-base font-medium tracking-widest text-[#B89A67] uppercase">
@@ -235,12 +238,12 @@ const OurPhilosophy = () => {
               </span>
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#ECD1A8] to-transparent"></div>
             </div>
-            
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-gray-800 mb-4">
               The Art of Creation
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              From concept to creation, each piece undergoes a meticulous journey
+              From concept to creation, each piece undergoes a meticulous
+              journey
             </p>
           </motion.div>
 
@@ -257,12 +260,14 @@ const OurPhilosophy = () => {
                     <div className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 w-8 h-8 sm:w-12 sm:h-12 bg-white border-2 border-[#ECD1A8] rounded-full flex items-center justify-center font-serif font-bold text-gray-800 text-sm sm:text-base shadow-lg z-20">
                       {step.step}
                     </div>
-                    
+
                     {/* Card */}
                     <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 overflow-hidden group-hover:shadow-2xl transition-all duration-300 h-full">
                       {/* Top gradient bar */}
-                      <div className={`h-2 sm:h-3 bg-gradient-to-r ${step.color}`}></div>
-                      
+                      <div
+                        className={`h-2 sm:h-3 bg-gradient-to-r ${step.color}`}
+                      ></div>
+
                       <div className="p-6 sm:p-8">
                         <h3 className="text-xl sm:text-2xl font-serif font-medium text-gray-800 mb-3 sm:mb-4">
                           {step.title}
@@ -271,13 +276,11 @@ const OurPhilosophy = () => {
                           {step.description}
                         </p>
                       </div>
-                      
                       {/* Bottom decorative line */}
                       <div className="px-6 sm:px-8 pb-6 sm:pb-8">
                         <div className="w-12 h-0.5 bg-gradient-to-r from-[#ECD1A8] to-transparent"></div>
                       </div>
                     </div>
-                    
                     {/* Connecting line for mobile */}
                     {index < craftProcess.length - 1 && (
                       <div className="lg:hidden absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-0.5 h-8 bg-gradient-to-b from-[#ECD1A8] to-transparent"></div>
@@ -299,7 +302,10 @@ const OurPhilosophy = () => {
           variants={containerVariants}
           className="max-w-6xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="text-center mb-12 sm:mb-16">
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-12 sm:mb-16"
+          >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-gray-800 mb-4">
               Our Core Values
             </h2>
@@ -321,7 +327,9 @@ const OurPhilosophy = () => {
                     </h3>
                   </div>
                   <p className="text-gray-600 leading-relaxed">
-                    We believe in creating fashion that lasts, reducing waste through timeless designs and durable materials that age gracefully.
+                    We believe in creating fashion that lasts, reducing waste
+                    through timeless designs and durable materials that age
+                    gracefully.
                   </p>
                 </div>
 
@@ -335,7 +343,8 @@ const OurPhilosophy = () => {
                     </h3>
                   </div>
                   <p className="text-gray-600 leading-relaxed">
-                    Preserving traditional Indian craftsmanship while providing fair wages and sustainable livelihoods for our artisans.
+                    Preserving traditional Indian craftsmanship while providing
+                    fair wages and sustainable livelihoods for our artisans.
                   </p>
                 </div>
               </div>
@@ -363,7 +372,8 @@ const OurPhilosophy = () => {
                     </div>
                   </div>
                   <p className="text-gray-600 leading-relaxed">
-                    Uncompromising attention to detail in every stitch, ensuring each piece meets our rigorous standards of excellence.
+                    Uncompromising attention to detail in every stitch, ensuring
+                    each piece meets our rigorous standards of excellence.
                   </p>
                 </div>
 
@@ -377,7 +387,8 @@ const OurPhilosophy = () => {
                     </div>
                   </div>
                   <p className="text-gray-600 leading-relaxed">
-                    Bringing Indian craftsmanship to the global stage while maintaining cultural authenticity and artisanal integrity.
+                    Bringing Indian craftsmanship to the global stage while
+                    maintaining cultural authenticity and artisanal integrity.
                   </p>
                 </div>
               </div>
@@ -401,12 +412,12 @@ const OurPhilosophy = () => {
                 WORLD-CLASS CRAFTSMANSHIP
               </span>
             </div>
-            
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-gray-800 mb-4 sm:mb-6">
               Experience Indian Craftsmanship
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-8 sm:mb-12">
-              Discover collections that celebrate heritage while embracing contemporary elegance
+              Discover collections that celebrate heritage while embracing
+              contemporary elegance
             </p>
           </div>
 
@@ -420,7 +431,6 @@ const OurPhilosophy = () => {
                 →
               </span>
             </a>
-            
             <a
               href="/about"
               className="inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-800 font-medium rounded-full hover:bg-gray-50 transition-colors shadow-lg hover:shadow-xl text-sm sm:text-base border border-gray-200"

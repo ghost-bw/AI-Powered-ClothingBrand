@@ -37,6 +37,13 @@ import {
   ClipboardCheck,
   Share2,
   Cpu,
+  ShoppingBag,
+  Package,
+  Truck,
+  Gift,
+  RefreshCw,
+  ThumbsUp,
+  HelpCircle,
 } from "lucide-react";
 
 const TermsOfService = () => {
@@ -100,6 +107,9 @@ const TermsOfService = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-8 text-gray-900 tracking-tight px-4">
               Terms of <span className="text-[#B89A67]">Service</span>
             </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Graphura Clothing Co.
+            </p>
           </motion.div>
 
           <motion.div
@@ -110,7 +120,7 @@ const TermsOfService = () => {
           >
             <div className="inline-flex items-center gap-4 px-8 py-4 bg-gray-900 text-white rounded-full text-lg font-semibold shadow-2xl">
               <Gavel className="w-6 h-6" />
-              Effective Date: January 25, 2026
+              Effective Date: February 2026
             </div>
           </motion.div>
         </div>
@@ -134,18 +144,18 @@ const TermsOfService = () => {
                 Welcome to Graphura
               </h2>
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                These Terms of Service ("Terms") govern your use of Graphura
-                India Private Limited's website, services, and internship
-                programs. By accessing or using our services, you agree to be
-                bound by these Terms. If you disagree with any part of the
-                terms, you may not access our services.
+                These Terms of Service ("Terms") govern your use of graphura
+                Clothing Co.'s website, mobile site, and online store. By
+                accessing or purchasing from our store, you agree to be bound by
+                these Terms. If you disagree with any part of the terms, please
+                do not use our services.
               </p>
               <div className="p-6 bg-[#ECD1A8]/10 rounded-xl border border-[#D4B483]/30">
                 <p className="text-gray-900 font-semibold text-lg">
                   <AlertCircle className="inline w-6 h-6 mr-2 text-[#B89A67]" />
                   Important: These Terms constitute a legally binding agreement
-                  between you and Graphura India Private Limited. Please read
-                  them carefully.
+                  between you and graphura Clothing Co. Please read them
+                  carefully before placing an order.
                 </p>
               </div>
             </div>
@@ -176,10 +186,6 @@ const TermsOfService = () => {
                   />
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 </div>
-                {/* <button className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full hover:bg-black transition-colors">
-                  <Download className="w-5 h-5" />
-                  Download PDF
-                </button> */}
               </div>
             </div>
 
@@ -199,55 +205,55 @@ const TermsOfService = () => {
                 },
                 {
                   num: "3",
-                  title: "Program Registration",
-                  icon: <ClipboardCheck className="w-5 h-5" />,
+                  title: "Orders & Payments",
+                  icon: <CreditCard className="w-5 h-5" />,
                   color: "bg-amber-100 text-amber-800",
                 },
                 {
                   num: "4",
-                  title: "Payments & Fees",
-                  icon: <CreditCard className="w-5 h-5" />,
+                  title: "Shipping & Delivery",
+                  icon: <Truck className="w-5 h-5" />,
                   color: "bg-purple-100 text-purple-800",
                 },
                 {
                   num: "5",
-                  title: "Intellectual Property",
-                  icon: <BookOpen className="w-5 h-5" />,
+                  title: "Returns & Refunds",
+                  icon: <RefreshCw className="w-5 h-5" />,
                   color: "bg-red-100 text-red-800",
                 },
                 {
                   num: "6",
-                  title: "User Conduct",
+                  title: "User Accounts",
                   icon: <Users className="w-5 h-5" />,
                   color: "bg-cyan-100 text-cyan-800",
                 },
                 {
                   num: "7",
-                  title: "Termination",
-                  icon: <X className="w-5 h-5" />,
+                  title: "Intellectual Property",
+                  icon: <BookOpen className="w-5 h-5" />,
                   color: "bg-indigo-100 text-indigo-800",
                 },
                 {
                   num: "8",
-                  title: "Limitation of Liability",
-                  icon: <Shield className="w-5 h-5" />,
+                  title: "Prohibited Activities",
+                  icon: <X className="w-5 h-5" />,
                   color: "bg-gray-100 text-gray-800",
                 },
                 {
                   num: "9",
-                  title: "Governing Law",
-                  icon: <Scale className="w-5 h-5" />,
+                  title: "Limitation of Liability",
+                  icon: <Shield className="w-5 h-5" />,
                   color: "bg-pink-100 text-pink-800",
                 },
                 {
                   num: "10",
-                  title: "Changes to Terms",
-                  icon: <AlertTriangle className="w-5 h-5" />,
+                  title: "Governing Law",
+                  icon: <Scale className="w-5 h-5" />,
                   color: "bg-orange-100 text-orange-800",
                 },
                 {
                   num: "11",
-                  title: "Contact Information",
+                  title: "Contact Us",
                   icon: <Mail className="w-5 h-5" />,
                   color: "bg-teal-100 text-teal-800",
                 },
@@ -300,7 +306,7 @@ const TermsOfService = () => {
                   Acceptance of Terms
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Understanding your agreement with our terms
+                  Understanding your agreement with us
                 </p>
               </div>
             </div>
@@ -313,9 +319,9 @@ const TermsOfService = () => {
                     1.1 Agreement
                   </h3>
                   <p className="text-gray-700">
-                    By accessing and using Graphura's website, services, or
-                    internship programs, you acknowledge that you have read,
-                    understood, and agree to be bound by these Terms of Service.
+                    By accessing, browsing, or making a purchase on graphura.in,
+                    you acknowledge that you have read, understood, and agree to
+                    be bound by these Terms of Service.
                   </p>
                 </div>
 
@@ -325,9 +331,9 @@ const TermsOfService = () => {
                     1.2 Modifications
                   </h3>
                   <p className="text-gray-700">
-                    We reserve the right to modify these Terms at any time.
-                    Continued use of our services after changes constitutes
-                    acceptance of the new Terms.
+                    We reserve the right to update these Terms at any time.
+                    Continued use of our website or placing orders after changes
+                    constitutes acceptance of the new Terms.
                   </p>
                 </div>
               </div>
@@ -341,11 +347,9 @@ const TermsOfService = () => {
                     </h4>
                     <p className="text-gray-700">
                       These Terms constitute a legally binding agreement between
-                      you (the "User") and Graphura India Private Limited
-                      ("Company," "we," "us," or "our"). If you are entering
-                      into this agreement on behalf of a company or other legal
-                      entity, you represent that you have the authority to bind
-                      such entity.
+                      you (the "Customer") and Graphura Clothing Co. ("Company,"
+                      "we," "us," or "our"). By completing a purchase, you agree
+                      to these Terms.
                     </p>
                   </div>
                 </div>
@@ -372,9 +376,7 @@ const TermsOfService = () => {
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
                   Eligibility Requirements
                 </h2>
-                <p className="text-gray-600 mt-2">
-                  Who can use our services and programs
-                </p>
+                <p className="text-gray-600 mt-2">Who can shop at Graphura</p>
               </div>
             </div>
 
@@ -385,31 +387,31 @@ const TermsOfService = () => {
                   icon: <User className="w-10 h-10" />,
                   title: "Age Requirement",
                   content:
-                    "You must be at least 18 years of age to use our services. By using our services, you represent and warrant that you are at least 18 years old.",
+                    "You must be at least 18 years of age to make a purchase. If you are under 18, you may use our site only with involvement of a parent or guardian.",
                   color: "bg-blue-50",
                 },
                 {
                   number: "2.2",
-                  icon: <GraduationCap className="w-10 h-10" />,
-                  title: "Educational Status",
+                  icon: <Globe className="w-10 h-10" />,
+                  title: "Shipping Eligibility",
                   content:
-                    "Our internship programs require participants to be currently enrolled in or recently graduated from an accredited university or college program.",
+                    "We currently ship to select countries. Please check our shipping policy at checkout. Some products may have regional availability restrictions.",
                   color: "bg-emerald-50",
                 },
                 {
                   number: "2.3",
-                  icon: <Globe className="w-10 h-10" />,
-                  title: "Geographic Eligibility",
+                  icon: <CreditCard className="w-10 h-10" />,
+                  title: "Payment Method",
                   content:
-                    "Some programs may have geographic restrictions based on visa requirements and local regulations. Check specific program details for eligibility.",
+                    "You must have a valid payment method accepted by our partners (credit/debit card, UPI, net banking, or COD where available).",
                   color: "bg-amber-50",
                 },
                 {
                   number: "2.4",
                   icon: <Shield className="w-10 h-10" />,
-                  title: "Background Checks",
+                  title: "Account Integrity",
                   content:
-                    "We reserve the right to conduct background checks for certain programs. Acceptance may be contingent upon satisfactory results.",
+                    "You agree to provide accurate, current, and complete information during account creation and checkout. False information may result in order cancellation.",
                   color: "bg-purple-50",
                 },
               ].map((item, index) => (
@@ -459,10 +461,10 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Program Registration & Application
+                  Orders & Payments
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  How to apply for our internship programs
+                  How we process your purchases
                 </p>
               </div>
             </div>
@@ -471,28 +473,15 @@ const TermsOfService = () => {
               <div className="grid lg:grid-cols-3 gap-8 mb-8">
                 <div className="p-6 bg-white rounded-xl shadow-md border border-gray-200">
                   <div className="w-12 h-12 bg-[#ECD1A8] rounded-lg flex items-center justify-center mb-4">
-                    <FileText className="w-6 h-6 text-gray-900" />
+                    <ShoppingBag className="w-6 h-6 text-gray-900" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3">
-                    3.1 Application Process
+                    3.1 Order Placement
                   </h3>
                   <p className="text-gray-700">
-                    Complete our online application form with accurate and
-                    truthful information. Incomplete or inaccurate applications
-                    may be rejected.
-                  </p>
-                </div>
-
-                <div className="p-6 bg-white rounded-xl shadow-md border border-gray-200">
-                  <div className="w-12 h-12 bg-[#ECD1A8] rounded-lg flex items-center justify-center mb-4">
-                    <Calendar className="w-6 h-6 text-gray-900" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">
-                    3.2 Application Deadlines
-                  </h3>
-                  <p className="text-gray-700">
-                    Applications must be submitted by published deadlines. Late
-                    applications may be considered at our discretion.
+                    Placing an item in your cart does not guarantee availability
+                    or pricing. Your order is confirmed when you receive an
+                    order confirmation email.
                   </p>
                 </div>
 
@@ -501,49 +490,65 @@ const TermsOfService = () => {
                     <CreditCard className="w-6 h-6 text-gray-900" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3">
-                    3.3 Application Fees
+                    3.2 Pricing & Payment
                   </h3>
                   <p className="text-gray-700">
-                    Some programs may require an application fee. This fee is
-                    non-refundable unless otherwise stated.
+                    All prices are in INR inclusive of applicable taxes. We
+                    accept Visa, Mastercard, RuPay, UPI, Net Banking, and COD
+                    (orders under ₹5000).
+                  </p>
+                </div>
+
+                <div className="p-6 bg-white rounded-xl shadow-md border border-gray-200">
+                  <div className="w-12 h-12 bg-[#ECD1A8] rounded-lg flex items-center justify-center mb-4">
+                    <X className="w-6 h-6 text-gray-900" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">
+                    3.3 Order Cancellation
+                  </h3>
+                  <p className="text-gray-700">
+                    You may cancel your order within 2 hours of placement before
+                    processing. Once shipped, our return policy applies.
                   </p>
                 </div>
               </div>
 
               <div className="p-8 bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Selection Process
+                  Order Processing Timeline
                 </h3>
-                <p className="text-gray-700 mb-6">
-                  Selection for our internship programs is competitive and based
-                  on multiple factors including academic performance, relevant
-                  experience, interview performance, and alignment with host
-                  company requirements.
-                </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                     <div className="text-xl font-bold text-[#B89A67] mb-1">
-                      1-2 Weeks
+                      0-2 Hours
                     </div>
-                    <div className="text-sm text-gray-600">Initial Review</div>
+                    <div className="text-sm text-gray-600">
+                      Free cancellation window
+                    </div>
                   </div>
                   <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                     <div className="text-xl font-bold text-[#B89A67] mb-1">
-                      Interview
+                      24-48 Hours
                     </div>
-                    <div className="text-sm text-gray-600">Required Step</div>
+                    <div className="text-sm text-gray-600">
+                      Order processing
+                    </div>
                   </div>
                   <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                     <div className="text-xl font-bold text-[#B89A67] mb-1">
-                      3-4 Weeks
+                      3-7 Days
                     </div>
-                    <div className="text-sm text-gray-600">Final Decision</div>
+                    <div className="text-sm text-gray-600">
+                      Shipping (domestic)
+                    </div>
                   </div>
                   <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                     <div className="text-xl font-bold text-[#B89A67] mb-1">
-                      Limited
+                      7-15 Days
                     </div>
-                    <div className="text-sm text-gray-600">Spots Available</div>
+                    <div className="text-sm text-gray-600">
+                      International shipping
+                    </div>
                   </div>
                 </div>
               </div>
@@ -567,10 +572,10 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Payments, Fees & Refunds
+                  Shipping & Delivery
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Our financial policies and procedures
+                  How we get your order to you
                 </p>
               </div>
             </div>
@@ -578,134 +583,70 @@ const TermsOfService = () => {
             <div className="w-full space-y-8">
               <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                  4.1 Program Fees
+                  4.1 Shipping Partners & Timelines
                 </h3>
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                   <div className="p-6 bg-blue-50 rounded-xl border border-blue-200">
-                    <h4 className="font-bold text-gray-900 mb-3">
-                      Included in Program Fee:
+                    <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <Truck className="w-5 h-5" />
+                      Domestic Shipping
                     </h4>
                     <ul className="space-y-2">
                       <li className="flex items-start gap-2">
                         <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
                         <span className="text-gray-700">
-                          Internship placement services
+                          Metro cities: 3-5 business days
                         </span>
                       </li>
                       <li className="flex items-start gap-2">
                         <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
                         <span className="text-gray-700">
-                          Visa assistance and documentation
+                          Tier 2/3 cities: 5-7 business days
                         </span>
                       </li>
                       <li className="flex items-start gap-2">
                         <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
                         <span className="text-gray-700">
-                          Pre-departure orientation
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
-                        <span className="text-gray-700">
-                          24/7 emergency support
+                          Free shipping on orders above ₹999
                         </span>
                       </li>
                     </ul>
                   </div>
 
                   <div className="p-6 bg-amber-50 rounded-xl border border-amber-200">
-                    <h4 className="font-bold text-gray-900 mb-3">
-                      Not Included:
+                    <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <Globe className="w-5 h-5" />
+                      International Shipping
                     </h4>
                     <ul className="space-y-2">
                       <li className="flex items-start gap-2">
-                        <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                        <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
                         <span className="text-gray-700">
-                          Airfare and travel expenses
+                          USA/UK/Europe: 7-12 business days
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
+                        <span className="text-gray-700">
+                          UAE/Singapore: 5-8 business days
                         </span>
                       </li>
                       <li className="flex items-start gap-2">
                         <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
                         <span className="text-gray-700">
-                          Accommodation costs
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
-                        <span className="text-gray-700">
-                          Personal living expenses
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
-                        <span className="text-gray-700">
-                          Visa application fees
+                          Customs duties borne by customer
                         </span>
                       </li>
                     </ul>
                   </div>
                 </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="bg-linear-to-br from-emerald-50 to-emerald-100 p-8 rounded-2xl shadow-lg border border-emerald-200">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    4.2 Payment Schedule
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-white rounded-lg">
-                      <span className="font-medium text-gray-900">Deposit</span>
-                      <span className="font-bold text-[#B89A67]">
-                        Upon Acceptance
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between p-4 bg-white rounded-lg">
-                      <span className="font-medium text-gray-900">
-                        Second Payment
-                      </span>
-                      <span className="font-bold text-[#B89A67]">
-                        30 Days Before Start
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between p-4 bg-white rounded-lg">
-                      <span className="font-medium text-gray-900">
-                        Final Payment
-                      </span>
-                      <span className="font-bold text-[#B89A67]">
-                        Program Start Date
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-linear-to-br from-purple-50 to-purple-100 p-8 rounded-2xl shadow-lg border border-purple-200">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    4.3 Refund Policy
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-700">
-                        Cancellation 60+ days before start
-                      </span>
-                      <span className="font-bold text-green-600">
-                        80% Refund
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-700">
-                        Cancellation 30-59 days before start
-                      </span>
-                      <span className="font-bold text-amber-600">
-                        50% Refund
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-700">
-                        Cancellation less than 30 days
-                      </span>
-                      <span className="font-bold text-red-600">No Refund</span>
-                    </div>
-                  </div>
+                <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <p className="text-gray-700 text-sm">
+                    <span className="font-bold">Note:</span> Delivery timelines
+                    are estimates and may vary due to unforeseen circumstances.
+                    We are not liable for delays caused by courier partners or
+                    customs.
+                  </p>
                 </div>
               </div>
             </div>
@@ -728,70 +669,119 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Intellectual Property Rights
+                  Returns, Exchanges & Refunds
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Ownership and usage of content and materials
+                  Our policy if you're not satisfied
                 </p>
               </div>
             </div>
 
-            <div className="w-full bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-200">
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                <div className="p-6 bg-linear-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                    <BookOpen className="w-6 h-6 text-blue-600" />
-                    5.1 Our Content
+            <div className="w-full space-y-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-linear-to-br from-emerald-50 to-emerald-100 p-8 rounded-2xl shadow-lg border border-emerald-200">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    5.1 Return Window
                   </h3>
-                  <p className="text-gray-700">
-                    All content on our website, including text, graphics, logos,
-                    images, and software, is the property of Graphura India
-                    Private Limited and protected by intellectual property laws.
-                  </p>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 bg-white rounded-lg">
+                      <span className="font-medium text-gray-900">
+                        Domestic Orders
+                      </span>
+                      <span className="font-bold text-[#B89A67]">
+                        7 Days Delivery
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-white rounded-lg">
+                      <span className="font-medium text-gray-900">
+                        International Orders
+                      </span>
+                      <span className="font-bold text-[#B89A67]">
+                        10 Days Delivery
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-white rounded-lg">
+                      <span className="font-medium text-gray-900">
+                        Store Credit Validity
+                      </span>
+                      <span className="font-bold text-[#B89A67]">1 Year</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="p-6 bg-linear-to-br from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                    <Eye className="w-6 h-6 text-emerald-600" />
-                    5.2 License to Use
+                <div className="bg-linear-to-br from-purple-50 to-purple-100 p-8 rounded-2xl shadow-lg border border-purple-200">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    5.2 Refund Policy
                   </h3>
-                  <p className="text-gray-700">
-                    We grant you a limited, non-exclusive, non-transferable
-                    license to access and use our services for personal,
-                    non-commercial purposes in accordance with these Terms.
-                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">Prepaid Orders</span>
+                      <span className="font-bold text-green-600">
+                        5-7 business days
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">COD Orders</span>
+                      <span className="font-bold text-amber-600">
+                        Store credit / Bank transfer
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">
+                        Non-returnable Items
+                      </span>
+                      <span className="font-bold text-red-600">
+                        Innerwear, masks, sale items
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="p-8 bg-linear-to-r from-[#ECD1A8]/20 to-[#D4B483]/20 rounded-2xl border-2 border-[#D4B483]/30">
-                <h4 className="font-bold text-gray-900 text-xl mb-4">
-                  Restrictions
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start gap-3 p-4 bg-white rounded-lg">
-                    <X className="w-5 h-5 text-red-600 mt-1 shrink-0-flex" />
-                    <span className="text-gray-700">
-                      Do not copy, modify, or distribute our content without
-                      permission
-                    </span>
+              <div className="w-full bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  5.3 Return Conditions
+                </h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <div className="flex items-start gap-2 mb-2">
+                      <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Item unused, unwashed, with tags attached
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2 mb-2">
+                      <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Original packaging intact
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2 mb-2">
+                      <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Return request initiated within window
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-3 p-4 bg-white rounded-lg">
-                    <X className="w-5 h-5 text-red-600 mt-1 shrink-0-flex" />
-                    <span className="text-gray-700">
-                      Do not use our trademarks without written consent
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-3 p-4 bg-white rounded-lg">
-                    <X className="w-5 h-5 text-red-600 mt-1 shrink-0-flex" />
-                    <span className="text-gray-700">
-                      Do not reverse engineer or decompile our software
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-3 p-4 bg-white rounded-lg">
-                    <X className="w-5 h-5 text-red-600 mt-1 shrink-0-flex" />
-                    <span className="text-gray-700">
-                      Do not use our content for commercial purposes
-                    </span>
+                  <div>
+                    <div className="flex items-start gap-2 mb-2">
+                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Customized or personalized items
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2 mb-2">
+                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Final sale / clearance products
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2 mb-2">
+                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Damaged due to customer misuse
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -799,7 +789,6 @@ const TermsOfService = () => {
           </motion.div>
         </motion.div>
 
-        {/* Section 6-11 would continue similarly */}
         {/* Section 6 */}
         <motion.div
           initial="hidden"
@@ -816,10 +805,10 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  User Conduct & Responsibilities
+                  User Accounts & Loyalty Program
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Rules and guidelines for using our services
+                  Managing your Graphura profile
                 </p>
               </div>
             </div>
@@ -829,117 +818,83 @@ const TermsOfService = () => {
                 <div className="p-6 bg-linear-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200">
                   <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
                     <Users className="w-6 h-6 text-blue-600" />
-                    6.1 Acceptable Use
+                    6.1 Account Creation
                   </h3>
                   <p className="text-gray-700 mb-4">
-                    You agree to use our services only for lawful purposes and
-                    in accordance with these Terms.
+                    You are responsible for maintaining the confidentiality of
+                    your account credentials. Notify us immediately of any
+                    unauthorized use.
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-start gap-2">
                       <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
                       <span className="text-gray-700">
-                        Provide accurate and truthful information
+                        One account per user
                       </span>
                     </div>
                     <div className="flex items-start gap-2">
                       <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
                       <span className="text-gray-700">
-                        Maintain the confidentiality of your account
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
-                      <span className="text-gray-700">
-                        Comply with all applicable laws and regulations
+                        Accurate personal information
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-6 bg-linear-to-br from-red-50 to-red-100 rounded-xl border border-red-200">
+                <div className="p-6 bg-linear-to-br from-amber-50 to-amber-100 rounded-xl border border-amber-200">
                   <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                    <AlertTriangle className="w-6 h-6 text-red-600" />
-                    6.2 Prohibited Activities
+                    <Gift className="w-6 h-6 text-amber-600" />
+                    6.2 Graphura Loyalty
                   </h3>
+                  <p className="text-gray-700 mb-4">
+                    Earn points on every purchase. 100 points = ₹50 off. Points
+                    expire after 12 months of inactivity.
+                  </p>
                   <div className="space-y-2">
                     <div className="flex items-start gap-2">
-                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
                       <span className="text-gray-700">
-                        Impersonating others or providing false information
+                        1 point per ₹100 spent
                       </span>
                     </div>
                     <div className="flex items-start gap-2">
-                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0-flex" />
                       <span className="text-gray-700">
-                        Uploading viruses or malicious code
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
-                      <span className="text-gray-700">
-                        Harassing or threatening other users
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
-                      <span className="text-gray-700">
-                        Violating intellectual property rights
+                        Double points on birthday month
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-8 bg-linear-to-r from-amber-50 to-amber-100 rounded-2xl border border-amber-200">
+              <div className="p-8 bg-linear-to-r from-red-50 to-red-100 rounded-2xl border border-red-200">
                 <h4 className="font-bold text-gray-900 text-xl mb-4">
-                  Intern Program Conduct
+                  6.3 Account Suspension
                 </h4>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h5 className="font-semibold text-gray-900 mb-2">
-                      During Internship:
-                    </h5>
-                    <ul className="space-y-2 text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                        <span>Follow host company policies and procedures</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                        <span>Maintain professional conduct at all times</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                        <span>
-                          Complete assigned tasks and responsibilities
-                        </span>
-                      </li>
-                    </ul>
+                <p className="text-gray-700 mb-4">
+                  We reserve the right to suspend or terminate accounts that
+                  violate our Terms, including but not limited to:
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="flex items-start gap-2 p-3 bg-white rounded-lg">
+                    <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                    <span className="text-gray-700">
+                      Fraudulent transactions
+                    </span>
                   </div>
-                  <div>
-                    <h5 className="font-semibold text-gray-900 mb-2">
-                      Code of Ethics:
-                    </h5>
-                    <ul className="space-y-2 text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                        <span>
-                          Maintain confidentiality of company information
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                        <span>Report any concerns to program coordinators</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                        <span>
-                          Respect cultural differences in international
-                          placements
-                        </span>
-                      </li>
-                    </ul>
+                  <div className="flex items-start gap-2 p-3 bg-white rounded-lg">
+                    <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                    <span className="text-gray-700">
+                      Abusive return behavior
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2 p-3 bg-white rounded-lg">
+                    <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                    <span className="text-gray-700">Multiple chargebacks</span>
+                  </div>
+                  <div className="flex items-start gap-2 p-3 bg-white rounded-lg">
+                    <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                    <span className="text-gray-700">Bot/reseller abuse</span>
                   </div>
                 </div>
               </div>
@@ -963,126 +918,70 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Termination & Suspension
+                  Intellectual Property
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Conditions for account termination and suspension
+                  Our brand, designs, and content
                 </p>
               </div>
             </div>
 
-            <div className="w-full grid md:grid-cols-2 gap-8">
-              <div className="bg-linear-to-br from-red-50 to-red-100 p-8 rounded-2xl shadow-lg border border-red-200">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-md">
-                    <X className="w-8 h-8 text-red-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      7.1 Our Rights
-                    </h3>
-                    <div className="w-12 h-1 bg-red-600 rounded-full"></div>
-                  </div>
+            <div className="w-full bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-200">
+              <div className="grid md:grid-cols-2 gap-8 mb-8">
+                <div className="p-6 bg-linear-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                    <BookOpen className="w-6 h-6 text-blue-600" />
+                    7.1 Our Content
+                  </h3>
+                  <p className="text-gray-700">
+                    All content on Graphura.in—including logos, graphics,
+                    product images, taglines, and original designs—is the sole
+                    property of Graphura Clothing Co. and protected under
+                    intellectual property laws.
+                  </p>
                 </div>
-                <p className="text-gray-700 mb-6">
-                  We reserve the right to terminate or suspend your account and
-                  access to our services immediately, without prior notice or
-                  liability, for any reason whatsoever, including without
-                  limitation if you breach these Terms.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="w-5 h-5 text-red-600" />
-                    <span className="text-gray-700 font-medium">
-                      Violation of Terms of Service
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="w-5 h-5 text-red-600" />
-                    <span className="text-gray-700 font-medium">
-                      Fraudulent or illegal activities
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="w-5 h-5 text-red-600" />
-                    <span className="text-gray-700 font-medium">
-                      Non-payment of program fees
-                    </span>
-                  </div>
+
+                <div className="p-6 bg-linear-to-br from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                    <Eye className="w-6 h-6 text-emerald-600" />
+                    7.2 Limited License
+                  </h3>
+                  <p className="text-gray-700">
+                    We grant you a personal, non-exclusive, non-transferable
+                    license to access our site and view content for personal
+                    shopping purposes only.
+                  </p>
                 </div>
               </div>
 
-              <div className="bg-linear-to-br from-amber-50 to-amber-100 p-8 rounded-2xl shadow-lg border border-amber-200">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-md">
-                    <User className="w-8 h-8 text-amber-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      7.2 Your Rights
-                    </h3>
-                    <div className="w-12 h-1 bg-amber-600 rounded-full"></div>
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-6">
-                  You may terminate your account at any time by contacting us at
-                  <span className="font-semibold text-[#B89A67]">
-                    {" "}
-                    support@graphura.in
-                  </span>
-                  . Upon termination, your right to use our services will
-                  immediately cease.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-amber-600" />
-                    <span className="text-gray-700 font-medium">
-                      30-day notice for program withdrawal
+              <div className="p-8 bg-linear-to-r from-[#ECD1A8]/20 to-[#D4B483]/20 rounded-2xl border-2 border-[#D4B483]/30">
+                <h4 className="font-bold text-gray-900 text-xl mb-4">
+                  Restrictions
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-start gap-3 p-4 bg-white rounded-lg">
+                    <X className="w-5 h-5 text-red-600 mt-1 shrink-0-flex" />
+                    <span className="text-gray-700">
+                      Do not reproduce, duplicate, or copy product images
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="w-5 h-5 text-amber-600" />
-                    <span className="text-gray-700 font-medium">
-                      Refund eligibility per Section 4.3
+                  <div className="flex items-start gap-3 p-4 bg-white rounded-lg">
+                    <X className="w-5 h-5 text-red-600 mt-1 shrink-0-flex" />
+                    <span className="text-gray-700">
+                      Do not use our logo or branding without permission
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-amber-600" />
-                    <span className="text-gray-700 font-medium">
-                      Written notice required
+                  <div className="flex items-start gap-3 p-4 bg-white rounded-lg">
+                    <X className="w-5 h-5 text-red-600 mt-1 shrink-0-flex" />
+                    <span className="text-gray-700">
+                      Do not scrape or data-mine our website
                     </span>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full mt-8 bg-linear-to-r from-gray-50 to-gray-100 p-8 rounded-2xl border border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                7.3 Effect of Termination
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="text-center p-6 bg-white rounded-xl shadow-sm">
-                  <div className="text-3xl font-bold text-[#B89A67] mb-2">
-                    Immediate
-                  </div>
-                  <div className="text-gray-700">
-                    Access revocation to services
-                  </div>
-                </div>
-                <div className="text-center p-6 bg-white rounded-xl shadow-sm">
-                  <div className="text-3xl font-bold text-[#B89A67] mb-2">
-                    30 Days
-                  </div>
-                  <div className="text-gray-700">
-                    Data retention period begins
-                  </div>
-                </div>
-                <div className="text-center p-6 bg-white rounded-xl shadow-sm">
-                  <div className="text-3xl font-bold text-[#B89A67] mb-2">
-                    Ongoing
-                  </div>
-                  <div className="text-gray-700">
-                    Obligations survive termination
+                  <div className="flex items-start gap-3 p-4 bg-white rounded-lg">
+                    <X className="w-5 h-5 text-red-600 mt-1 shrink-0-flex" />
+                    <span className="text-gray-700">
+                      Do not sell counterfeit Graphura merchandise
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1106,103 +1005,64 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Limitation of Liability
+                  Prohibited Activities
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Legal disclaimers and liability limitations
+                  What you cannot do on our platform
                 </p>
               </div>
             </div>
 
             <div className="w-full bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-200">
-              <div className="space-y-8">
-                <div className="p-6 bg-linear-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    8.1 No Warranty
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="p-6 bg-linear-to-br from-red-50 to-red-100 rounded-xl border border-red-200">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                    <AlertTriangle className="w-6 h-6 text-red-600" />
+                    8.1 Strictly Prohibited
                   </h3>
-                  <p className="text-gray-700">
-                    Our services are provided on an "AS IS" and "AS AVAILABLE"
-                    basis. We make no warranties, expressed or implied,
-                    regarding the suitability, reliability, availability,
-                    timeliness, or accuracy of our services for any particular
-                    purpose.
-                  </p>
-                </div>
-
-                <div className="p-6 bg-linear-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    8.2 Liability Cap
-                  </h3>
-                  <div className="flex flex-col md:flex-row items-center gap-8">
-                    <div className="shrink-0-flex">
-                      <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg">
-                        <Shield className="w-12 h-12 text-blue-600" />
-                      </div>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-2">
+                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Reselling Graphura products at inflated prices
+                      </span>
                     </div>
-                    <div>
-                      <p className="text-gray-700">
-                        To the maximum extent permitted by law, Graphura India
-                        Private Limited shall not be liable for any indirect,
-                        incidental, special, consequential, or punitive damages,
-                        including without limitation, loss of profits, data,
-                        use, goodwill, or other intangible losses, resulting
-                        from your access to or use of or inability to access or
-                        use our services.
-                      </p>
+                    <div className="flex items-start gap-2">
+                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Using bots to bypass purchase limits
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Uploading malicious code or viruses
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <X className="w-5 h-5 text-red-600 mt-0.5 shrink-0-flex" />
+                      <span className="text-gray-700">
+                        Harassing other customers or staff
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-6 bg-linear-to-br from-amber-50 to-amber-100 rounded-xl border border-amber-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    8.3 Program-Specific Limitations
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+                    <HelpCircle className="w-6 h-6 text-amber-600" />
+                    8.2 Bulk Purchases
                   </h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">
-                        We Are Not Responsible For:
-                      </h4>
-                      <ul className="space-y-2 text-gray-700">
-                        <li className="flex items-start gap-2">
-                          <X className="w-4 h-4 text-red-600 mt-1 shrink-0-flex" />
-                          <span>
-                            Visa denials or delays by government authorities
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <X className="w-4 h-4 text-red-600 mt-1 shrink-0-flex" />
-                          <span>
-                            Host company performance or internal decisions
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <X className="w-4 h-4 text-red-600 mt-1 shrink-0-flex" />
-                          <span>Personal emergencies or health issues</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">
-                        We Provide Assistance For:
-                      </h4>
-                      <ul className="space-y-2 text-gray-700">
-                        <li className="flex items-start gap-2">
-                          <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                          <span>
-                            Visa application guidance and documentation
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                          <span>24/7 emergency support during program</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <Check className="w-4 h-4 text-green-600 mt-1 shrink-0-flex" />
-                          <span>Program coordination and logistics</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  <p className="text-gray-700 mb-3">
+                    We reserve the right to cancel orders that appear to be for
+                    commercial resale. For wholesale inquiries:
+                  </p>
+                  <a
+                    href="mailto:wholesale@graphura.in"
+                    className="text-[#B89A67] font-semibold hover:underline"
+                  >
+                    wholesale@graphura.in
+                  </a>
                 </div>
               </div>
             </div>
@@ -1225,114 +1085,50 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Governing Law & Dispute Resolution
+                  Limitation of Liability
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Legal jurisdiction and conflict resolution procedures
+                  Legal disclaimers for our products
                 </p>
               </div>
             </div>
 
-            <div className="w-full grid md:grid-cols-2 gap-8">
-              <div className="bg-linear-to-br from-indigo-50 to-indigo-100 p-8 rounded-2xl shadow-lg border border-indigo-200">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-md">
-                    <Scale className="w-8 h-8 text-indigo-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      9.1 Governing Law
-                    </h3>
-                    <div className="w-12 h-1 bg-indigo-600 rounded-full"></div>
-                  </div>
+            <div className="w-full bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-200">
+              <div className="space-y-8">
+                <div className="p-6 bg-linear-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    9.1 No Warranty
+                  </h3>
+                  <p className="text-gray-700">
+                    Our products are provided "AS IS" without any express or
+                    implied warranties. We do not guarantee that product
+                    descriptions, colors, or sizing are 100% accurate due to
+                    monitor variations and manufacturing tolerances.
+                  </p>
                 </div>
-                <p className="text-gray-700 mb-6">
-                  These Terms shall be governed and construed in accordance with
-                  the laws of India, without regard to its conflict of law
-                  provisions.
-                </p>
-                <div className="p-4 bg-white rounded-lg border border-gray-200">
-                  <div className="flex items-center gap-3">
-                    <MapPin className="w-5 h-5 text-[#B89A67]" />
+
+                <div className="p-6 bg-linear-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    9.2 Liability Cap
+                  </h3>
+                  <div className="flex flex-col md:flex-row items-center gap-8">
+                    <div className="shrink-0-flex">
+                      <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg">
+                        <Shield className="w-12 h-12 text-blue-600" />
+                      </div>
+                    </div>
                     <div>
-                      <div className="font-bold text-gray-900">
-                        Jurisdiction
-                      </div>
-                      <div className="text-gray-700">
-                        Courts in Gurgaon, Haryana
-                      </div>
+                      <p className="text-gray-700">
+                        To the maximum extent permitted by law, Graphura
+                        Clothing Co.'s total liability for any claim arising
+                        from your purchase shall not exceed the amount you paid
+                        for the product. We are not liable for indirect,
+                        incidental, or consequential damages.
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div className="bg-linear-to-br from-emerald-50 to-emerald-100 p-8 rounded-2xl shadow-lg border border-emerald-200">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-md">
-                    <Users className="w-8 h-8 text-emerald-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      9.2 Dispute Resolution
-                    </h3>
-                    <div className="w-12 h-1 bg-emerald-600 rounded-full"></div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                      <span className="font-bold text-emerald-600">1</span>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">
-                        Informal Negotiation
-                      </div>
-                      <div className="text-gray-700">
-                        Attempt to resolve disputes amicably within 30 days
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                      <span className="font-bold text-emerald-600">2</span>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">Mediation</div>
-                      <div className="text-gray-700">
-                        If unresolved, proceed to mediation with neutral third
-                        party
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                      <span className="font-bold text-emerald-600">3</span>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">
-                        Legal Action
-                      </div>
-                      <div className="text-gray-700">
-                        As last resort, pursue legal action in designated
-                        jurisdiction
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full mt-8 bg-linear-to-r from-amber-50 to-amber-100 p-8 rounded-2xl border border-amber-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                9.3 Class Action Waiver
-              </h3>
-              <p className="text-gray-700">
-                You agree that any dispute resolution proceedings will be
-                conducted only on an individual basis and not in a class,
-                consolidated, or representative action. You waive any right to a
-                jury trial in any action arising out of or relating to these
-                Terms.
-              </p>
             </div>
           </motion.div>
         </motion.div>
@@ -1353,82 +1149,68 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Changes to Terms of Service
+                  Governing Law & Disputes
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  How and when we update our terms
+                  Legal jurisdiction and resolution
                 </p>
               </div>
             </div>
 
-            <div className="w-full bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-200">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="p-6 bg-linear-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                    <AlertTriangle className="w-6 h-6 text-blue-600" />
-                    10.1 Right to Modify
-                  </h3>
-                  <p className="text-gray-700">
-                    We reserve the right, at our sole discretion, to modify or
-                    replace these Terms at any time. If a revision is material,
-                    we will provide at least 30 days' notice prior to any new
-                    terms taking effect.
-                  </p>
-                </div>
-
-                <div className="p-6 bg-linear-to-br from-purple-50 to-purple-100 rounded-xl border border-purple-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                    <Bell className="w-6 h-6 text-purple-600" />
-                    10.2 Notification Methods
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-5 h-5 text-purple-600" />
-                      <span className="text-gray-700">
-                        Email notification to registered users
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Globe className="w-5 h-5 text-purple-600" />
-                      <span className="text-gray-700">
-                        Website announcement and banner
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-purple-600" />
-                      <span className="text-gray-700">
-                        Updated "Last Modified" date
-                      </span>
-                    </div>
+            <div className="w-full grid md:grid-cols-2 gap-8">
+              <div className="bg-linear-to-br from-indigo-50 to-indigo-100 p-8 rounded-2xl shadow-lg border border-indigo-200">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-md">
+                    <Scale className="w-8 h-8 text-indigo-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      10.1 Governing Law
+                    </h3>
+                    <div className="w-12 h-1 bg-indigo-600 rounded-full"></div>
                   </div>
                 </div>
+                <p className="text-gray-700 mb-6">
+                  These Terms shall be governed by the laws of India. Any
+                  disputes arising hereunder shall be subject to the exclusive
+                  jurisdiction of courts in Gurgaon, Haryana.
+                </p>
               </div>
 
-              <div className="mt-8 p-8 bg-linear-to-r from-[#ECD1A8]/20 to-[#D4B483]/20 rounded-2xl border-2 border-[#D4B483]/30">
-                <h4 className="font-bold text-gray-900 text-xl mb-4">
-                  10.3 Continued Use Constitutes Acceptance
-                </h4>
-                <div className="flex items-start gap-4">
-                  <Check className="w-8 h-8 text-[#B89A67] shrink-0-flex" />
+              <div className="bg-linear-to-br from-emerald-50 to-emerald-100 p-8 rounded-2xl shadow-lg border border-emerald-200">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-md">
+                    <Users className="w-8 h-8 text-emerald-600" />
+                  </div>
                   <div>
-                    <p className="text-gray-700">
-                      By continuing to access or use our services after any
-                      revisions become effective, you agree to be bound by the
-                      revised terms. If you do not agree to the new terms, you
-                      are no longer authorized to use our services.
-                    </p>
-                    <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
-                      <div className="flex items-center gap-3">
-                        <Clock className="w-5 h-5 text-[#B89A67]" />
-                        <div>
-                          <div className="font-bold text-gray-900">
-                            Review Period
-                          </div>
-                          <div className="text-gray-700">
-                            You have 30 days to review changes before they take
-                            effect
-                          </div>
-                        </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      10.2 Dispute Resolution
+                    </h3>
+                    <div className="w-12 h-1 bg-emerald-600 rounded-full"></div>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                      <span className="font-bold text-emerald-600">1</span>
+                    </div>
+                    <div>
+                      <div className="font-bold text-gray-900">
+                        Customer Support
+                      </div>
+                      <div className="text-gray-700">
+                        Contact us first to resolve issues
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                      <span className="font-bold text-emerald-600">2</span>
+                    </div>
+                    <div>
+                      <div className="font-bold text-gray-900">Mediation</div>
+                      <div className="text-gray-700">
+                        If unresolved within 30 days
                       </div>
                     </div>
                   </div>
@@ -1454,10 +1236,10 @@ const TermsOfService = () => {
               </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Contact Information & Miscellaneous
+                  Contact Us
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  How to contact us and other important provisions
+                  How to reach our support team
                 </p>
               </div>
             </div>
@@ -1465,33 +1247,33 @@ const TermsOfService = () => {
             <div className="w-full grid md:grid-cols-2 gap-8">
               <div className="bg-linear-to-br from-gray-900 to-[#2C1810] p-8 rounded-2xl shadow-xl text-white">
                 <h3 className="text-2xl font-bold mb-6">
-                  11.1 Contact Information
+                  11.1 Customer Support
                 </h3>
 
                 <div className="space-y-6">
                   <div className="p-4 bg-white/10 rounded-xl border border-white/20">
                     <div className="flex items-center gap-3 mb-2">
-                      <Building className="w-5 h-5 text-[#ECD1A8]" />
-                      <h4 className="font-bold">Legal Department</h4>
+                      <Mail className="w-5 h-5 text-[#ECD1A8]" />
+                      <h4 className="font-bold">Order Support</h4>
                     </div>
                     <a
-                      href="mailto:legal@graphura.in"
+                      href="mailto:orders@graphura.in"
                       className="text-[#ECD1A8] hover:underline block"
                     >
-                      legal@graphura.in
+                      orders@graphura.in
                     </a>
                   </div>
 
                   <div className="p-4 bg-white/10 rounded-xl border border-white/20">
                     <div className="flex items-center gap-3 mb-2">
-                      <Mail className="w-5 h-5 text-[#ECD1A8]" />
-                      <h4 className="font-bold">General Inquiries</h4>
+                      <RefreshCw className="w-5 h-5 text-[#ECD1A8]" />
+                      <h4 className="font-bold">Returns & Exchanges</h4>
                     </div>
                     <a
-                      href="mailto:official@graphura.in"
+                      href="mailto:returns@graphura.in"
                       className="text-[#ECD1A8] hover:underline block"
                     >
-                      official@graphura.in
+                      returns@graphura.in
                     </a>
                   </div>
 
@@ -1500,9 +1282,9 @@ const TermsOfService = () => {
                       <Phone className="w-5 h-5 text-[#ECD1A8]" />
                       <h4 className="font-bold">Phone Support</h4>
                     </div>
-                    <div className="text-[#ECD1A8]">+91 7378021327</div>
+                    <div className="text-[#ECD1A8]">+91 98765 43210</div>
                     <div className="text-gray-400 text-sm mt-1">
-                      Mon-Fri, 9AM-6PM IST
+                      Mon-Sat, 10AM-7PM IST
                     </div>
                   </div>
 
@@ -1512,11 +1294,11 @@ const TermsOfService = () => {
                       <h4 className="font-bold">Registered Office</h4>
                     </div>
                     <div className="text-gray-300">
-                      Graphura India Private Limited
+                      Graphura Clothing Co.
                       <br />
-                      near RSF, Pataudi
+                      123, Fashion Street
                       <br />
-                      Gurgaon, Haryana 122503
+                      Gurgaon, Haryana 122001
                       <br />
                       India
                     </div>
@@ -1526,7 +1308,7 @@ const TermsOfService = () => {
 
               <div className="bg-linear-to-br from-white to-gray-50 p-8 rounded-2xl shadow-xl border border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                  11.2 Miscellaneous Provisions
+                  11.2 Miscellaneous
                 </h3>
 
                 <div className="space-y-6">
@@ -1536,8 +1318,7 @@ const TermsOfService = () => {
                     </h4>
                     <p className="text-gray-700 text-sm">
                       These Terms constitute the entire agreement between you
-                      and Graphura regarding our services and supersede all
-                      prior agreements and understandings.
+                      and Graphura regarding your use of our store.
                     </p>
                   </div>
 
@@ -1546,27 +1327,16 @@ const TermsOfService = () => {
                       Severability
                     </h4>
                     <p className="text-gray-700 text-sm">
-                      If any provision of these Terms is held to be
-                      unenforceable or invalid, such provision will be changed
-                      and interpreted to accomplish the objectives to the
-                      greatest extent possible under applicable law.
+                      If any provision is found unenforceable, the remaining
+                      provisions remain in full force.
                     </p>
                   </div>
 
                   <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
                     <h4 className="font-bold text-gray-900 mb-2">No Waiver</h4>
                     <p className="text-gray-700 text-sm">
-                      Our failure to enforce any right or provision of these
-                      Terms will not be considered a waiver of those rights.
-                    </p>
-                  </div>
-
-                  <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                    <h4 className="font-bold text-gray-900 mb-2">Assignment</h4>
-                    <p className="text-gray-700 text-sm">
-                      You may not assign or transfer these Terms without our
-                      prior written consent. We may assign our rights under
-                      these Terms without restriction.
+                      Our failure to enforce a right does not waive our right to
+                      enforce it later.
                     </p>
                   </div>
                 </div>
@@ -1580,9 +1350,9 @@ const TermsOfService = () => {
                     Acknowledgement
                   </h3>
                   <p className="text-gray-900">
-                    By using our services, you acknowledge that you have read
-                    these Terms of Service, understand them, and agree to be
-                    bound by them.
+                    By completing a purchase or creating an account, you
+                    acknowledge that you have read, understood, and agree to be
+                    bound by these Terms of Service.
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -1591,7 +1361,7 @@ const TermsOfService = () => {
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-gray-900">
-                      January 25,2026
+                      February 2026
                     </div>
                     <div className="text-gray-900">Effective Date</div>
                   </div>
@@ -1599,67 +1369,6 @@ const TermsOfService = () => {
               </div>
             </div>
           </motion.div>
-        </motion.div>
-        {/* Quick Contact & Summary */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={containerVariants}
-          className="w-full"
-        >
-          {/* <motion.div variants={itemVariants}>
-                        <div className="w-full grid md:grid-cols-2 gap-8">
-                            <div className="bg-linear-to-br from-[#2C1810] to-gray-900 p-8 rounded-2xl shadow-xl text-white">
-                                <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                    <Mail className="w-6 h-6 text-[#ECD1A8]" />
-                                    Need Clarification?
-                                </h3>
-                                <p className="text-gray-300 mb-6">
-                                    If you have questions about any of these terms or need further clarification,
-                                    please don't hesitate to contact us.
-                                </p>
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-3">
-                                        <Mail className="w-5 h-5 text-[#ECD1A8]" />
-                                        <a href="mailto:legal@graphura.in" className="text-[#ECD1A8] hover:underline">
-                                            legal@graphura.in
-                                        </a>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <Phone className="w-5 h-5 text-[#ECD1A8]" />
-                                        <span>+91 7378021327</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <MapPin className="w-5 h-5 text-[#ECD1A8]" />
-                                        <span>Graphura India Private Limited, Gurgaon, Haryana</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="bg-linear-to-br from-white to-gray-50 p-8 rounded-2xl shadow-xl border border-gray-200">
-                                <h3 className="text-2xl font-bold text-gray-900 mb-6">Terms Summary</h3>
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-3 p-4 bg-[#ECD1A8]/10 rounded-lg">
-                                        <Check className="w-5 h-5 text-green-600" />
-                                        <span className="text-gray-700">These Terms govern all use of our services</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 p-4 bg-[#ECD1A8]/10 rounded-lg">
-                                        <Check className="w-5 h-5 text-green-600" />
-                                        <span className="text-gray-700">By using our services, you accept these Terms</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 p-4 bg-[#ECD1A8]/10 rounded-lg">
-                                        <Check className="w-5 h-5 text-green-600" />
-                                        <span className="text-gray-700">We may update these Terms periodically</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 p-4 bg-[#ECD1A8]/10 rounded-lg">
-                                        <Check className="w-5 h-5 text-green-600" />
-                                        <span className="text-gray-700">Your continued use constitutes acceptance</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div> */}
         </motion.div>
 
         {/* Back to Top - Full Width */}
@@ -1681,22 +1390,20 @@ const TermsOfService = () => {
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-4">
               <div className="flex items-center gap-2">
                 <Gavel className="w-5 h-5 text-[#B89A67]" />
-                <span className="font-semibold">Legally Binding Agreement</span>
+                <span className="font-semibold">Legally Binding</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-[#B89A67]" />
-                <span className="font-semibold">
-                  Effective January 25, 2026
-                </span>
+                <span className="font-semibold">Effective February 2026</span>
               </div>
               <div className="flex items-center gap-2">
                 <Scale className="w-5 h-5 text-[#B89A67]" />
-                <span className="font-semibold">Governing Law: India</span>
+                <span className="font-semibold">Jurisdiction: Gurgaon</span>
               </div>
             </div>
-            <p>© 2026 Graphura India Private Limited. All rights reserved.</p>
+            <p>© 2026 Graphura Clothing Co. All rights reserved.</p>
             <p className="mt-1">
-              These Terms of Service were last updated on January 25, 2026
+              These Terms of Service were last updated in February 2026
             </p>
           </div>
         </motion.div>

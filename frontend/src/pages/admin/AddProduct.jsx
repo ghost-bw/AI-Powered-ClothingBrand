@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import API from "../../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
 
@@ -31,15 +32,26 @@ const AddProduct = () => {
   });
 
   const [colors, setColors] = useState([]);
+  const [sizes, setSizes] = useState([]);
+const [sizeInput, setSizeInput] = useState("");
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [collectionsList, setCollectionsList] = useState([]);
   const [selectedCollectionName, setSelectedCollectionName] = useState("");
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch("/api/categories").then(r => r.json()).then(setCategories);
-    fetch("/api/collections").then(r => r.json()).then(setCollectionsList);
-  }, []);
+ useEffect(() => {
+  const loadData = async () => {
+    const catRes = await API.get("/categories");
+    const colRes = await API.get("/collections");
+
+    setCategories(catRes.data);
+    setCollectionsList(colRes.data);
+  };
+
+  loadData();
+}, []);
+
 
   useEffect(() => {
     if (formData.collections.length) {
@@ -65,7 +77,7 @@ const AddProduct = () => {
 
     Object.keys(formData).forEach(k => {
       if (k === "sizes") {
-        data.append("sizes", JSON.stringify(formData.sizes.split(",")));
+data.append("sizes", JSON.stringify(sizes));
       } else if (k === "collections") {
         data.append("collections", JSON.stringify(formData.collections));
       } else if (k === "discountPrice") {
@@ -107,6 +119,7 @@ const AddProduct = () => {
     });
 
     alert("✅ Product Added Successfully");
+    navigate("/admin/products");
   };
 
   const handleChange = (e) => {
@@ -178,7 +191,42 @@ const AddProduct = () => {
             <input name="price" placeholder="Price" onChange={handleChange} className="input" />
             <input name="discountPercent" placeholder="Discount %" onChange={handleChange} className="input" />
             <input value={formData.discountPrice} readOnly className="input bg-gray-100" />
-            <input name="sizes" placeholder="Sizes S,M,L" onChange={handleChange} className="input" />
+            {/* <input name="sizes" placeholder="Sizes S,M,L" onChange={handleChange} className="input" /> */}
+            <div>
+  <div className="flex gap-2 mb-2">
+    <input
+      value={sizeInput}
+      onChange={e => setSizeInput(e.target.value)}
+      placeholder="Add size (e.g. XL)"
+      className="input"
+    />
+
+    <button
+      type="button"
+      onClick={() => {
+        if (!sizeInput) return;
+        setSizes([...sizes, sizeInput]);
+        setSizeInput("");
+      }}
+      className="bg-gray-200 px-3 rounded"
+    >
+      Add
+    </button>
+  </div>
+
+  <div className="flex gap-2 flex-wrap">
+    {sizes.map((s, i) => (
+      <span
+        key={i}
+        className="bg-black text-white px-3 py-1 rounded cursor-pointer"
+        onClick={() => setSizes(sizes.filter((_, idx) => idx !== i))}
+      >
+        {s} ✕
+      </span>
+    ))}
+  </div>
+</div>
+
           </div>
 
           <div className="grid grid-cols-2 gap-4">

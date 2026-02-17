@@ -15,7 +15,7 @@ const OrderDetails = () => {
   const token = localStorage.getItem("token");
 
   const [order, setOrder] = useState(null);
-  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const statusStyle = {
     Delivered: "bg-green-100 text-green-700",
@@ -26,101 +26,112 @@ const OrderDetails = () => {
     Processing: "bg-yellow-100 text-yellow-700",
   };
 
-useEffect(() => {
-  axios
-    .get(`http://localhost:4000/api/user/dashboard/orders/${orderId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => {
-      setOrder(res.data.order || res.data);
-      setStatus(res.data.status || res.data.order?.status);
-    })
-    .catch(console.error);
-}, [orderId]);
+  /* ================= FETCH ORDER ================= */
 
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:4000/api/user/dashboard/orders/${orderId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-  if (!order) return null;
+        setOrder(res.data.order || res.data);
+      } catch (error) {
+        console.error("Fetch order error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrder();
+  }, [orderId]);
+
+  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (!order) return <div className="text-center py-10">Order not found</div>;
 
   /* ================= ACTION HANDLERS ================= */
 
-/* ================= ACTION HANDLERS ================= */
+  const handleCancel = async () => {
+    try {
+      if (order.paymentMethod === "cod") {
+        await axios.put(
+          `http://localhost:4000/api/orders/${order._id}/cancel`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-const handleCancel = async () => {
-  try {
-    if (order.paymentMethod === "cod") {
-      await axios.put(
-        `http://localhost:4000/api/orders/${order._id}/cancel`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setStatus("Cancelled");
-    } else {
-      // 🔗 ROUTE TO REFUND FORM (CANCEL)
-      navigate(`/user/dashboard/refund-request/${order._id}?type=cancel`);
+        setOrder({ ...order, status: "Cancelled" });
+      } else {
+        navigate(
+          `/user/dashboard/refund-request/${order._id}?type=cancel`
+        );
+      }
+    } catch (error) {
+      console.error("Cancel error:", error);
+      alert("Unable to cancel order");
     }
-  } catch (error) {
-    console.error("Cancel order error:", error);
-    alert("Unable to cancel order");
-  }
-};
+  };
 
-const handleReturn = async () => {
-  try {
-    if (order.paymentMethod === "cod") {
-      await axios.put(
-        `http://localhost:4000/api/orders/${order._id}/return`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+  const handleReturn = async () => {
+    try {
+      if (order.paymentMethod === "cod") {
+        await axios.put(
+          `http://localhost:4000/api/orders/${order._id}/return`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-      setStatus("Returned");
-    } else {
-      // 🔗 ROUTE TO REFUND FORM (RETURN)
-      navigate(`/user/dashboard/refund-request/${order._id}?type=return`);
+        setOrder({ ...order, status: "Returned" });
+      } else {
+        navigate(
+          `/user/dashboard/refund-request/${order._id}?type=return`
+        );
+      }
+    } catch (error) {
+      console.error("Return error:", error);
+      alert("Unable to return order");
     }
-  } catch (error) {
-    console.error("Return order error:", error);
-    alert("Unable to return order");
-  }
-};
-
-
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8">
       <div className="max-w-lg mx-auto space-y-5">
-        {/* Back */}
+
+        {/* BACK BUTTON */}
         <button
           onClick={() => navigate(-1)}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl
           bg-white border shadow-sm text-sm font-semibold text-gray-700
-          transition-all duration-300
-          hover:bg-black hover:text-white hover:shadow-md group"
+          hover:bg-black hover:text-white transition"
         >
-          <FaArrowLeft className="transition-transform group-hover:-translate-x-1" />
+          <FaArrowLeft />
           Back to Orders
         </button>
 
         {/* CARD */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          {/* Header */}
+
+          {/* HEADER */}
           <div className="p-5 border-b flex justify-between items-start">
             <div>
               <p className="text-base font-bold text-gray-900">
-                Order #{order?._id?.slice(-6)}
+                Order #{order._id}
               </p>
               <p className="text-xs text-gray-500 mt-1">
-                Placed on {new Date(order.createdAt).toLocaleDateString()}
+                Placed on{" "}
+                {new Date(order.createdAt).toLocaleDateString("en-IN")}
               </p>
             </div>
 
             <span
               className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                statusStyle[status]
+                statusStyle[order.status] || ""
               }`}
             >
-              {status}
+              {order.status}
             </span>
           </div>
 
@@ -130,43 +141,55 @@ const handleReturn = async () => {
               Item Details
             </h3>
 
-             {order?.items?.map((item) => (
-
+            {order.items.map((item) => (
               <div key={item._id} className="flex gap-4">
                 <img
-                  src={item.image}
-                  alt="product"
+                  src={item.image || "/placeholder.png"}
+                  alt={item.name}
                   className="w-24 h-24 rounded-xl border object-cover"
                 />
 
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900">{item.name}</p>
-                  <p className="text-xs text-gray-500 mt-1">
-                Size: {item.size} • Color: {item.color} • Qty: {item.quantity}
+                  <p className="font-medium text-gray-900">
+                    {item.name}
                   </p>
 
-                  <p className="text-lg font-bold mt-2">₹{item.price}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Size: {item.size} • Color: {item.color} • Qty:{" "}
+                    {item.quantity}
+                  </p>
+
+                  <p className="text-lg font-bold mt-2">
+                    ₹{item.price}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Price */}
+          {/* PRICE DETAILS */}
           <div className="px-5 py-4 border-t text-sm space-y-2 bg-gray-50">
             <div className="flex justify-between">
-              <span className="text-gray-600">Subtotal</span>
+              <span>Subtotal</span>
               <span>₹{order.subtotal}</span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-gray-600">Shipping</span>
+              <span>Shipping</span>
               <span>₹{order.shippingCost}</span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-gray-600">GST</span>
+              <span>GST</span>
               <span>₹{order.gst}</span>
             </div>
+
+            {order.discount > 0 && (
+              <div className="flex justify-between text-green-600">
+                <span>Discount</span>
+                <span>-₹{order.discount}</span>
+              </div>
+            )}
 
             <div className="flex justify-between font-semibold pt-2 border-t">
               <span>Total</span>
@@ -174,85 +197,68 @@ const handleReturn = async () => {
             </div>
           </div>
 
-          {/* Address */}
+          {/* ADDRESS */}
           <div className="p-5 border-t">
-            <h3 className="text-sm font-semibold mb-2">Delivery Address</h3>
+            <h3 className="text-sm font-semibold mb-2">
+              Delivery Address
+            </h3>
             <p className="text-xs text-gray-600 leading-relaxed">
-              {order?.shipping?.fullName}
-              <br />
-              {order?.shipping?.address}
-              <br />
-              {order?.shipping?.city}, {order?.shipping?.state} –{" "}
-              {order?.shipping?.zip}
-              <br />
+              {order.shipping.fullName} <br />
+              {order.shipping.address} <br />
+              {order.shipping.city}, {order.shipping.state} –{" "}
+              {order.shipping.zip} <br />
               India
             </p>
           </div>
 
-          {/* Payment */}
+          {/* PAYMENT */}
           <div className="p-5 border-t bg-gray-50">
             <div className="flex items-start gap-3">
               <FaLock className="text-gray-500 mt-1" />
               <div>
-                <h3 className="text-sm font-semibold">Payment Method</h3>
+                <h3 className="text-sm font-semibold">
+                  Payment Method
+                </h3>
                 <p className="text-xs text-gray-600">
-                  {order?.paymentMethod?.toUpperCase()}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Your order & payment information is securely encrypted.
+                  {order.paymentMethod?.toUpperCase()}
                 </p>
               </div>
             </div>
           </div>
 
+          {/* ACTIONS */}
+          <div className="p-5 border-t space-y-3">
 
+            {order.status === "Processing" && (
+              <button
+                onClick={handleCancel}
+                className="w-full py-3 rounded-xl border border-red-500 text-red-600 font-semibold hover:bg-red-50 transition"
+              >
+                <FaTimesCircle className="inline mr-2" />
+                Cancel Order
+              </button>
+            )}
 
-          {/* Actions */}
-          {/* Actions */}
-<div className="p-5 border-t space-y-3">
+            {order.status === "Delivered" && (
+              <button
+                onClick={handleReturn}
+                className="w-full py-3 rounded-xl border border-orange-500 text-orange-600 font-semibold hover:bg-orange-50 transition"
+              >
+                <FaUndo className="inline mr-2" />
+                Return Order
+              </button>
+            )}
 
-  {status === "Shipped" && (
-    <button
-      onClick={handleCancel}
-      className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
-      border border-red-500 text-red-600 font-semibold
-      hover:bg-red-50 transition"
-    >
-      <FaTimesCircle /> Cancel Order
-    </button>
-  )}
-
-  {status === "Delivered" && (
-    <>
-      <button
-        onClick={handleReturn}
-        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
-        border border-orange-500 text-orange-600 font-semibold
-        hover:bg-orange-50 transition"
-      >
-        <FaUndo /> Return Order
-      </button>
-
-      {/* Keep button for UI consistency but disable */}
-      <button
-        disabled
-        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
-        border border-gray-400 text-gray-400 font-semibold"
-      >
-        <FaMoneyCheckAlt /> Request Refund
-      </button>
-    </>
-  )}
-
-  {(status === "Returned" || status === "Cancelled") && (
-    <button
-      disabled
-      className="w-full py-3 rounded-xl bg-gray-100 text-gray-400 font-semibold"
-    >
-      Action Completed
-    </button>
-  )}
-</div>
+            {(order.status === "Returned" ||
+              order.status === "Cancelled") && (
+              <button
+                disabled
+                className="w-full py-3 rounded-xl bg-gray-100 text-gray-400 font-semibold"
+              >
+                Action Completed
+              </button>
+            )}
+          </div>
 
         </div>
       </div>

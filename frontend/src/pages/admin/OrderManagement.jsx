@@ -87,63 +87,68 @@ const stats = {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex-1 px-10 py-8 max-w-[1400px] mx-auto"
+          className="
+            flex-1
+            px-3 sm:px-6 lg:px-8
+            py-4 sm:py-8
+            max-w-[1400px]
+            mx-auto
+            w-full
+          "
         >
-          {/* HEADER */}
-          <div className="mb-6 flex justify-between items-center">
+          {/* Header */}
+          <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <div>
-              <h1 className="text-4xl font-black mb-2">Order Management</h1>
-              <p className="text-gray-500">Track & manage customer orders</p>
+              <h1 className="text-xl sm:text-3xl lg:text-4xl font-black mb-1">
+                Order Management
+              </h1>
+              <p className="text-gray-500 text-xs sm:text-base">
+                Track & manage customer orders
+              </p>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
               <button
-                onClick={exportCSV}
-                className="flex items-center gap-2 bg-black text-amber-100 border px-5 py-3 rounded-xl hover:shadow transition"
+                onClick={() => exportToCSV(ordersData, "orders.csv")}
+                className="
+                  flex items-center justify-center gap-2
+                  bg-white border
+                  px-4 sm:px-5 py-2.5 sm:py-3
+                  rounded-xl
+                  hover:shadow transition
+                  w-full sm:w-auto
+                  text-sm sm:text-base
+                "
               >
                 <Download size={18} />
                 Export CSV
               </button>
 
-              {/* <button
+              <button
                 onClick={() => navigate("/admin/orders/create")}
-                className="flex items-center gap-2 bg-black text-white px-5 py-3 rounded-xl hover:opacity-90 transition"
+                className="
+                  flex items-center justify-center gap-2
+                  bg-black text-white
+                  px-4 sm:px-5 py-2.5 sm:py-3
+                  rounded-xl
+                  hover:opacity-90 transition
+                  w-full sm:w-auto
+                  text-sm sm:text-base
+                "
               >
                 <Plus size={18} />
                 Create Order
-              </button> */}
+              </button>
             </div>
           </div>
 
-          {/* SEARCH + FILTER */}
-          <div className="flex gap-4 mb-8">
-            <input
-              placeholder="Search Order ID"
-              className="bg-white p-3 rounded-xl shadow-sm transition-all duration-200
-  hover:shadow-xl hover:-translate-y-0.5
-  focus:outline-none focus:ring-2 focus:ring-black"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-
-            <select
-             className="bg-black text-white p-3 rounded-xl shadow-sm transition-all duration-200
-  hover:shadow-xl hover:-translate-y-0.5 focus:outline-none"
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option>All</option>
-              <option>Processing</option>
-              <option>Shipped</option>
-              <option>Delivered</option>
-              <option>Returned</option>
-               <option>Cancelled</option>
-            </select>
-          </div>
-
-          {/* STATS */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+          {/* Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
             <StatsCard
               title="New orders"
-              value={stats.newOrders}
+              value="12"
+              badge="-2.6%"
+              badgeType="down"
               accent="blue"
               icon={<Package size={16} />}
             />
@@ -172,6 +177,12 @@ const stats = {
 
           {/* TABLE */}
           <OrderTable orders={filteredOrders} />
+          {/* Orders Table */}
+          <div className="overflow-x-auto -mx-3 sm:mx-0">
+            <div className="min-h-screen flex overflow-x-hidden">
+              <OrderTable />
+            </div>
+          </div>
         </motion.main>
       </div>
     </div>

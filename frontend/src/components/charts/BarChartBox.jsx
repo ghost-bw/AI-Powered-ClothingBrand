@@ -8,17 +8,13 @@ import {
   CartesianGrid,
 } from "recharts";
 
-export default function BarChartBox({
-  title,
-  data,
-  xKey,
-  yKey,
-}) {
-  return (
-  <div className="bg-white rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:scale-[1.01]">
-  <h2 className="font-bold mb-4">{title}</h2>
 
-      <div className="h-[280px]">
+export default function BarChartBox({ title, data, xKey, yKey }) {
+  return (
+    <div className="bg-white border rounded-2xl p-4 sm:p-6">
+      <h2 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">{title}</h2>
+
+      <div className="h-[220px] sm:h-[260px] lg:h-[280px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             {/* ✅ Gradient Definition */}
@@ -32,9 +28,8 @@ export default function BarChartBox({
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey={xKey} />
             <YAxis />
-            <Tooltip
-              cursor={{ fill: "rgba(99,102,241,0.08)" }}
-            />
+
+            <Tooltip cursor={{ fill: "rgba(99,102,241,0.08)" }} />
 
             {/* ✅ Gradient Bar */}
             <Bar

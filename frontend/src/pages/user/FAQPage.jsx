@@ -260,6 +260,13 @@ const FAQPage = () => {
 
           <div className="flex flex-wrap justify-center gap-4">
             <a
+              href="tel:+917378021327"
+              className="flex items-center gap-2 bg-[#fbf6ed] text-gray-900 px-8 py-3 rounded-full font-bold hover:bg-[#ECD1A8] transition-colors"
+            >
+              <Phone size={18} />
+              Call Now
+            </a>
+            <a
               href="mailto:support@graphura.in"
               className="flex items-center gap-2 bg-white text-gray-900 px-8 py-3 rounded-full font-bold hover:bg-[#ECD1A8] transition-colors"
             >

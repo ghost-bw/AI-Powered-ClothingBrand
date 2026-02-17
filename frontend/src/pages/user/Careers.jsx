@@ -425,15 +425,14 @@ const Careers = () => {
                       </div>
                     </div>
                   </div>
-                 <button
-  className="lg:self-start px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-black transition-colors"
-  onClick={() => {
-    window.location.href = "https://graphura.online/intern-corner.html";
-  }}
->
-  Apply Now
-</button>
-
+                  <button
+                    onClick={() =>
+                      window.open("https://www.graphura.online/apply.html")
+                    }
+                    className="lg:self-start px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-black transition-colors"
+                  >
+                    Apply Now
+                  </button>
                 </div>
 
                 <p className="text-gray-700 mb-6">{job.description}</p>
@@ -674,7 +673,7 @@ const Careers = () => {
                     movement towards sustainable, ethical fashion that empowers
                     artisans and protects our planet.
                   </p>
-                  <a href="/our-philosphy">
+                  <a href="/philosophy">
                     <button className="mt-6 px-6 py-3 bg-white text-gray-900 font-semibold rounded-xl hover:bg-gray-100 transition-colors">
                       Learn About Our Mission
                     </button>

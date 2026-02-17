@@ -15,7 +15,7 @@ function Favorites() {
 
   /* ================= AUTH GUARD ================= */
   useEffect(() => {
-    if (!token) navigate("/user/login");
+    if (!token) navigate("/login");
   }, [token, navigate]);
 
   /* ================= LOAD DATA ================= */

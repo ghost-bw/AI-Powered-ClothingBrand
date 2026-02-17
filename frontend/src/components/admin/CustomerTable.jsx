@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from "react";
 
 export default function CustomerTable({ data = [], onSelect }) {
@@ -35,25 +36,30 @@ export default function CustomerTable({ data = [], onSelect }) {
               <th className="pb-3 text-left">Orders</th>
               <th className="pb-3 text-left">Spend</th>
               <th className="pb-3 text-left">Status</th>
+
+
             </tr>
           </thead>
 
           <tbody>
-            {filteredCustomers.map((c, i) => (
+
+              
+              {filteredCustomers.map((c, i) => (
+
               <tr
-                key={i}
+                key={c.id}
                 onClick={() => onSelect(c)}
-                className="cursor-pointer transition hover:bg-gray-50 border-b last:border-b-0"
+                className="border-t cursor-pointer hover:bg-gray-50"
               >
-                <td className="py-3 font-semibold text-blue-600">
+                <td className="py-3 font-semibold text-blue-600 whitespace-nowrap">
                   {c.name}
                 </td>
-                <td>{c.email}</td>
+                <td className="whitespace-nowrap">{c.email}</td>
                 <td>{c.orders}</td>
-                <td>₹{c.spend}</td>
+                <td className="whitespace-nowrap">{c.spend}</td>
                 <td>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    className={`px-3 py-1 rounded-full text-xs whitespace-nowrap ${
                       c.status === "Active"
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-700"
@@ -67,6 +73,7 @@ export default function CustomerTable({ data = [], onSelect }) {
           </tbody>
         </table>
       </div>
+
 
       {/* MOBILE CARDS */}
       <div className="md:hidden space-y-3">
@@ -109,6 +116,7 @@ export default function CustomerTable({ data = [], onSelect }) {
           </div>
         ))}
       </div>
+
     </div>
   );
 }

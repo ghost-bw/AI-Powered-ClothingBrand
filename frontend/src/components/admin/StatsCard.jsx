@@ -36,35 +36,38 @@ export default function StatsCard({
     <motion.div
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300 }}
-      className={`relative overflow-hidden rounded-2xl p-6 ${accentMap[accent].bg}`}
+
+      className={`relative overflow-hidden rounded-2xl p-4 sm:p-6 ${accentMap[accent].bg}`}
     >
       {/* Top pill */}
       <div
-        className={`inline-flex items-center gap-2 px-4 py-1 rounded-full text-sm font-medium text-white ${accentMap[accent].pill}`}
+        className={`inline-flex items-center gap-2 px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-medium text-white ${accentMap[accent].pill}`}
       >
         {icon}
-        {title}
+        <span className="whitespace-nowrap">{title}</span>
       </div>
 
       {/* Value + badge */}
-      <div className="mt-4 flex items-center gap-3">
-        <h2 className="text-4xl font-extrabold text-gray-900">
+      <div className="mt-3 sm:mt-4 flex items-center gap-2 sm:gap-3 flex-wrap">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">
           {value}
         </h2>
 
         <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${badgeColor}`}
+
+          className={`px-2 py-1 rounded-full text-[10px] sm:text-xs font-semibold ${badgeColor}`}
         >
           {badge}
         </span>
       </div>
 
-      <p className="text-sm text-gray-500 mt-1">
-        Than last week
-      </p>
+
+
+
+      <p className="text-xs sm:text-sm text-gray-500 mt-1">Than last week</p>
 
       {/* Decorative circle */}
-      <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/40 rounded-full" />
+      <div className="absolute -right-10 sm:-right-8 -bottom-10 sm:-bottom-8 w-24 h-24 sm:w-32 sm:h-32 bg-white/40 rounded-full" />
     </motion.div>
   );
 }

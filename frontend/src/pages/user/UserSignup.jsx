@@ -49,7 +49,7 @@ export default function UserSignup() {
           >
             <div className="relative z-10 h-full w-full flex flex-col justify-between px-8 py-8 text-white">
               <div className="font-semibold tracking-wide">
-                <img src={logo} alt="Graphura Logo" className="h-15 w-auto" />
+                <img src={logo} alt="Graphura Logo" className="h-15 w-auto cursor-pointer" />
               </div>
 
               <div>
@@ -67,9 +67,13 @@ export default function UserSignup() {
 
           {/* RIGHT FORM CARD */}
           <div className="w-full md:w-1/2 flex items-center justify-center px-6 md:px-12 py-12 relative">
+            {/* LOGIN CARD */}
+
             <div
               className="w-full max-w-md bg-[#FAF9F6] rounded-2xl px-8 py-6 shadow-[0_15px_40px_rgba(0,0,0,0.18)]"
-              style={{ boxShadow: "0 16px 40px rgb(128, 128, 128)" }}
+              style={{
+                boxShadow: "0 16px 40px rgb(128, 128, 128)",
+              }}
             >
               <h2 className="text-2xl font-semibold mb-1">Create account</h2>
               <p className="text-sm text-gray-500 mb-6">
@@ -169,7 +173,7 @@ export default function UserSignup() {
               <p className="text-xs text-center mt-5 text-gray-600">
                 Already have an account?{" "}
                 <span
-                  onClick={() => navigate("/user/login")}
+                  onClick={() => navigate("/login")}
                   className="text-black font-medium cursor-pointer"
                 >
                   SIGN IN
@@ -177,7 +181,6 @@ export default function UserSignup() {
               </p>
             </div>
           </div>
-
         </div>
       </div>
     </div>

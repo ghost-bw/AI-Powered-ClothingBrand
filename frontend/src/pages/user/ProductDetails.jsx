@@ -56,14 +56,12 @@ function ProductDetails() {
   const [selectedSize, setSelectedSize] = useState("");
 
 useEffect(() => {
-  if (!product?.sizes?.length) return;
+  if (!product?.inventory?.length) return;
 
-  if (product.sizes.includes("M")) {
-    setSelectedSize("M");
-  } else {
-    setSelectedSize(product.sizes[0]); // first available size
-  }
+  const firstSize = product.inventory[0].size;
+  setSelectedSize(firstSize);
 }, [product]);
+
 
 
 
@@ -74,6 +72,12 @@ const selectedVariant = product?.inventory?.find(
 
 const variantStock = selectedVariant?.stock || 0;
 
+
+const sizes = product?.inventory
+  ? Array.from(
+      new Set(product.inventory.map(i => i.size))
+    ).sort()
+  : [];
 
 
   useEffect(() => {
@@ -125,24 +129,20 @@ const variantStock = selectedVariant?.stock || 0;
 };
 
 
-//  const isInWishlist =
-//   product && wishlist.includes(product._id);
+ const isInWishlist =
+  product && Array.isArray(wishlist) && wishlist.includes(product._id);
+
 
   const isInCart =
     product &&
-    // cart.some(
-    //   (item) =>
-    //     item.id === product._id &&
-    //     item.size === selectedSize &&
-    //     item.color === selectedColor?.name,
-    // );
-
     cart.some(
-  (item) =>
-    item.id === product._id &&
-    item.size === selectedSize &&
-    item.color === selectedColor?.name
-)
+      (item) =>
+        item.id === product._id &&
+        item.size === selectedSize &&
+        item.color === selectedColor?.name,
+    );
+
+    
 
  const handleAddToCart = async () => {
   const token = localStorage.getItem("token");
@@ -253,29 +253,16 @@ const handleWishlistToggle = async () => {
     }
   };
 
-  // const handleImageNavigation = (direction) => {
-  //   if (!product) return;
-
-  //   const newIndex =
-  //     direction === "next"
-  //       ? (selectedImage + 1) % selectedColor?.images?.length
-
-  //       : (selectedImage - 1 + selectedColor?.images?.length) % selectedColor?.images?.length;
-
-  //   setSelectedImage(newIndex);
-  // };
-
   const handleImageNavigation = (direction) => {
+    if (!product) return;
 
- const len = selectedColor?.images?.length || 1;
+    const newIndex =
+      direction === "next"
+        ? (selectedImage + 1) % product.images.length
+        : (selectedImage - 1 + product.images.length) % product.images.length;
 
- const newIndex =
-  direction === "next"
-   ? (selectedImage + 1) % len
-   : (selectedImage - 1 + len) % len;
-
- setSelectedImage(newIndex);
-};
+    setSelectedImage(newIndex);
+  };
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
@@ -289,8 +276,7 @@ const handleWishlistToggle = async () => {
 
   const handleQuantityChange = (change) => {
     const newQuantity = quantity + change;
-    if (newQuantity >= 1 && newQuantity <= variantStock)
- {
+    if (newQuantity >= 1 && newQuantity <= (product?.stock || 10)) {
       setQuantity(newQuantity);
     }
   };
@@ -299,8 +285,13 @@ const handleWishlistToggle = async () => {
     if (!product) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0]?.clientY);
+
+    if (!clientX || !clientY) return;
+
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    const y = ((clientY - rect.top) / rect.height) * 100;
 
     setZoomPosition({ x, y });
     setIsZoomed(true);
@@ -308,6 +299,12 @@ const handleWishlistToggle = async () => {
 
   const handleMouseMove = (e) => {
     if (isZoomed) {
+      handleImageZoom(e);
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (isZoomed && e.touches) {
       handleImageZoom(e);
     }
   };
@@ -476,10 +473,15 @@ const handleWishlistToggle = async () => {
                 {/* Close zoom button */}
                 {isZoomed && (
                   <button
-                    onClick={() => setIsZoomed(false)}
-                    className="absolute top-4 left-4 bg-black/50 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-black/70"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsZoomed(false);
+                    }}
+                    className="absolute top-4 left-4 bg-black/60 text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-black/80 transition-colors shadow-lg z-20"
+                    title="Exit zoom"
+                    aria-label="Exit zoom mode"
                   >
-                    <X size={20} />
+                    <X size={20} className="sm:size-6" />
                   </button>
                 )}
               </div>
@@ -521,7 +523,7 @@ const handleWishlistToggle = async () => {
                 </span>
               )}
               {product.details?.featured && (
-                <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+                <span className="bg-blue-500 text-white px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold shadow-md">
                   Featured
                 </span>
               )}
@@ -544,7 +546,7 @@ const handleWishlistToggle = async () => {
                   <img
                     src={img}
                     alt=""
-                    className="w-full h-24 object-cover"
+                    className="w-full h-16 sm:h-24 object-cover"
                     loading="lazy"
                   />
                   {selectedImage === index && (
@@ -625,9 +627,27 @@ const handleWishlistToggle = async () => {
             </div>
           </div>
 
-          {/* { Share */} 
-          <div className="flex items-center justify-between">
-            
+          {/* Rating & Share */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+              <div className="flex text-yellow-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={16}
+                    className={
+                      i < Math.floor(product.rating)
+                        ? "fill-yellow-400"
+                        : "stroke-yellow-400"
+                    }
+                  />
+                ))}
+              </div>
+              <span className="text-sm sm:text-base text-gray-600">
+                {(product?.rating ?? 0).toFixed(1)} • {product.reviews} reviews
+              </span>
+            </div>
+
             <div className="flex items-center gap-4">
               <button
                 onClick={handleShare}
@@ -640,51 +660,53 @@ const handleWishlistToggle = async () => {
           </div>
 
           {/* Trust Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t">
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Truck size={18} />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-4 border-t">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+              <Truck size={16} className="sm:size-4" />
               <span>Free Shipping</span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <RefreshCw size={18} />
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+              <RefreshCw size={16} className="sm:size-4" />
               <span>30 Day Returns</span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Shield size={18} />
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+              <Shield size={16} className="sm:size-4" />
               <span>2 Year Warranty</span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Package size={18} />
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+              <Package size={16} className="sm:size-4" />
               <span>Authentic</span>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-gray-600 leading-relaxed">{product.description}</p>
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+            {product.description}
+          </p>
 
           {/* Color Selection */}
           {product.colors && product.colors.length > 0 && (
             <div>
-              <h3 className="font-medium mb-3 text-gray-900">
+              <h3 className="font-medium mb-3 text-sm sm:text-base text-gray-900">
                 Color:{" "}
                 <span className="font-semibold text-gray-700">
                   {selectedColor?.name}
                 </span>
               </h3>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {product.colors.map((color) => (
                   <button
-                    key={color._id}
+                    key={color.id}
                     onClick={() => handleColorSelect(color)}
-                    className={`relative w-12 h-12 rounded-full border-2 transition-transform shadow-sm ${selectedColor?._id === color._id ? "border-black scale-110 ring-2 ring-black ring-opacity-20" : "border-gray-300 hover:scale-105"}`}
-                    style={{ backgroundColor: color.hex }}
+                    className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-transform shadow-sm ${selectedColor?.id === color.id ? "border-black scale-110 ring-2 ring-black ring-opacity-20" : "border-gray-300 hover:scale-105"}`}
+                    style={{ backgroundColor: color.value }}
                     title={color.name}
                     aria-label={`Select ${color.name} color`}
                   >
-                    {selectedColor?._id === color._id && (
+                    {selectedColor?.id === color.id && (
                       <div className="absolute inset-0 border-2 border-white rounded-full"></div>
                     )}
-                    {selectedColor?._id === color._id && (
+                    {selectedColor?.id === color.id && (
                       <div className="absolute -top-1 -right-1 w-5 h-5 bg-black rounded-full flex items-center justify-center">
                         <Check size={12} className="text-white" />
                       </div>
@@ -696,42 +718,88 @@ const handleWishlistToggle = async () => {
           )}
 
           {/* Size Selection */}
-          {product.sizes && product.sizes.length > 0 && (
+          {/* {product.variants && product.variants.length > 0 && (
             <div>
               <div className="flex justify-between items-center mb-3">
-                <h3 className="font-medium text-gray-900">Select Size</h3>
+                <h3 className="font-medium text-sm sm:text-base text-gray-900">
+                  Select Size
+                </h3>
                 <button
                   onClick={() => setShowSizeGuide(true)}
-                  className="text-sm text-blue-600 hover:underline font-medium"
+                  className="text-xs sm:text-sm text-blue-600 hover:underline font-medium"
                 >
                   Size Guide
                 </button>
               </div>
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-  {product.sizes.map((size) => (
-    <button
-      key={size}
-      onClick={() => setSelectedSize(size)}
-      className={`relative py-3 rounded-lg text-center border transition-all ${
-        selectedSize === size
-          ? "border-blue-600 bg-blue-50 ring-2 ring-blue-100 text-blue-700"
-          : "border-gray-200 hover:border-gray-400 text-gray-700 hover:shadow-md"
-      }`}
-      aria-label={`Size ${size}`}
-    >
-      <span className="font-medium">{size}</span>
-
-      {selectedSize === size && (
-        <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center shadow-md">
-          <Check size={12} className="text-white" />
-        </div>
-      )}
-    </button>
-  ))}
-</div>
-
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3">
+                {product.variants.map((variant) => (
+                  <button
+                    key={variant.size}
+                    onClick={() => setSelectedSize(variant.size)}
+                    disabled={!variant.inStock}
+                    className={`relative py-2 sm:py-3 px-2 sm:px-3 rounded-lg text-center border text-sm sm:text-base transition-all ${selectedSize === variant.size ? "border-blue-600 bg-blue-50 ring-2 ring-blue-100 text-blue-700" : "border-gray-200 hover:border-gray-400 text-gray-700"} ${!variant.inStock ? "opacity-50 cursor-not-allowed bg-gray-100" : "hover:shadow-md"}`}
+                    aria-label={`Size ${variant.size} ${variant.inStock ? "available" : "out of stock"}`}
+                  >
+                    <span
+                      className={`font-medium ${!variant.inStock ? "text-gray-400" : ""}`}
+                    >
+                      {variant.size}
+                    </span>
+                    {!variant.inStock && (
+                      <span className="block text-xs text-gray-400 mt-0.5">
+                        Out of stock
+                      </span>
+                    )}
+                    {selectedSize === variant.size && variant.inStock && (
+                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center shadow-md">
+                        <Check size={12} className="text-white" />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
-          )}
+          )} */}
+          {/* Size Selection */}
+{sizes.length > 0 && (
+  <div>
+    <div className="flex justify-between items-center mb-3">
+      <h3 className="font-medium text-sm sm:text-base text-gray-900">
+        Select Size
+      </h3>
+      <button
+        onClick={() => setShowSizeGuide(true)}
+        className="text-xs sm:text-sm text-blue-600 hover:underline font-medium"
+      >
+        Size Guide
+      </button>
+    </div>
+
+    <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3">
+      {sizes.map((size) => {
+        const stock = product.inventory.find(
+          i => i.size === size && i.color === selectedColor?.name
+        )?.stock ?? 0;
+
+        return (
+          <button
+            key={size}
+            onClick={() => setSelectedSize(size)}
+            disabled={stock === 0}
+            className={`relative py-2 px-3 rounded-lg border ${
+              selectedSize === size
+                ? "border-blue-600 bg-blue-50"
+                : "border-gray-200"
+            } ${stock === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            {size}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+)}
+
 
           {/* Quantity & Stock */}
           <div className="space-y-3">
@@ -748,12 +816,12 @@ const handleWishlistToggle = async () => {
                 <button
                   onClick={() => handleQuantityChange(-1)}
                   disabled={quantity <= 1}
-                  className="px-4 py-3 text-gray-600 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 sm:px-4 py-2 sm:py-3 text-gray-600 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   aria-label="Decrease quantity"
                 >
                   –
                 </button>
-                <span className="w-12 text-center font-medium text-gray-900">
+                <span className="w-10 sm:w-12 text-center font-medium text-gray-900">
                   {quantity}
                 </span>
                 <button
@@ -769,15 +837,15 @@ const handleWishlistToggle = async () => {
           </div>
 
           {/* Delivery Estimate */}
-          <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
-            <div className="flex items-center gap-3">
-              <Truck className="text-blue-600" size={20} />
+          <div className="p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-100">
+            <div className="flex items-start sm:items-center gap-2 sm:gap-3">
+              <Truck className="text-blue-600 flex-shrink-0" size={18} />
               <div>
-                <p className="text-sm font-medium text-gray-900">
+                <p className="text-xs sm:text-sm font-medium text-gray-900">
                   Delivery Estimate
                 </p>
-                <p className="text-sm text-gray-600">
-                  {variantStock > 0
+                <p className="text-xs sm:text-sm text-gray-600">
+                  {product.stock > 0
                     ? `Free delivery by ${new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "short" })}`
                     : "Available for pre-order. Ships in 2-3 weeks"}
                 </p>
@@ -787,14 +855,17 @@ const handleWishlistToggle = async () => {
 
           {/* Success Messages */}
           {showWishlistMessage && (
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg animate-fadeIn">
-              <p className="text-green-700 font-medium flex items-center gap-3">
-                <Heart size={20} className="fill-green-600 text-green-600" />
+            <div className="p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg animate-fadeIn">
+              <p className="text-green-700 font-medium flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 text-sm sm:text-base">
+                <Heart
+                  size={18}
+                  className="fill-green-600 text-green-600 flex-shrink-0 sm:size-5"
+                />
                 <span>
                   Added to favorites!
                   <button
                     onClick={() => navigate("/favorites")}
-                    className="ml-2 text-green-800 underline font-semibold hover:text-green-900"
+                    className="ml-0 sm:ml-2 block sm:inline text-green-800 underline font-semibold hover:text-green-900"
                   >
                     View favorites
                   </button>
@@ -804,14 +875,17 @@ const handleWishlistToggle = async () => {
           )}
 
           {showCartMessage && (
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg animate-fadeIn">
-              <p className="text-blue-700 font-medium flex items-center gap-3">
-                <ShoppingCart size={20} className="text-blue-600" />
+            <div className="p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg animate-fadeIn">
+              <p className="text-blue-700 font-medium flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 text-sm sm:text-base">
+                <ShoppingCart
+                  size={18}
+                  className="fill-blue-600 text-blue-600 flex-shrink-0 sm:size-5"
+                />
                 <span>
-                  Added to cart!
+                  Item added to cart!
                   <button
                     onClick={() => navigate("/cart")}
-                    className="ml-2 text-blue-800 underline font-semibold hover:text-blue-900"
+                    className="ml-0 sm:ml-2 block sm:inline text-blue-800 underline font-semibold hover:text-blue-900"
                   >
                     View cart
                   </button>
@@ -821,80 +895,73 @@ const handleWishlistToggle = async () => {
           )}
 
           {/* Action Buttons */}
-          <div className="space-y-4 pt-4 border-t">
+          <div className="space-y-3 sm:space-y-4 pt-4 border-t">
             <button
-  onClick={handleBuyNow}
-  disabled={!selectedSize || !selectedColor || variantStock === 0}
-  className={`w-full py-4 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl ${
-    !selectedSize || !selectedColor || variantStock === 0
-      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-      : "bg-linear-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800"
-  }`}
->
-  {variantStock === 0 ? "Out of Stock" : "Buy Now"}
-</button>
+              onClick={handleBuyNow}
+              disabled={!selectedSize || product.stock === 0}
+              className={`w-full py-3 sm:py-4 rounded-xl font-medium text-sm sm:text-base transition-all duration-300 shadow-lg hover:shadow-xl ${
+                !selectedSize || product.stock === 0
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-linear-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800"
+              }`}
+            >
+              {product.stock === 0 ? "Out of Stock" : "Buy Now"}
+            </button>
 
-                              <button
-                      onClick={() => {
-                        console.log("SENDING PRODUCT:", product._id);
+            <button
+              onClick={() => navigate("/ai-try-on")}
+              className="w-full py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md"
+            >
+              Try your clothes
+            </button>
 
-                        navigate("/tryon", {
-                          state: {
-                            productId: product._id,
-                          },
-                        });
-                      }}
-                      className="w-full py-4 rounded-xl font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md"
-                    >
-                       Try on Feature
-                    </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+              <button
+                onClick={handleAddToCart}
+                disabled={!selectedSize || product.stock === 0 || isInCart}
+                className={`py-3 sm:py-4 rounded-xl font-medium text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 shadow-md hover:shadow-lg ${
+                  isInCart
+                    ? "bg-green-100 text-green-700 border-2 border-green-300"
+                    : !selectedSize || product.stock === 0
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-gray-900 text-white hover:bg-black"
+                }`}
+              >
+                <ShoppingCart size={18} className="sm:size-5" />
+                <span className="font-semibold">
+                  {isInCart ? "✓ Added" : "Add to Cart"}
+                </span>
+              </button>
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-  {/* ADD TO CART */}
-  <button
-    onClick={handleAddToCart}
-    disabled={!selectedSize || variantStock === 0 || isInCart}
-    className={`py-4 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-3 shadow-md hover:shadow-lg ${
-      isInCart
-        ? "bg-green-100 text-green-700 border-2 border-green-300"
-        : !selectedSize || variantStock === 0
-        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-        : "bg-gray-900 text-white hover:bg-black"
-    }`}
-  >
-    <ShoppingCart size={22} />
-    <span className="font-semibold">
-      {isInCart ? "✓ Added to Cart" : "Add to Cart"}
-    </span>
-  </button>
-
-  {/* ADD TO WISHLIST */}
-  <button
-    onClick={handleWishlistToggle}
-    className="py-4 rounded-xl font-medium transition-all duration-300
-               flex items-center justify-center gap-3
-               border-2 border-red-500 text-red-500
-               hover:bg-red-500 hover:text-white shadow-md hover:shadow-lg"
-  >
-    <Heart size={22} />
-    <span className="font-semibold">Add to Wishlist</span>
-  </button>
-</div>
-
-
-            
+              <button
+                onClick={handleWishlistToggle}
+                className={`py-3 sm:py-4 rounded-xl font-medium text-sm sm:text-base border-2 transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 shadow-md hover:shadow-lg ${
+                  isInWishlist
+                    ? "border-red-500 text-red-600 bg-red-50 hover:bg-red-100"
+                    : "border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-gray-700"
+                }`}
+              >
+                <Heart
+                  size={18}
+                  className={`sm:size-5 ${isInWishlist ? "fill-red-500 text-red-500" : ""}`}
+                />
+                <span className="font-semibold">
+                  {isInWishlist ? "Wishlist" : "Save"}
+                </span>
+              </button>
+            </div>
           </div>
 
           {/* Tabs for Product Details */}
-          <div className="mt-8">
-            <div className="border-b border-gray-200">
-              <div className="flex space-x-8">
+          <div className="mt-6 sm:mt-8">
+            <div className="border-b border-gray-200 overflow-x-auto">
+              <div className="flex space-x-4 sm:space-x-8 min-w-max sm:min-w-0">
                 {["description", "details", "shipping", "reviews"].map(
                   (tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className={`py-3 px-1 font-medium text-sm border-b-2 transition-colors ${
+                      className={`py-2 sm:py-3 px-1 font-medium text-xs sm:text-sm border-b-2 transition-colors whitespace-nowrap ${
                         activeTab === tab
                           ? "border-blue-600 text-blue-600"
                           : "border-transparent text-gray-500 hover:text-gray-700"
@@ -985,8 +1052,7 @@ const handleWishlistToggle = async () => {
                   <div className="flex items-center gap-4">
                     <div className="text-center">
                       <span className="text-3xl font-bold text-gray-900">
-                       {(product.rating || 4.5).toFixed(1)}
-
+                        {(product.rating ?? 0).toFixed(1)}
                       </span>
                       <div className="flex text-yellow-400 mt-1">
                         {[...Array(5)].map((_, i) => (
@@ -1119,9 +1185,9 @@ const handleWishlistToggle = async () => {
 
       {/* Related Products - Responsive Carousel */}
       {relatedProducts.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-16 mb-20">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 mt-12 sm:mt-16 mb-20 overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
               Complete the Look
             </h2>
             <button
@@ -1174,9 +1240,11 @@ const handleWishlistToggle = async () => {
       {showSizeGuide && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto animate-slideUp">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold text-gray-900">Size Guide</h3>
+            <div className="p-4 sm:p-6">
+              <div className="flex justify-between items-center mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                  Size Guide
+                </h3>
                 <button
                   onClick={() => setShowSizeGuide(false)}
                   className="text-gray-500 hover:text-gray-700 transition-colors"
@@ -1256,8 +1324,8 @@ const handleWishlistToggle = async () => {
                 </table>
               </div>
 
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">
+              <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-gray-50 rounded-lg">
+                <p className="text-xs sm:text-sm text-gray-600">
                   <strong className="text-gray-900">Note:</strong> This size
                   guide is for reference only. For the best fit, we recommend
                   measuring yourself and comparing with our size chart. If
@@ -1265,10 +1333,10 @@ const handleWishlistToggle = async () => {
                 </p>
               </div>
 
-              <div className="mt-6 flex justify-end">
+              <div className="mt-4 sm:mt-6 flex justify-end">
                 <button
                   onClick={() => setShowSizeGuide(false)}
-                  className="px-6 py-2 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                  className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
                 >
                   Close
                 </button>
@@ -1278,8 +1346,8 @@ const handleWishlistToggle = async () => {
         </div>
       )}
 
-      {/* Add CSS animations */}
-      <style jsx>{`
+      {/* Add CSS animations and Swiper styling */}
+      <style>{`
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -1298,11 +1366,119 @@ const handleWishlistToggle = async () => {
             opacity: 1;
           }
         }
+        @keyframes slideInLeft {
+          from {
+            transform: translateX(-10px);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        @keyframes slideInRight {
+          from {
+            transform: translateX(10px);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
         .animate-fadeIn {
           animation: fadeIn 0.3s ease-in-out;
         }
         .animate-slideUp {
           animation: slideUp 0.3s ease-in-out;
+        }
+        .related-products-swiper {
+          position: relative;
+        }
+        .related-products-swiper .swiper-button-next,
+        .related-products-swiper .swiper-button-prev {
+          width: 40px;
+          height: 40px;
+          background-color: white;
+          border-radius: 12px;
+          color: #1f2937;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          z-index: 10;
+          top: 50%;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+        }
+        .related-products-swiper .swiper-button-next {
+          right: 10px;
+          animation: slideInRight 0.5s ease-out;
+          transform: translateY(-50%);
+        }
+        .related-products-swiper .swiper-button-prev {
+          left: 10px;
+          animation: slideInLeft 0.5s ease-out;
+          transform: translateY(-50%);
+        }
+        .related-products-swiper .swiper-button-next::after,
+        .related-products-swiper .swiper-button-prev::after {
+          font-size: 18px;
+          font-weight: bold;
+          color: #1f2937;
+        }
+        .related-products-swiper .swiper-button-next:hover,
+        .related-products-swiper .swiper-button-prev:hover {
+          background-color: white;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+          transform: translateY(calc(-50% - 3px));
+          color: #1e40af;
+        }
+        .related-products-swiper .swiper-button-next:hover::after,
+        .related-products-swiper .swiper-button-prev:hover::after {
+          color: #1e40af;
+        }
+        .related-products-swiper .swiper-button-next:active,
+        .related-products-swiper .swiper-button-prev:active {
+          transform: translateY(-50%);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .related-products-swiper .swiper-button-disabled {
+          opacity: 0.35;
+          cursor: not-allowed;
+          background-color: #f3f4f6;
+        }
+        .related-products-swiper .swiper-button-disabled:hover {
+          background-color: #f3f4f6;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          transform: translateY(-50%);
+        }
+        .related-products-swiper .swiper-button-disabled::after {
+          color: #d1d5db;
+        }
+        @media (max-width: 768px) {
+          .related-products-swiper .swiper-button-next,
+          .related-products-swiper .swiper-button-prev {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+          }
+          .related-products-swiper .swiper-button-next::after,
+          .related-products-swiper .swiper-button-prev::after {
+            font-size: 16px;
+          }
+          .related-products-swiper .swiper-button-next {
+            right: 8px;
+          }
+          .related-products-swiper .swiper-button-prev {
+            left: 8px;
+          }
+          .related-products-swiper .swiper-button-next:hover,
+          .related-products-swiper .swiper-button-prev:hover {
+            transform: translateY(calc(-50% - 2px));
+          }
         }
       `}</style>
     </>

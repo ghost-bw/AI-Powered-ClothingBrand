@@ -6,8 +6,8 @@ import twilio from "twilio";
 import WhatsappLog from "../models/WhatsappLog.model.js";
 
 const client = twilio(
- process.env.TWILIO_SID,
- process.env.TWILIO_AUTH
+  process.env.TWILIO_SID,
+  process.env.TWILIO_AUTH
 );
 
 
@@ -60,17 +60,31 @@ export const placeOrder = async (req, res) => {
     /* ===== CREATE ORDER ===== */
     const order = await Order.create({
       user: user._id,
-      items: user.cart,
-      shipping: req.body.shipping,
-      paymentMethod: req.body.payment,
-      paymentStatus: req.body.payment === "cod" ? "pending" : "paid",
+
+      // ✅ Use formatted items coming from frontend
+      items: req.body.items,
+
+      shipping: {
+        fullName: req.body.shipping.fullName,
+        email: req.body.shipping.email,
+        address: req.body.shipping.address,
+        city: req.body.shipping.city,
+        state: req.body.shipping.state,
+        zip: req.body.shipping.zip,
+        phone: req.body.shipping.phone,
+      },
+
+      paymentMethod: req.body.paymentMethod,
+
       subtotal: req.body.subtotal,
       shippingCost: req.body.shippingCost,
       gst: req.body.gst,
       discount: req.body.discount,
       total: req.body.total,
+
       status: "Processing",
     });
+
 
     /* ===== AUTO WHATSAPP CONFIRMATION ===== */
     let phone = order.shipping.phone;
@@ -118,19 +132,19 @@ ${itemNames}
     await user.save();
 
     /* ===== CREATE INVOICE ===== */
-   /* ===== CREATE INVOICE ===== */
-if (
-  order.paymentMethod === "cod" ||
-  order.paymentStatus === "paid"
-) {
-  await Invoice.create({
-    user: user._id,
-    orderId: order._id,          // 🔥 LINK ORDER
-    amount: order.total,
-    paymentMethod: order.paymentMethod,
-    paymentStatus: order.paymentStatus,
-  });
-}
+    /* ===== CREATE INVOICE ===== */
+    if (
+      order.paymentMethod === "cod" ||
+      order.paymentStatus === "paid"
+    ) {
+      await Invoice.create({
+        user: user._id,
+        orderId: order._id,          // 🔥 LINK ORDER
+        amount: order.total,
+        paymentMethod: order.paymentMethod,
+        paymentStatus: order.paymentStatus,
+      });
+    }
 
 
     res.json({
@@ -147,72 +161,72 @@ if (
 /* ================= MY ORDERS ================= */
 
 export const getMyOrders = async (req, res) => {
- try {
+  try {
 
-  const orders = await Order.find({
-   user: req.user._id
-  }).sort({ createdAt: -1 });
+    const orders = await Order.find({
+      user: req.user._id
+    }).sort({ createdAt: -1 });
 
-  res.json(orders);
+    res.json(orders);
 
- } catch (err) {
-  res.status(500).json({ message: err.message });
- }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 export const getAllOrders = async (req, res) => {
- try {
-  const orders = await Order.find()
-   .populate("user", "name email")
-   .sort({ createdAt: -1 });
+  try {
+    const orders = await Order.find()
+      .populate("user", "name email")
+      .sort({ createdAt: -1 });
 
-  res.json(orders);
+    res.json(orders);
 
- } catch (err) {
-  res.status(500).json({ message: err.message });
- }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 export const getCustomerOrders = async (req, res) => {
- try {
+  try {
 
-  const orders = await Order.find({
-    user: req.params.id   // <-- customer id
-  }).sort({ createdAt: -1 });
+    const orders = await Order.find({
+      user: req.params.id   // <-- customer id
+    }).sort({ createdAt: -1 });
 
-  res.json(orders);
+    res.json(orders);
 
- } catch (err) {
-  res.status(500).json({ message: err.message });
- }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
-export const updateOrderStatus = async (req,res)=>{
- try{
+export const updateOrderStatus = async (req, res) => {
+  try {
 
-  console.log("ORDER STATUS API HIT");
+    console.log("ORDER STATUS API HIT");
 
-  const { status } = req.body;
-  const orderId = req.params.id;
+    const { status } = req.body;
+    const orderId = req.params.id;
 
-  const order = await Order.findByIdAndUpdate(
-    orderId,
-    { status },
-    { new:true }
-  );
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
 
-  if(!order) return res.status(404).json({success:false});
+    if (!order) return res.status(404).json({ success: false });
 
-  let phone = order.shipping.phone;
- if(phone.length === 10){
- phone = "+91" + phone;
-}
-else if(!phone.startsWith("+")){
- phone = "+" + phone;
-}
-const itemNames = order.items.map(i => i.name).join(", ");
+    let phone = order.shipping.phone;
+    if (phone.length === 10) {
+      phone = "+91" + phone;
+    }
+    else if (!phone.startsWith("+")) {
+      phone = "+" + phone;
+    }
+    const itemNames = order.items.map(i => i.name).join(", ");
 
-const message = `Hello ${order.shipping.fullName},
+    const message = `Hello ${order.shipping.fullName},
 
 Your order ${order._id}, Items:${itemNames}    
 status is now:
@@ -222,25 +236,25 @@ Total: ₹${order.total}
 
 – Graphura`;
 
-  // console.log("PHONE:", phone);
-  // console.log("MESSAGE:", message);
+    // console.log("PHONE:", phone);
+    // console.log("MESSAGE:", message);
 
-  await client.messages.create({
-    from:"whatsapp:+14155238886",
-    to:`whatsapp:${phone}`,
-    body:message
-  });
+    await client.messages.create({
+      from: "whatsapp:+14155238886",
+      to: `whatsapp:${phone}`,
+      body: message
+    });
 
-  await WhatsappLog.create({
-   phone,
-   template:status,
-   status:"Sent"
-  });
+    await WhatsappLog.create({
+      phone,
+      template: status,
+      status: "Sent"
+    });
 
-  res.json({success:true});
+    res.json({ success: true });
 
- }catch(err){
-  console.log("STATUS ERROR:",err);
-  res.status(500).json({success:false});
- }
+  } catch (err) {
+    console.log("STATUS ERROR:", err);
+    res.status(500).json({ success: false });
+  }
 };

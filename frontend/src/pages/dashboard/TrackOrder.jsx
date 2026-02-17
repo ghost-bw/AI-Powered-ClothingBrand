@@ -213,21 +213,35 @@ export default function TrackOrder() {
           <div className="space-y-10">
             {steps.map((step, index) => (
               <div key={index} className="flex items-start gap-5 group">
+                {/* Icon */}
                 <div
                   className={`relative z-10 w-14 h-14 rounded-full flex items-center justify-center
+                  transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl
                   ${
                     step.current
                       ? "bg-blue-600 text-white ring-4 ring-blue-200"
                       : step.done
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-300 text-gray-500"
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-300 text-gray-500"
                   }`}
                 >
                   {step.icon}
                 </div>
 
+                {/* Text */}
                 <div className="pt-1">
-                  <p className="font-semibold">{step.label}</p>
+                  <p
+                    className={`font-semibold ${step.current ? "text-blue-600" : "text-gray-900"}`}
+                  >
+                    {step.label}
+                  </p>
+                  <p className="text-sm text-gray-500">{step.date}</p>
+
+                  {step.current && (
+                    <span className="inline-block mt-2 text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full shadow-sm">
+                      Current Status
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
@@ -258,16 +272,19 @@ export default function TrackOrder() {
         {/* Courier */}
         <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <h4 className="font-semibold mb-1">Courier Partner</h4>
-          <p className="font-medium">Self Delivery</p>
+          <p className="font-medium">{order.courier}</p>
+          <p className="text-xs text-gray-500">
+            Tracking ID: {order.trackingId}
+          </p>
 
           <div className="mt-4 pt-4 border-t text-sm flex items-center gap-2">
             <FaMoneyBillWave className="text-green-600" />
-            Payment: <b>{order.paymentMethod}</b>
+            Payment: <b>{order.payment}</b>
           </div>
         </div>
 
-        {/* Support */}
-        <div className="bg-gradient-to-br from-green-500 to-emerald-700 text-white rounded-2xl p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+        {/* Contact/Help */}
+        <div className="bg-gradient-to-br from-green-500 to-emerald-700 text-white rounded-2xl p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer">
           <div>
             <h4 className="font-semibold text-lg">Need Help?</h4>
             <p className="text-sm opacity-90 mt-1">
@@ -275,7 +292,11 @@ export default function TrackOrder() {
             </p>
           </div>
 
-          <button className="mt-5 bg-white text-green-700 font-semibold px-5 py-3 rounded-full flex items-center justify-center gap-2">
+          <button
+            className="mt-5 bg-white text-green-700 font-semibold px-5 py-3 rounded-full
+            flex items-center justify-center gap-2
+            hover:scale-105 hover:shadow-lg transition cursor-pointer"
+          >
             <FaPhoneAlt /> Contact Support
           </button>
         </div>
@@ -287,7 +308,7 @@ export default function TrackOrder() {
 
         {order.items.map((item) => (
           <div
-            key={item._id}
+            key={item.id}
             className="flex items-center gap-5 p-4 rounded-xl bg-gray-50
             hover:bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
           >
@@ -300,18 +321,17 @@ export default function TrackOrder() {
             <div className="flex-1">
               <p className="font-medium">{item.name}</p>
               <p className="text-sm text-gray-500">
-                Qty: {item.quantity} • Color: {item.color}
+                Qty: {item.qty} • Status:{" "}
+                <span className="text-blue-600 font-medium">{item.status}</span>
               </p>
             </div>
 
             <div className="text-right space-y-2">
               <p className="font-bold text-lg">₹{item.price}</p>
               <button
-                onClick={() =>
-                  navigate(`/user/dashboard/orders/${order._id}`)
-                }
+                onClick={() => navigate(`/order-details/${order.id}`)}
                 className="px-5 py-2 text-sm rounded-lg border border-black text-black
-                hover:bg-black hover:text-white hover:shadow-lg transition-all duration-200"
+                hover:bg-black hover:text-white hover:shadow-lg transition-all duration-200 cursor-pointer"
               >
                 View Details
               </button>

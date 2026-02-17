@@ -20,10 +20,9 @@ const AdminLogin = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/admin/login" ||
-          "http://localhost:4000/api/admin",
+        "http://localhost:4000/api/admin/login" ,
         { email, password },
-        { withCredentials: true }
+       
       );
 
       if (res.data.token) {
@@ -35,7 +34,7 @@ const AdminLogin = () => {
       }
     } catch (err) {
       setError(
-        err.response?.data?.message || "Server error. Please try again."
+        err.response?.data?.message || "Server error. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -87,9 +86,7 @@ const AdminLogin = () => {
             style={{ boxShadow: "0 16px 40px rgb(128, 128, 128)" }}
           >
             <h2 className="text-2xl font-semibold text-black">Admin Login</h2>
-            <p className="text-sm text-gray-500 mt-1">
-              Sign in to continue
-            </p>
+            <p className="text-sm text-gray-500 mt-1">Sign in to continue</p>
 
             <form className="mt-6 space-y-4" onSubmit={handleLogin}>
               {/* EMAIL */}
@@ -149,9 +146,7 @@ const AdminLogin = () => {
             </form>
 
             {error && (
-              <p className="mt-4 text-xs text-center text-red-500">
-                {error}
-              </p>
+              <p className="mt-4 text-xs text-center text-red-500">{error}</p>
             )}
           </div>
         </div>

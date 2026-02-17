@@ -92,7 +92,13 @@ const MenCategoryPage = () => {
             </h1>
 
             {done && (
-              <p className="mt-3 text-4xl font-dancing text-gray-200">
+              <p
+                className="cinzel mt-2 
+  text-lg sm:text- md:text-xl lg:text-xl 
+  
+  tracking-wide
+  text-gray-200"
+              >
                 {subText}
               </p>
             )}
@@ -185,6 +191,8 @@ const MenCategoryPage = () => {
           </motion.div>
         </section>
       </div>
+      
+
     </div>
   );
 };

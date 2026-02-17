@@ -263,3 +263,65 @@ export default function Inventory() {
     </div>
   );
 }
+
+/* ---------- Editable Matrix Row ---------- */
+
+function EditableMatrixRow({ row, rowIndex, onUpdate, zebra }) {
+  const [editCell, setEditCell] = useState(null);
+  const [value, setValue] = useState("");
+
+  const saveValue = (colIndex) => {
+    onUpdate((prev) => {
+      const copy = [...prev];
+      copy[rowIndex].sizes[colIndex] = value;
+      return copy;
+    });
+    setEditCell(null);
+  };
+
+  const getColor = (item) => {
+    if (item === "Out" || item === "Urgent") return "text-red-600";
+    if (item === "Low") return "text-orange-600";
+    return "text-green-600";
+  };
+
+  return (
+    <tr className={`${zebra ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
+      <td className="py-3 px-3 font-medium whitespace-nowrap">{row.color}</td>
+
+      {row.sizes.map((item, colIndex) => {
+        const isEditing =
+          editCell?.row === rowIndex && editCell?.col === colIndex;
+
+        return (
+          <td
+            key={colIndex}
+            className={`py-3 px-3 text-center font-medium cursor-pointer ${getColor(item)}`}
+            onClick={() => {
+              setEditCell({ row: rowIndex, col: colIndex });
+              setValue(item);
+            }}
+          >
+            {isEditing ? (
+              <input
+                autoFocus
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                onBlur={() => saveValue(colIndex)}
+                onKeyDown={(e) => e.key === "Enter" && saveValue(colIndex)}
+                className="w-16 border rounded-md px-2 py-1 text-sm text-center"
+              />
+            ) : (
+              <>
+                {item}
+                {(item === "Low" || item === "Out" || item === "Urgent") && (
+                  <AlertTriangle size={14} className="inline ml-1" />
+                )}
+              </>
+            )}
+          </td>
+        );
+      })}
+    </tr>
+  );
+}

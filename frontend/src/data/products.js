@@ -8,6 +8,12 @@ import Skirts from "../assets/products/women/Skirts.jpg";
 import Palazzo from "../assets/products/women/Palazzos.jpg";
 import Shrug from "../assets/products/women/Shrugs.jpg";
 import Jackets from "../assets/products/women/Jacket1.webp";
+import Bags from "../assets/products/women/Hand Bag.jpg";
+import Scarfs from "../assets/products/women/Casual Scarfs.jpg";
+import Casuals from "../assets/products/women/Casual Scarfs.jpg";
+
+import Slipper from "../assets/products/women/slipper.jpg";
+
 
 export const products = [
   {
@@ -103,7 +109,8 @@ export const products = [
   {
     id: 10,
     name: "Shrug",
-    sku: "ID-JKT-334",
+    sku: "ID-JKT-331",
+
     category: "Outerwear",
     price: 4999,
     stock: 30,
@@ -113,11 +120,53 @@ export const products = [
     {
     id: 11,
     name: "Jacket",
-    sku: "ID-JKT-334",
+
+    sku: "ID-JKT-332",
     category: "Outerwear",
     price: 4999,
     stock: 30,
     image: Jackets,
     isLive: true,
   },
+
+  {
+    id: 12,
+    name: "Bag",
+    sku: "ID-JKT-333",
+    category: "Accessories",
+    price: 4999,
+    stock: 30,
+    image: Bags,
+    isLive: true,
+  },
+  {
+    id: 13,
+    name: "Slippers",
+    sku: "ID-JKT-334",
+    category: "Accessories",
+    price: 1599,
+    stock: 30,
+    image: Slipper,
+    isLive: true,
+  },
+  {
+    id: 14,
+    name: "Shawls Scarf",
+    sku: "ID-JKT-335",
+    category: "Accessories",
+    price: 1599,
+    stock: 20,
+    image: Scarfs,
+    isLive: true,
+  },
+  {
+    id: 15,
+    name: "Casual Scarf",
+    sku: "ID-JKT-324",
+    category: "Accessories",
+    price: 1599,
+    stock: 15,
+    image: Casuals,
+    isLive: true,
+  }
 ];

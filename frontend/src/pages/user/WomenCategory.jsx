@@ -4,7 +4,6 @@ import ProductCard from "../../components/Home/ProductCard";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
 import { useShop } from "../../context/ShopContext";
-
 /* HERO TEXT */
 const HERO_TITLE = "Women’s Collection";
 const HERO_SUB =
@@ -213,6 +212,8 @@ export default function WomenCollectionPage() {
           ))}
         </div>
       </section>
+      
+
     </div>
   );
 }

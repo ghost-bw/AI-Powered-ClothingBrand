@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useShop } from "../../context/ShopContext";
 import graphura from "../../assets/graphuralogo/graphura.webp";
 import gpay from "../../assets/payment/gpay.webp";
 import phonepe from "../../assets/payment/phonepe.webp";
 import paytm from "../../assets/payment/paytm.webp";
 import API from "../../api/axios";
 import { toast } from "react-hot-toast";
-const loadRazorpay = () => {
-  return new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-};
-
-
 
 import {
   CreditCard,
@@ -39,6 +27,46 @@ import {
   Clock,
   ChevronLeft,
 } from "lucide-react";
+
+const loadRazorpay = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+
+    document.body.appendChild(script);
+  });
+};
+
+
+// import {
+//   CreditCard,
+//   Smartphone,
+//   Truck,
+//   Landmark,
+//   ShieldCheck,
+//   MapPin,
+//   Menu,
+//   ShoppingBag,
+//   User,
+//   X,
+//   Check,
+//   AlertCircle,
+//   RefreshCw,
+//   Lock,
+//   Shield,
+//   Package,
+//   Clock,
+//   ChevronLeft,
+// } from "lucide-react";
 
 // Enhanced Checkout Stepper Component with failure state
 const CheckoutStepper = ({ currentStep, hasFailed }) => {
@@ -65,9 +93,8 @@ const CheckoutStepper = ({ currentStep, hasFailed }) => {
 
           {/* Progress Line */}
           <div
-            className={`absolute top-6 h-0.5 transition-all duration-300 ${
-              hasFailed && currentStep === 3 ? "bg-red-500" : "bg-green-600"
-            }`}
+            className={`absolute top-6 h-0.5 transition-all duration-300 ${hasFailed && currentStep === 3 ? "bg-red-500" : "bg-green-600"
+              }`}
             style={{
               left: "24px",
               width: `${(currentStep - 1) * 50}%`,
@@ -97,10 +124,9 @@ const CheckoutStepper = ({ currentStep, hasFailed }) => {
                   {/* Circle */}
                   <div
                     className={`w-12 h-12 rounded-full flex items-center justify-center font-semibold text-lg mb-2 border-2 transition-all duration-300 relative z-20
-                      ${
-                        isCurrentFailed
-                          ? "bg-red-500 text-white border-red-500"
-                          : isCompleted || isActive
+                      ${isCurrentFailed
+                        ? "bg-red-500 text-white border-red-500"
+                        : isCompleted || isActive
                           ? "bg-green-600 text-white border-green-600"
                           : "bg-white text-gray-600 border-gray-300"
                       }`}
@@ -117,22 +143,20 @@ const CheckoutStepper = ({ currentStep, hasFailed }) => {
 
                 {/* Step Title */}
                 <span
-                  className={`text-sm font-medium ${
-                    isCurrentFailed
-                      ? "text-red-600"
-                      : isCompleted || isActive
+                  className={`text-sm font-medium ${isCurrentFailed
+                    ? "text-red-600"
+                    : isCompleted || isActive
                       ? "text-green-600"
                       : "text-gray-500"
-                  }`}
+                    }`}
                 >
                   {step.title}
                 </span>
 
                 {/* Step Description */}
                 <span
-                  className={`text-xs mt-1 text-center ${
-                    isCurrentFailed ? "text-red-400" : "text-gray-400"
-                  }`}
+                  className={`text-xs mt-1 text-center ${isCurrentFailed ? "text-red-400" : "text-gray-400"
+                    }`}
                 >
                   {step.description}
                 </span>
@@ -155,7 +179,7 @@ const CheckoutPage = () => {
   const [paymentError, setPaymentError] = useState("");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   // const [paymentAttempts, setPaymentAttempts] = useState(0);
-  
+
   const [shippingInfo, setShippingInfo] = useState({
     fullName: "",
     email: "",
@@ -174,8 +198,8 @@ const CheckoutPage = () => {
   const [shippingCost] = useState(150);
   const [gstRate] = useState(0.12);
   const [cart, setCart] = useState([]);
-const [loading, setLoading] = useState(true);
-const [orderId, setOrderId] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [orderId, setOrderId] = useState("");
 
 
 
@@ -183,63 +207,68 @@ const [orderId, setOrderId] = useState("");
   // const { cart, cartTotal, cartCount } = useShop();
   const navigate = useNavigate();
 
-  const cartTotal = cart.reduce(
-  (sum, item) => sum + item.price * (item.quantity || 1),
-  0
-);
+  const cartTotal = cart.reduce((sum, item) => {
+    const price =
+      item.product?.discountPrice ??
+      item.product?.price ??
+      0;
 
-const cartCount = cart.reduce(
-  (sum, item) => sum + (item.quantity || 1),
-  0
-);
+    return sum + price * (item.quantity || 1);
+  }, 0);
 
-const subtotal = cartTotal;
 
-const estimatedShipping =
-  subtotal >= freeShippingThreshold ? 0 : shippingCost;
 
-const discountAmount = subtotal * discountPercent;
+  const cartCount = cart.reduce(
+    (sum, item) => sum + (item.quantity || 1),
+    0
+  );
 
-const gst = (subtotal - discountAmount + estimatedShipping) * gstRate;
+  const subtotal = cartTotal;
 
-const total = subtotal - discountAmount + estimatedShipping + gst;
+  const estimatedShipping =
+    subtotal >= freeShippingThreshold ? 0 : shippingCost;
+
+  const discountAmount = subtotal * discountPercent;
+
+  const gst = (subtotal - discountAmount + estimatedShipping) * gstRate;
+
+  const total = subtotal - discountAmount + estimatedShipping + gst;
 
 
 
   // Calculate free shipping progress
   const freeShippingProgress = Math.min(
-    (subtotal / freeShippingThreshold) * 100,
+    (subtotal / freeShippingThreshold),
     100
   );
   const amountNeeded = Math.max(freeShippingThreshold - subtotal, 0);
 
   useEffect(() => {
-  const loadCart = async () => {
-    try {
-      const res = await API.get("/users/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+    const loadCart = async () => {
+      try {
+        const res = await API.get("/users/me", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
-      setCart(res.data?.cart || []);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
+        setCart(res.data?.cart || []);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCart();
+  }, []);
+
+  useEffect(() => {
+    if (!loading && cart.length === 0 && currentStep !== 3) {
+      navigate("/cart");
     }
-  };
+  }, [loading]);
 
-  loadCart();
-}, []);
-
- useEffect(() => {
-  if (loading) return;
-
-  if (cart.length === 0 && currentStep !== 3) {
-    navigate("/cart");
-  }
-}, [loading, cart]);
 
 
   const isAddressValid = () => {
@@ -256,34 +285,34 @@ const total = subtotal - discountAmount + estimatedShipping + gst;
   };
 
   // Handle promo code
-const handleApplyPromo = async () => {
-  if (!promoCode.trim()) return;
+  const handleApplyPromo = async () => {
+    if (!promoCode.trim()) return;
 
-  try {
-    const res = await API.get(`/coupons/validate/${promoCode}`);
+    try {
+      const res = await API.get(`/coupons/validate/${promoCode}`);
 
-    if (!res.data.valid) {
+      if (!res.data.valid) {
+        alert("Invalid promo code");
+        setDiscountPercent(0);
+        return;
+      }
+
+      // ✅ Minimum spend check
+      if (cartTotal < res.data.minSpend) {
+        alert(`Minimum spend ₹${res.data.minSpend} required`);
+        return;
+      }
+
+      // ✅ Apply discount
+      setDiscountPercent(res.data.discount / 100);
+      toast(`Promo applied! You saved ${res.data.discount}%`);
+
+      await API.put(`/coupons/use/${promoCode}`);
+    } catch (err) {
       alert("Invalid promo code");
       setDiscountPercent(0);
-      return;
     }
-
-    // ✅ Minimum spend check
-    if (cartTotal < res.data.minSpend) {
-      alert(`Minimum spend ₹${res.data.minSpend} required`);
-      return;
-    }
-
-    // ✅ Apply discount
-    setDiscountPercent(res.data.discount / 100);
-    toast(`Promo applied! You saved ${res.data.discount}%`);
-
-     await API.put(`/coupons/use/${promoCode}`);
-  } catch (err) {
-    alert("Invalid promo code");
-    setDiscountPercent(0);
-  }
-};
+  };
 
   // --- HANDLERS ---
   const handleInputChange = async (e) => {
@@ -325,96 +354,120 @@ const handleApplyPromo = async () => {
     }
   };
 
-  
-const handlePlaceOrder = async () => {
-  if (!paymentMethod) return toast.error("Select payment method");
+
+  const handlePlaceOrder = async () => {
+  if (!paymentMethod) {
+    toast.error("Select payment method");
+    return;
+  }
+
   if (isProcessing) return;
 
-  /* ===== COD FLOW ===== */
-if (paymentMethod === "cod") {
-  try {
-    setPaymentStatus("");
-    setPaymentError("");
+  // ✅ Format cart according to Order model
+  const formattedItems = cart.map((item) => ({
+    product: item.product?._id,
+    name: item.product?.name,
+    price:
+      item.product?.discountPrice ??
+      item.product?.price ??
+      0,
+    image:
+      item.product?.colors?.[0]?.images?.[0] ||
+      item.product?.images?.[0] ||
+      item.product?.image ||
+      "",
+    size: item.size || "M",
+    color: item.colors?.[0]?.name || "",
+    quantity: item.quantity || 1,
+  }));
 
-   const res = await API.post(
-  "/orders",
-  {
-    shipping: shippingInfo,
-    items: cart,
-    subtotal,
-    shippingCost: estimatedShipping,
-    gst,
-    discount: discountAmount,
-    total,
+  /* ================= COD FLOW ================= */
+  if (paymentMethod === "cod") {
+    try {
+      const res = await API.post(
+        "/orders",
+        {
+          shipping: shippingInfo,
+          items: formattedItems,
+          subtotal,
+          shippingCost: estimatedShipping,
+          gst,
+          discount: discountAmount,
+          total,
+          paymentMethod: "cod",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-    payment: "cod",          // ✅ ADD THIS LINE
-    paymentMethod: "cod",    // (keep this)
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
+      setOrderId(res.data.orderId || res.data._id);
+      setPaymentStatus("success");
+      setCurrentStep(3);
+    } catch (err) {
+      setPaymentStatus("failed");
+      setPaymentError(
+        err.response?.data?.message || "Order failed"
+      );
+      setCurrentStep(3);
+    }
+
+    return;
   }
-);
 
+  /* ================= ONLINE PAYMENT ================= */
 
-    setOrderId(res.data.orderId || res.data._id);
-    setPaymentStatus("success");
-    setCurrentStep(3);
-  } catch (err) {
-    console.error("COD ERROR:", err.response?.data || err.message);
-
-    setPaymentStatus("failed");
-    setPaymentError(
-      err.response?.data?.message || "Order failed"
-    );
-    setCurrentStep(3);
-  }
-  return;
-}
-
-
-
-  /* ===== ONLINE PAYMENT ===== */
   const loaded = await loadRazorpay();
-  if (!loaded) return toast.error("Razorpay SDK failed");
+  if (!loaded) {
+    toast.error("Razorpay SDK failed to load");
+    return;
+  }
 
   try {
+    setShowPaymentModal(true);
     setIsProcessing(true);
 
-    const { data: razorOrder } = await API.post("/payment/razorpay-order", {
-      amount: total,
-    });
+    // Create Razorpay Order
+    const { data } = await API.post(
+      "/payment/razorpay-order",
+      {
+        amount: Math.round(total), // convert to paisa
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY,
-      amount: razorOrder.amount,
+      amount: data.amount,
       currency: "INR",
       name: "Graphura",
       description: "Order Payment",
-      order_id: razorOrder.id,
+      order_id: data.id,
 
-      handler: async (response) => {
+      handler: async function (response) {
         try {
           const verify = await API.post(
             "/payment/razorpay-verify",
             {
-  razorpay_order_id: response.razorpay_order_id,
-  razorpay_payment_id: response.razorpay_payment_id,
-  razorpay_signature: response.razorpay_signature,
-  shipping: shippingInfo,
-  items: cart,
-  subtotal,
-  shippingCost: estimatedShipping,
-  gst,
-  discount: discountAmount,
-  total,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
 
-  payment: paymentMethod,      // ✅ REQUIRED
-  paymentMethod,
-  paymentVerified: true,       // ✅ REQUIRED
-}
-,
+              shipping: shippingInfo,
+              items: formattedItems,
+              subtotal,
+              shippingCost: estimatedShipping,
+              gst,
+              discount: discountAmount,
+              total,
+              paymentMethod,
+            },
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -425,47 +478,52 @@ if (paymentMethod === "cod") {
           setOrderId(verify.data.orderId);
           setPaymentStatus("success");
           setCurrentStep(3);
-          setIsProcessing(false);
-        } catch (err) {
+        } catch (error) {
           setPaymentStatus("failed");
           setPaymentError("Payment verification failed");
           setCurrentStep(3);
+        } finally {
           setIsProcessing(false);
+          setShowPaymentModal(false);
         }
       },
 
       modal: {
-        ondismiss: () => {
+        ondismiss: function () {
           setIsProcessing(false);
+          setShowPaymentModal(false);
           toast.error("Payment cancelled");
         },
       },
 
       prefill: {
-        name: shippingInfo.fullName || "Customer",
+        name: shippingInfo.fullName,
         email: shippingInfo.email,
         contact: shippingInfo.phone,
       },
 
-      theme: { color: "#16a34a" },
+      theme: {
+        color: "#16a34a",
+      },
     };
 
-    new window.Razorpay(options).open();
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   } catch (err) {
+    console.error("Payment Error:", err);
     setIsProcessing(false);
-    setPaymentStatus("failed");
-    setCurrentStep(3);
+    setShowPaymentModal(false);
+    toast.error("Something went wrong");
   }
 };
 
+  const handleRetryPayment = () => {
+    setPaymentStatus("");
+    setPaymentError("");
+    setShowPaymentModal(false);
 
-const handleRetryPayment = () => {
-  setPaymentStatus("");
-  setPaymentError("");
-  setShowPaymentModal(false);
-
-  handlePlaceOrder(new Event("submit"));
-};
+    handlePlaceOrder(new Event("submit"));
+  };
 
 
   const handleTryDifferentMethod = () => {
@@ -474,125 +532,79 @@ const handleRetryPayment = () => {
     setShowPaymentModal(false);
     setCurrentStep(2);
   };
-  
+
 
   // --- NAVBAR COMPONENT ---
-  const Navbar = () => (
-    <nav className="bg-white sticky top-0 z-50 shadow-sm border-b border-gray-100">
-      <div className="w-full px-6">
-        <div className="flex justify-between items-center h-16 px-4">
-          {/* Logo */}
-          <div className="flex items-center justify-start">
-            <a href="/">
-              <img className="w-auto h-15" src={graphura} alt="Graphura Logo" />
-            </a>
-          </div>
+  // const Navbar = () => (
+  //   <nav className="bg-white sticky top-0 z-50 shadow-sm border-b border-gray-100">
+  //     <div className="w-full px-6">
+  //       <div className="flex justify-between items-center h-16 px-4">
+  //         {/* Logo */}
+  //         <div className="flex items-center justify-start">
+  //           <a href="/">
+  //             <img className="w-auto h-15" src={graphura} alt="Graphura Logo" />
+  //           </a>
+  //         </div>
 
-          {/* Desktop Icons */}
-          <div className="hidden md:flex items-center space-x-6">
-            <div className="hidden md:flex items-left text-left space-x-8">
-              <a
-                href="#"
-                className="text-gray-600 hover:text-black font-medium transition"
-              >
-                Support
-              </a>
-            </div>
-            <button
-              onClick={() => navigate("/cart")}
-              className="text-gray-600 hover:text-black relative cursor-pointer"
-            >
-              <ShoppingBag size={20} />
-              <span className="absolute -top-1 -right-2 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {cartCount}
-              </span>
-            </button>
-            <button className="text-gray-600 hover:text-black cursor-pointer">
-              <User size={20} />
-            </button>
-          </div>
+  //         {/* Desktop Icons */}
+  //         <div className="hidden md:flex items-center space-x-6">
+  //           <div className="hidden md:flex items-left text-left space-x-8">
+  //             <a
+  //               href="#"
+  //               className="text-gray-600 hover:text-black font-medium transition"
+  //             >
+  //               Support
+  //             </a>
+  //           </div>
+  //           <button
+  //             onClick={() => navigate("/cart")}
+  //             className="text-gray-600 hover:text-black relative cursor-pointer"
+  //           >
+  //             <ShoppingBag size={20} />
+  //             <span className="absolute -top-1 -right-2 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+  //               {cartCount}
+  //             </span>
+  //           </button>
+  //           <button className="text-gray-600 hover:text-black cursor-pointer">
+  //             <User size={20} />
+  //           </button>
+  //         </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-600 focus:outline-none"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-      </div>
+  //         {/* Mobile Menu Button */}
+  //         <div className="md:hidden flex items-center">
+  //           <button
+  //             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+  //             className="text-gray-600 focus:outline-none"
+  //           >
+  //             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+  //           </button>
+  //         </div>
+  //       </div>
+  //     </div>
 
-      {/* Add this section after the Navbar for testing */}
-{/* {process.env.NODE_ENV === 'development' && (
-  <div className="fixed bottom-4 right-4 z-50 bg-white p-4 rounded-lg shadow-xl border border-gray-300">
-    <h3 className="font-bold mb-2 text-sm">🧪 Developer Testing</h3>
-    <div className="flex flex-col gap-2">
-      <button
-        onClick={() => {
-          setCurrentStep(1);
-          setPaymentStatus("");
-          setPaymentError("");
-        }}
-        className="bg-blue-500 text-white px-3 py-1 text-xs rounded"
-      >
-        Reset to Step 1
-      </button>
-      <button
-        onClick={() => {
-          setCurrentStep(2);
-          setPaymentMethod("upi");
-          setPaymentStatus("");
-        }}
-        className="bg-purple-500 text-white px-3 py-1 text-xs rounded"
-      >
-        Jump to Payment
-      </button>
-      <button
-        onClick={() => {
-          setCurrentStep(3);
-          setPaymentStatus("success");
-        }}
-        className="bg-green-500 text-white px-3 py-1 text-xs rounded"
-      >
-        Force Success
-      </button>
-      <button
-        onClick={() => {
-          setCurrentStep(3);
-          setPaymentStatus("failed");
-          setPaymentError("Test: Insufficient funds");
-        }}
-        className="bg-red-500 text-white px-3 py-1 text-xs rounded"
-      >
-        Force Failure
-      </button>
-    </div>
-  </div>
-)} */}
 
-      {/* Mobile Menu Dropdown */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
-          <div className="px-4 pt-2 pb-6 space-y-2">
-            <a
-              href="#"
-              className="block px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-50 rounded-md"
-            >
-              Support
-            </a>
-            <a
-              href="#"
-              className="block px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-50 rounded-md"
-            >
-              My Account
-            </a>
-          </div>
-        </div>
-      )}
-    </nav>
-  );
+
+  //     {/* Mobile Menu Dropdown */}
+  //     {isMobileMenuOpen && (
+  //       <div className="md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg">
+  //         <div className="px-4 pt-2 pb-6 space-y-2">
+  //           <a
+  //             href="#"
+  //             className="block px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-50 rounded-md"
+  //           >
+  //             Support
+  //           </a>
+  //           <a
+  //             href="#"
+  //             className="block px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-50 rounded-md"
+  //           >
+  //             My Account
+  //           </a>
+  //         </div>
+  //       </div>
+  //     )}
+  //   </nav>
+  // );
 
   // --- Payment Processing Modal ---
   const PaymentProcessingModal = () => (
@@ -668,7 +680,7 @@ const handleRetryPayment = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-3">
             Order Placed Successfully 🎉
           </h2>
-          
+
           <div className="bg-linear-to-r from-green-50 to-emerald-50 p-4 rounded-lg mb-6">
             <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg inline-block mb-3 animate-fade-in">
               <span className="font-semibold">Order ID:</span> {orderId || "Generating..."}
@@ -716,7 +728,7 @@ const handleRetryPayment = () => {
               Continue Shopping
             </button>
             <button
-             onClick={() => navigate(`/user/dashboard/orders/${orderId}`)}
+              onClick={() => navigate(`/dashboard/orders/${orderId}`)}
               className="px-8 py-3 bg-white text-green-600 border-2 border-green-600 rounded-xl font-semibold hover:bg-green-50 transition-all duration-300"
             >
               View Order Details
@@ -745,7 +757,7 @@ const handleRetryPayment = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-3">
             Payment Failed ❌
           </h2>
-          
+
           <div className="bg-linear-to-r from-red-50 to-orange-50 p-4 rounded-lg mb-6">
             <p className="text-red-700 font-medium mb-3">
               <AlertCircle className="inline mr-2" />
@@ -828,7 +840,7 @@ const handleRetryPayment = () => {
   // --- MAIN LAYOUT ---
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
-      <Navbar />
+      {/* <Navbar /> */}
 
       <main className="py-10 px-4">
         <div className="max-w-6xl mx-auto">
@@ -918,10 +930,9 @@ const handleRetryPayment = () => {
                         </label>
                         <div
                           className={`flex items-center rounded-lg border transition
-                            ${
-                              shippingInfo.phone.length === 10
-                                ? "border-green-500"
-                                : "border-gray-300 focus-within:border-black"
+                            ${shippingInfo.phone.length === 10
+                              ? "border-green-500"
+                              : "border-gray-300 focus-within:border-black"
                             }`}
                         >
                           <div className="flex items-center gap-1 px-3 bg-gray-100 text-sm font-medium text-gray-700 rounded-l-lg border-r">
@@ -1012,10 +1023,9 @@ const handleRetryPayment = () => {
                         setCurrentStep(2);
                       }}
                       className={`mt-6 px-6 py-3 rounded-lg font-semibold transition
-                        ${
-                          isAddressValid()
-                            ? "bg-black text-white hover:bg-green-800"
-                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        ${isAddressValid()
+                          ? "bg-black text-white hover:bg-green-800"
+                          : "bg-gray-300 text-gray-500 cursor-not-allowed"
                         }
                       `}
                     >
@@ -1061,11 +1071,10 @@ const handleRetryPayment = () => {
                         </label>
 
                         <label
-                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
-                            paymentMethod === "card"
-                              ? "border-green-600 bg-green-50"
-                              : "border-gray-200 hover:border-gray-300"
-                          }`}
+                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${paymentMethod === "card"
+                            ? "border-green-600 bg-green-50"
+                            : "border-gray-200 hover:border-gray-300"
+                            }`}
                         >
                           <input
                             type="radio"
@@ -1091,11 +1100,10 @@ const handleRetryPayment = () => {
                         </label>
 
                         <label
-                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
-                            paymentMethod === "netbanking"
-                              ? "border-green-600 bg-green-50"
-                              : "border-gray-200 hover:border-gray-300"
-                          }`}
+                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${paymentMethod === "netbanking"
+                            ? "border-green-600 bg-green-50"
+                            : "border-gray-200 hover:border-gray-300"
+                            }`}
                         >
                           <input
                             type="radio"
@@ -1121,11 +1129,10 @@ const handleRetryPayment = () => {
                         </label>
 
                         <label
-                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
-                            paymentMethod === "cod"
-                              ? "border-green-600 bg-green-50"
-                              : "border-gray-200 hover:border-gray-300"
-                          }`}
+                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${paymentMethod === "cod"
+                            ? "border-green-600 bg-green-50"
+                            : "border-gray-200 hover:border-gray-300"
+                            }`}
                         >
                           <input
                             type="radio"
@@ -1192,39 +1199,53 @@ const handleRetryPayment = () => {
                     <div className="space-y-4 mb-6 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                       {cart.map((item) => (
                         <div
-                        key={`${item._id}-${item.colors?.[0]?.name || "Default"}`}
+                          key={`${item._id}-${item.colors?.[0]?.name || "Default"}`}
 
                           className="flex gap-3 pb-4 border-b border-gray-100 last:border-b-0"
                         >
                           <div className="w-16 h-16 bg-gray-200 rounded-md shrink-0 overflow-hidden">
-                           <img
-                                  src={
-                                    item.colors?.[0]?.images?.[0] ||
-                                    item.images?.[0] ||
-                                    item.image ||
-                                    "/placeholder.png"
-                                  }
-                                  alt={item.name}
-                                  className="w-full h-full object-cover"
-                                />
+                            <img
+                              src={
+                                item.product?.colors?.[0]?.images?.[0] ||
+                                item.product?.images?.[0]||
+                                item.product?.image ||
+                            "/placeholder.png"
+                              }
+                            alt={item.product?.name}
+                            className="w-full h-full object-cover"
+                            />
                           </div>
                           <div className="flex-1">
                             <div className="flex justify-between">
                               <div>
                                 <p className="text-sm font-medium text-gray-800 line-clamp-2">
-                                  {item.name}
+                                  {item.product?.name}
                                 </p>
                                 <p className="text-xs text-gray-500">
                                   Size: {item.size || "M"} | Qty: {item.quantity || 1}
                                 </p>
-                                {item.color && (
+                                {item.colors?.[0]?.name && (
                                   <p className="text-xs text-gray-500">
-                                    Color: {item.color}
+                                    Color: {item.colors[0].name}
                                   </p>
                                 )}
-                                <p className="text-sm font-bold text-gray-900 mt-1">
-                                  ₹{item.price ? item.price.toLocaleString() : "0"}
-                                </p>
+
+                                <div>
+                                  {item.discountPrice && (
+                                    <span className="text-xs line-through text-gray-400 mr-1">
+                                      ₹{item.price.toLocaleString()}
+                                    </span>
+                                  )}
+
+                                  <span className="font-bold">
+                                    ₹{(
+                                      item.product?.discountPrice ??
+                                      item.product?.price ??
+                                      0
+                                    )}
+                                  </span>
+                                </div>
+
                               </div>
                             </div>
                           </div>

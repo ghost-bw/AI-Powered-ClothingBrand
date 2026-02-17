@@ -59,8 +59,9 @@ const AdminOrderDetail = () => {
             hover:bg-black hover:text-white transition"
           >
             <FaArrowLeft /> Back to Orders
+     
           </button>
-
+        </div>
           {/* CARD */}
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
 
@@ -164,16 +165,46 @@ const AdminOrderDetail = () => {
               </div>
             </div>
 
-            {/* ADMIN NOTE */}
-            <div className="p-5 border-t text-center text-xs text-gray-400">
-              Admin view • Read-only
+            {/* RIGHT */}
+            <div className="space-y-6 min-w-0">
+              <div className="bg-white rounded-xl border p-4 md:p-6">
+                <h3 className="font-semibold mb-4">Order Timeline</h3>
+
+                <div className="space-y-4 text-sm">
+                  {[
+                    { label: "Order Placed", Icon: CheckCircle },
+                    { label: "Payment Confirmed", Icon: CheckCircle },
+                    { label: "Packed", Icon: Package },
+                    { label: "Dispatched", Icon: Truck },
+                  ].map(({ label, Icon }, index) => (
+                    <div key={index} className="flex gap-3">
+                      <Icon size={18} className="text-blue-600" />
+                      <div>
+                        <p className="font-semibold">{label}</p>
+                        <p className="text-xs text-slate-400">Dec 24, 2025</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl border p-4 md:p-6">
+                <h3 className="font-semibold mb-4">Internal Admin Notes</h3>
+
+                <textarea
+                  className="w-full h-24 border rounded-lg p-3 text-sm"
+                  placeholder="Add a private note..."
+                />
+
+                <button className="mt-3 w-full h-9 bg-black text-white rounded-lg text-sm">
+                  Post Note
+                </button>
+              </div>
             </div>
-
           </div>
-        </div>
-      </motion.main>
-    </div>
+        </motion.main>
+      </div>
+    
   );
-};
-
-export default AdminOrderDetail;
+}
+ export default AdminOrderDetail; 

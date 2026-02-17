@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
 
@@ -35,10 +36,12 @@ export default function CustomerDetail({ customer }) {
   if (!customer) {
     return (
       <div className="bg-white border rounded-2xl p-6 text-center text-gray-400">
+
         Select a customer to view details
       </div>
     );
   }
+
 
   const avgOrder =
     customer.orders > 0
@@ -80,10 +83,12 @@ export default function CustomerDetail({ customer }) {
         <MiniStat title="Total Spend" value={`₹${customer.spend}`} />
         <MiniStat title="Orders" value={customer.orders} />
         <MiniStat title="Avg Order" value={`₹${avgOrder}`} />
+ 
       </div>
 
       {/* Order History */}
       <h3 className="font-semibold mb-2">Order History</h3>
+
    <div className="max-h-48 overflow-y-auto pr-2">
   <ul className="text-sm space-y-2">
     {orders && orders.length > 0 ? (
@@ -108,7 +113,7 @@ export default function CustomerDetail({ customer }) {
     )}
   </ul>
 </div>
-    </div>
+  </div>
   );
 }
 

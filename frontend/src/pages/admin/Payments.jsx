@@ -11,6 +11,8 @@ import {
   X,
 } from "lucide-react";
 
+
+
 import StatsCard from "../../components/admin/StatsCard";
 import LineChartBox from "../../components/charts/LineChartBox";
 
@@ -39,6 +41,7 @@ function filterByDate(date, range) {
 }
 
 function getPaymentMethodData(data) {
+  if (!data.length) return [];
   const map = {};
   data.forEach((p) => {
     map[p.method] = (map[p.method] || 0) + 1;
@@ -168,19 +171,34 @@ export default function Payments() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <select className="border rounded-xl px-4 py-2" value={method} onChange={(e) => setMethod(e.target.value)}>
+
+            <select
+              className="border rounded-xl px-4 py-2 w-full sm:w-auto"
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+            >
               <option value="all">All Methods</option>
               <option value="UPI">UPI</option>
-              <option value="CARD">Card</option>
+              <option value="Card">Card</option>
               <option value="COD">COD</option>
             </select>
-            <select className="border rounded-xl px-4 py-2" value={status} onChange={(e) => setStatus(e.target.value)}>
+
+            <select
+              className="border rounded-xl px-4 py-2 w-full sm:w-auto"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
               <option value="all">All Status</option>
               <option value="Success">Success</option>
               <option value="Pending">Pending</option>
               <option value="Failed">Failed</option>
             </select>
-            <select className="border rounded-xl px-4 py-2" value={range} onChange={(e) => setRange(e.target.value)}>
+
+            <select
+              className="border rounded-xl px-4 py-2 w-full sm:w-auto"
+              value={range}
+              onChange={(e) => setRange(e.target.value)}
+            >
               <option value="7">Last 7 Days</option>
               <option value="30">Last 30 Days</option>
               <option value="all">All Time</option>
@@ -238,7 +256,10 @@ export default function Payments() {
                       <StatusBadge status={p.status} />
                     </td>
                     <td className="p-4 text-center">
-                      <button onClick={() => setActivePayment(p)} className="font-semibold flex items-center gap-1 justify-center">
+                      <button
+                        onClick={() => setActivePayment(p)}
+                        className="inline-flex items-center gap-1 font-semibold"
+                      >
                         <Eye size={16} /> View
                       </button>
                     </td>
@@ -290,17 +311,35 @@ function StatusBadge({ status }) {
     Pending: "bg-yellow-100 text-yellow-700",
     Failed: "bg-red-100 text-red-700",
   };
-  return <span className={`px-3 py-1 rounded-full text-xs font-bold ${map[status]}`}>{status}</span>;
+
+  return (
+    <span className={`px-3 py-1 rounded-full text-xs font-bold ${map[status]}`}>
+      {status}
+    </span>
+  );
 }
 
 function PaymentModal({ payment, onClose }) {
   return (
-    <motion.div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
-      <motion.div className="bg-white rounded-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+    <motion.div
+      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.div
+        initial={{ scale: 0.9 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0.9 }}
+        className="bg-white rounded-2xl w-full max-w-md p-6"
+      >
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold">Payment Details</h3>
-          <button onClick={onClose}><X /></button>
+          <button onClick={onClose}>
+            <X />
+          </button>
         </div>
+
         <div className="space-y-3 text-sm">
           <Detail label="Payment ID" value={payment.id} />
           <Detail label="Customer" value={payment.customer} />

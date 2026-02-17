@@ -5,7 +5,7 @@ const ProductCard = ({
   product,
   onWishlistToggle,
   isWishlisted = false,
-  showViewButton = true, // ✅ DEFAULT TRUE
+  showViewButton = true,
 }) => {
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const ProductCard = ({
           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
         />
 
-        {/* DISCOUNT STRIP */}
+        {/* DISCOUNT */}
         {hasDiscount && (
           <span className="absolute top-3 left-3 bg-black text-white text-xs px-3 py-1 rounded-full">
             {product.discountPercent}% OFF
@@ -85,7 +85,7 @@ const ProductCard = ({
           )}
         </div>
 
-        {/* ✅ VIEW PRODUCT — ALWAYS VISIBLE */}
+        {/* VIEW BUTTON */}
         {showViewButton && (
           <button
             onClick={handleViewClick}

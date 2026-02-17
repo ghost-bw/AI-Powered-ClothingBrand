@@ -80,14 +80,13 @@ const SustainabilityPage = () => {
             className="mb-8 w-full"
           >
             <div className="flex justify-center mb-8">
-              <div className="w-32 h-32 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-2xl border-4 border-emerald-300/30">
-                <Leaf className="w-16 h-16 text-white" />
+              <div className="w-32 h-32 bg-[#dec195] rounded-2xl flex items-center justify-center shadow-2xl border-4 border-[#D4B483]">
+                <Leaf className="w-16 h-16 text-gray-900" />
               </div>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white tracking-tight px-4">
-              Sustainable <span className="text-emerald-300">Fashion</span>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900 tracking-tight px-4">
+              Sustainable <span className="text-[#B89A67]">Fashion</span>
             </h1>
-            <div className="w-24 h-1 bg-emerald-300 mx-auto mb-6"></div>
           </motion.div>
 
           <motion.p
@@ -469,7 +468,7 @@ const SustainabilityPage = () => {
               <h2 className="text-4xl font-bold mb-4">
                 Certifications & Awards
               </h2>
-              <p className="text-emerald-100 max-w-2xl mx-auto">
+              <p className="text-gray-400 max-w-2xl mx-auto">
                 Recognition for our commitment to ethical and sustainable
                 fashion
               </p>
@@ -502,11 +501,11 @@ const SustainabilityPage = () => {
                   key={index}
                   className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 text-center"
                 >
-                  <div className="w-12 h-12 bg-emerald-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-[#B89A67]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                     {cert.icon}
                   </div>
                   <h3 className="font-bold text-lg mb-2">{cert.name}</h3>
-                  <p className="text-emerald-100 text-sm">{cert.description}</p>
+                  <p className="text-gray-400 text-sm">{cert.description}</p>
                 </div>
               ))}
             </div>
@@ -535,7 +534,7 @@ const SustainabilityPage = () => {
 
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <Zap className="w-5 h-5 text-emerald-600" />
+                  <Zap className="w-5 h-5 text-[#B89A67]" />
                   <span className="font-semibold text-gray-900">
                     100% Renewable Energy by 2025
                   </span>
@@ -553,7 +552,7 @@ const SustainabilityPage = () => {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <TrendingUp className="w-5 h-5 text-emerald-600" />
+                  <TrendingUp className="w-5 h-5 text-[#B89A67]" />
                   <span className="font-semibold text-gray-900">
                     500+ Artisan Families Supported
                   </span>
@@ -561,7 +560,7 @@ const SustainabilityPage = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-8 rounded-2xl shadow-2xl text-white">
+            <div className="bg-gradient-to-br from-[#B89A67] to-[#D4B483] p-8 rounded-2xl shadow-2xl text-white">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
                   <Star className="w-7 h-7" />
@@ -605,10 +604,10 @@ const SustainabilityPage = () => {
           viewport={{ once: true }}
           className="w-full"
         >
-          <div className="w-full bg-gradient-to-br from-emerald-900 to-teal-800 p-12 rounded-2xl shadow-2xl text-white text-center">
+          <div className="w-full bg-gradient-to-br from-gray-900 to-gray-800 p-12 rounded-2xl shadow-2xl text-white text-center">
             <div className="max-w-4xl mx-auto">
               <div className="flex justify-center mb-8">
-                <div className="w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                <div className="w-24 h-24 bg-[#B89A67] rounded-2xl flex items-center justify-center shadow-2xl">
                   <Leaf className="w-12 h-12 text-white" />
                 </div>
               </div>
@@ -616,7 +615,7 @@ const SustainabilityPage = () => {
               <h2 className="text-4xl font-bold mb-4">
                 Join the Sustainable Fashion Movement
               </h2>
-              <p className="text-emerald-100 text-xl mb-10 max-w-2xl mx-auto">
+              <p className="text-gray-400 text-xl mb-10 max-w-2xl mx-auto">
                 Every purchase supports ethical production, artisan livelihoods,
                 and environmental conservation.
               </p>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import API from "../../api/axios";
 
 const gradients = [
@@ -62,7 +63,6 @@ const Coupons = () => {
 
   useEffect(() => {
     if (!extendedCoupons.length) return;
-
     if (current === extendedCoupons.length - 1) {
       setTimeout(() => {
         setTransition(false);
@@ -87,6 +87,7 @@ const Coupons = () => {
 
       <div className="w-full max-w-[1500px] h-[260px] sm:h-[280px] md:h-[300px] overflow-visible relative px-4 sm:px-8">
 
+
         <div
           className="flex"
           style={{
@@ -101,6 +102,7 @@ const Coupons = () => {
             >
               <div
                 className={`relative w-full h-[230px] sm:h-[250px] md:h-[260px] rounded-[40px]
+
                 bg-gradient-to-r ${coupon.gradient}
                 border border-black/5
                 transition-all duration-500 hover:scale-[1.02]
@@ -117,14 +119,17 @@ const Coupons = () => {
                 <div className="relative z-10 h-full flex flex-col justify-center items-center text-black px-6 text-center">
 
                   {/* TITLE */}
+
                   <h2 className="cinzel text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.15em] font-light">
                     {coupon.title}
                   </h2>
 
-                  {/* SUBTITLE */}
+
+                  {/* Responsive Subtitle */}
                   <h3 className="permanent-marker-regular text-sm sm:text-base md:text-lg tracking-[0.25em] mt-2 text-black/70">
                     {coupon.subtitle}
                   </h3>
+
 
                   {/* CODE */}
                   <div className="mt-5 px-6 sm:px-10 py-2 sm:py-3 rounded-full 
@@ -141,6 +146,25 @@ const Coupons = () => {
                     {coupon.highlight}
                   </div>
 
+
+                  {/* Code */}
+                  {coupon.code && (
+                    <div
+                      className="mt-5 px-6 sm:px-10 py-2 sm:py-3 rounded-full 
+                  bg-white shadow-lg
+                  border border-black/10
+                  hover:bg-black hover:text-white
+                  transition-all duration-300 
+                  text-xs sm:text-sm md:text-base tracking-widest"
+                    >
+                      CODE: {coupon.code}
+                    </div>
+                  )}
+
+                  {/* Highlight */}
+                  <div className="mt-4 text-xs sm:text-sm md:text-base tracking-[0.2em] text-black/70">
+                    {coupon.highlight}
+                  </div>
                 </div>
               </div>
             </div>
@@ -150,6 +174,7 @@ const Coupons = () => {
 
       <style>
         {`
+
           @keyframes shine {
             0% { left: -60%; }
             100% { left: 120%; }
@@ -158,6 +183,7 @@ const Coupons = () => {
             animation: shine 4s linear infinite;
           }
         `}
+
       </style>
     </div>
   );

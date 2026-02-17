@@ -3,7 +3,6 @@ import ProductCard from "../../components/Home/ProductCard";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
 import { useShop } from "../../context/ShopContext";
-
 /* HERO TEXT */
   const TITLE_TEXT = "Little Styles. Big Smiles.";
   const SUB_TEXT =
@@ -120,7 +119,13 @@ export default function KidsCollection() {
           </h1>
 
           {done && (
-            <p className="font-dancing text-4xl mt-4 text-gray-200">
+            <p
+              className="cinzel mt-2 
+  text-lg sm:text- md:text-xl lg:text-xl 
+  
+  tracking-wide
+  text-gray-200"
+            >
               {SUB_TEXT}
             </p>
           )}
@@ -273,6 +278,8 @@ export default function KidsCollection() {
           animation: fadeUp 0.8s ease forwards;
         }
       `}</style>
+      
+
     </div>
   );
 }

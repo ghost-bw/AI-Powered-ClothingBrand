@@ -1,143 +1,3 @@
-// import React, { useState, useEffect } from 'react'
-// import { ChevronLeft, ChevronRight } from 'lucide-react';
-// import { useNavigate } from "react-router-dom";
-// import { Swiper, SwiperSlide } from 'swiper/react';
-// import { Navigation } from 'swiper/modules';
-// import 'swiper/css';
-// import 'swiper/css/navigation';
-// import productsData from "../../data/products.json";
-
-// const Trending = () => {
-//   const [trendingProducts, setTrendingProducts] = useState([]);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const products = Object.values(productsData);
-//     const shuffled = [...products].sort(() => 0.5 - Math.random());
-//     const selected = shuffled.slice(0, 8).map(product => ({
-//       id: product.id,
-//       img: product.images[0],
-//       category: product.category,
-//       name: product.title,
-//       price: product.price.toLocaleString(),
-//       discount: product.discount,
-//       rating: product.rating
-//     }));
-//     setTrendingProducts(selected);
-//   }, []);
-
-//   const handleProductClick = (productId) => {
-//     navigate(`/product/${productId}`);
-//   };
-
-//   const formatPrice = (price) => `₹${price}`;
-
-//   return (
-//     <section className="bg-gray-50 py-8 sm:py-10 md:py-12">
-//       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-
-//         {/* Header */}
-//         <div className="flex justify-between items-end mb-6 sm:mb-8">
-//           <div>
-//             <p className="text-xs sm:text-sm tracking-widest text-gray-500 uppercase">
-//               Trending Now
-//             </p>
-//             <h2 className="mt-1 text-xl sm:text-2xl md:text-3xl font-serif font-semibold">
-//               Featured Products
-//             </h2>
-//           </div>
-
-//           <button
-//             onClick={() => navigate('/collections')}
-//             className="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 group"
-//           >
-//             View All
-//             <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-//           </button>
-//         </div>
-
-//         {/* Slider */}
-//         <div className="relative">
-//           <Swiper
-//             modules={[Navigation]}
-//             spaceBetween={12}
-//             slidesPerView={3}   // 👈 MOBILE PE 3 CARDS
-//             navigation={{
-//               nextEl: '.trending-next',
-//               prevEl: '.trending-prev',
-//             }}
-//             breakpoints={{
-//               640: { slidesPerView: 3, spaceBetween: 14 },
-//               768: { slidesPerView: 3, spaceBetween: 18 },
-//               1024: { slidesPerView: 4, spaceBetween: 24 },
-//             }}
-//           >
-//             {trendingProducts.map((product) => (
-//               <SwiperSlide key={product.id}>
-//                 <div
-//                   onClick={() => handleProductClick(product.id)}
-//                   className="group cursor-pointer bg-white rounded-2xl shadow-sm hover:shadow-lg transition overflow-hidden"
-//                 >
-//                   {/* Image */}
-//                   <div className="relative aspect-square bg-gray-100 overflow-hidden">
-//                     <img
-//                       src={product.img}
-//                       alt={product.name}
-//                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-//                     />
-
-//                     {product.discount > 0 && (
-//                       <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-red-500 text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold">
-//                         {product.discount}% OFF
-//                       </span>
-//                     )}
-
-//                     {product.rating && (
-//                       <span className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 bg-white/90 backdrop-blur px-2 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-medium">
-//                         ⭐ {product.rating}
-//                       </span>
-//                     )}
-//                   </div>
-
-//                   {/* Info */}
-//                   <div className="p-2 sm:p-4">
-//                     <p className="text-[9px] sm:text-xs text-gray-500 uppercase tracking-wide mb-1">
-//                       {product.category}
-//                     </p>
-
-//                     <h3 className="text-xs sm:text-base font-medium line-clamp-1 mb-1 sm:mb-2 group-hover:text-indigo-600 transition">
-//                       {product.name}
-//                     </h3>
-
-//                     <div className="flex justify-between items-center">
-//                       <p className="text-sm sm:text-lg font-bold">
-//                         {formatPrice(product.price)}
-//                       </p>
-//                       <span className="hidden sm:inline text-xs text-gray-500 hover:text-indigo-600">
-//                         Quick View
-//                       </span>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </SwiperSlide>
-//             ))}
-//           </Swiper>
-
-//           {/* Navigation Buttons – Mobile + Desktop */}
-//           <div className="trending-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-3 bg-white rounded-full p-1.5 sm:p-2 lg:p-3 shadow-md cursor-pointer z-10">
-//             <ChevronLeft size={18} />
-//           </div>
-
-//           <div className="trending-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-3 bg-white rounded-full p-1.5 sm:p-2 lg:p-3 shadow-md cursor-pointer z-10">
-//             <ChevronRight size={18} />
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Trending;
 
 
 import React, { useState, useEffect } from 'react'
@@ -175,7 +35,8 @@ const Trending = () => {
   const formatPrice = (price) => `₹${price}`;
 
   return (
-    <section className="relative bg-white py-20 md:py-24 overflow-hidden">
+
+    <section className="relative bg-white py-10 md:py-10 overflow-hidden">
 
       {/* subtle white luxury glow */}
       <div className="absolute -top-40 left-1/3 w-[600px] h-[600px] bg-black/5 rounded-full blur-[160px]" />
@@ -216,7 +77,9 @@ const Trending = () => {
             breakpoints={{
               640: { slidesPerView: 3, spaceBetween: 16 },
               768: { slidesPerView: 3, spaceBetween: 22 },
-              1024: { slidesPerView: 4, spaceBetween: 28 },
+
+              1024: { slidesPerView: 5, spaceBetween: 24 },
+              1280: { slidesPerView: 5, spaceBetween: 28 },
             }}
           >
             {trendingProducts.map((product) => (
@@ -291,5 +154,6 @@ const Trending = () => {
     </section>
   );
 };
+
 
 export default Trending;

@@ -7,12 +7,15 @@
     "price": 14500,
     "originalPrice": 18900,
     "discount": 23,
+    "gender": "Women",
     "category": "Ethically Sourced Silk",
+    "size": "S, M, XL, XXL, 3XL",
     "images": [
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800&auto=format&fit=crop"
+      "https://i.pinimg.com/736x/13/52/3a/13523abec7f19e2e8e5bd9f08742ffce.jpg",
+      "https://i.pinimg.com/736x/d8/ef/e4/d8efe41e0b962192e2bb086894588a72.jpg",
+      "https://i.pinimg.com/1200x/a8/2a/00/a82a00df259f9d29d880613a6d2710e1.jpg",
+      "https://i.pinimg.com/736x/57/0a/7f/570a7fd9bf7848be04ae0ca85039bf37.jpg"
+
     ],
     "variants": [
       { "size": "XS", "inStock": true, "sku": "SILK-XS-001" },
@@ -22,9 +25,33 @@
       { "size": "XL", "inStock": true, "sku": "SILK-XL-001" }
     ],
     "colors": [
-      { "id": 1, "name": "Midnight Blue", "value": "#1e3a8a", "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop" },
-      { "id": 2, "name": "Forest Green", "value": "#166534", "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop" },
-      { "id": 3, "name": "Ruby Red", "value": "#991b1b", "image": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&auto=format&fit=crop" }
+
+      {
+        "id": 1,
+        "name": "Midnight Blue",
+        "value": "#1e3a8a",
+
+        "image": "https://i.pinimg.com/736x/13/52/3a/13523abec7f19e2e8e5bd9f08742ffce.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/736x/d8/ef/e4/d8efe41e0b962192e2bb086894588a72.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/a8/2a/00/a82a00df259f9d29d880613a6d2710e1.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Ruby Red",
+        "value": "#991b1b",
+        "image": "https://i.pinimg.com/736x/57/0a/7f/570a7fd9bf7848be04ae0ca85039bf37.jpg"
+      }
+
     ],
     "details": {
       "fabric": "100% Mulberry Silk",
@@ -48,14 +75,48 @@
     "price": 4200,
     "originalPrice": 6000,
     "discount": 30,
+    "gender": "Women",
     "category": "Sustainable Cotton",
-    "images": ["https://images.unsplash.com/photo-1582533561751-ef6f6ab93a2e?w=800&auto=format&fit=crop"],
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/da/41/38/da4138d780df4b25076b108d4fc6bacc.jpg",
+      "https://i.pinimg.com/736x/0f/96/69/0f966909671078f986ce11bbcc15043b.jpg",
+      "https://i.pinimg.com/1200x/74/f8/6b/74f86b89f30d661c97a94b7db4ff280f.jpg",
+      "https://i.pinimg.com/1200x/74/18/ed/7418ed8e18265a9f8410d589fdaa5329.jpg"
+    ],
     "variants": [
+      { "size": "XS", "inStock": true, "sku": "SILK-XS-001" },
       { "size": "S", "inStock": true, "sku": "KHD-S-002" },
       { "size": "M", "inStock": true, "sku": "KHD-M-002" },
-      { "size": "L", "inStock": true, "sku": "KHD-L-002" }
+      { "size": "L", "inStock": true, "sku": "KHD-L-002" },
+      { "size": "XL", "inStock": true, "sku": "SILK-XL-001" }
     ],
-    "colors": [{ "id": 4, "name": "Ivory", "value": "#fffff0", "image": "https://images.unsplash.com/photo-1582533561751-ef6f6ab93a2e?w=800&auto=format&fit=crop" }],
+    "colors": [
+      {
+        "id": 5,
+        "name": "Midnight Blue",
+        "value": "#1e3a8a",
+        "image": "https://i.pinimg.com/1200x/da/41/38/da4138d780df4b25076b108d4fc6bacc.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/736x/0f/96/69/0f966909671078f986ce11bbcc15043b.jpg"
+      },
+      {
+        "id": 7,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/1200x/74/f8/6b/74f86b89f30d661c97a94b7db4ff280f.jpg"
+      },
+      {
+        "id": 8,
+        "name": "Ruby Red",
+        "value": "#991b1b",
+        "image": "https://i.pinimg.com/1200x/74/18/ed/7418ed8e18265a9f8410d589fdaa5329.jpg"
+      }
+    ],
     "details": {
       "fabric": "100% Khadi Cotton",
       "care": "Hand wash cold",
@@ -79,12 +140,48 @@
     "originalPrice": 9500,
     "discount": 6,
     "category": "Artisanal Outerwear",
-    "images": ["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop"],
-    "variants": [
-      { "size": "M", "inStock": true, "sku": "IND-M-003" },
-      { "size": "L", "inStock": true, "sku": "IND-L-003" }
+
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/95/30/be/9530be1eb22faa6fe42aced688952bd4.jpg",
+      "https://i.pinimg.com/1200x/d4/f5/b5/d4f5b5524306ccdbe1c29f7be20cb328.jpg",
+      "https://i.pinimg.com/1200x/6c/55/b9/6c55b9112b1895305ad6882c478a75f8.jpg",
+      "https://i.pinimg.com/736x/69/71/a1/6971a14990a8a686c0e58551dfbccca0.jpg"
     ],
-    "colors": [{ "id": 5, "name": "Indigo", "value": "#00416a", "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop" }],
+    "variants": [
+      { "size": "XS", "inStock": true, "sku": "SILK-XS-001" },
+      { "size": "S", "inStock": true, "sku": "KHD-S-002" },
+      { "size": "M", "inStock": true, "sku": "IND-M-003" },
+      { "size": "L", "inStock": true, "sku": "IND-L-003" },
+      { "size": "XL", "inStock": true, "sku": "SILK-XL-001" }
+    ],
+    "colors": [
+      {
+        "id": 9,
+        "name": "Midnight Blue",
+        "value": "#1e3a8a",
+        "image": "https://i.pinimg.com/736x/95/30/be/9530be1eb22faa6fe42aced688952bd4.jpg"
+      },
+      {
+        "id": 10,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/1200x/d4/f5/b5/d4f5b5524306ccdbe1c29f7be20cb328.jpg"
+      },
+      {
+        "id": 11,
+        "name": "Midnight Blue",
+        "value": "#1e3a8a",
+        "image": "https://i.pinimg.com/1200x/6c/55/b9/6c55b9112b1895305ad6882c478a75f8.jpg"
+      },
+      {
+        "id": 12,
+        "name": "Ruby Red",
+        "value": "#991b1b",
+        "image": "https://i.pinimg.com/736x/69/71/a1/6971a14990a8a686c0e58551dfbccca0.jpg"
+      }
+    ],
     "details": {
       "fabric": "Organic Cotton",
       "care": "Wash separately",
@@ -107,10 +204,48 @@
     "price": 12000,
     "originalPrice": 15000,
     "discount": 20,
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
     "category": "Luxury Woolens",
-    "images": ["https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=800&auto=format&fit=crop"],
-    "variants": [{ "size": "Free", "inStock": true, "sku": "PASH-FS-004" }],
-    "colors": [{ "id": 6, "name": "Camel", "value": "#c19a6b", "image": "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=800&auto=format&fit=crop" }],
+    "images": [
+      "https://i.pinimg.com/736x/52/4c/f7/524cf7eaf882deab2ebb1c37643da1c7.jpg",
+      "https://i.pinimg.com/736x/15/25/96/152596630e64e206ebdb771cc89ac32e.jpg",
+      "https://i.pinimg.com/736x/fa/d3/06/fad306a83b5561e8845e422d214f2a4b.jpg",
+      "https://i.pinimg.com/1200x/92/df/e3/92dfe3e5d8a621882af5e9805cfe9582.jpg"
+    ],
+    "variants": [
+      { "size": "XS", "inStock": true, "sku": "SILK-XS-001" },
+      { "size": "S", "inStock": true, "sku": "KHD-S-002" },
+      { "size": "M", "inStock": true, "sku": "IND-M-003" },
+      { "size": "L", "inStock": true, "sku": "IND-L-003" },
+      { "size": "XL", "inStock": true, "sku": "SILK-XL-001" }
+    ],
+    "colors": [
+      {
+        "id": 13,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/52/4c/f7/524cf7eaf882deab2ebb1c37643da1c7.jpg"
+      },
+      {
+        "id": 14,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/736x/15/25/96/152596630e64e206ebdb771cc89ac32e.jpg"
+      },
+      {
+        "id": 15,
+        "name": "Midnight Blue",
+        "value": "#1e3a8a",
+        "image": "https://i.pinimg.com/736x/fa/d3/06/fad306a83b5561e8845e422d214f2a4b.jpg"
+      },
+      {
+        "id": 16,
+        "name": "Ruby Red",
+        "value": "#991b1b",
+        "image": "https://i.pinimg.com/1200x/92/df/e3/92dfe3e5d8a621882af5e9805cfe9582.jpg"
+      }
+    ],
     "details": {
       "fabric": "100% Pashmina",
       "care": "Professional dry clean",
@@ -133,14 +268,48 @@
     "price": 5500,
     "originalPrice": 5500,
     "discount": 0,
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
     "category": "Linen Collection",
-    "images": ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop"],
+    "images": [
+      "https://i.pinimg.com/736x/d3/f2/3f/d3f23f1de30caecb0615408476929f0b.jpg",
+      "https://i.pinimg.com/736x/2f/da/6a/2fda6ac4c72bfe20a99e87dc36a5b77b.jpg",
+      "https://i.pinimg.com/736x/7c/a0/54/7ca0541ce62c3af91c14946747934d46.jpg",
+      "https://i.pinimg.com/736x/f9/0c/3d/f90c3df81848e7309e0c66e7c662b4e9.jpg"
+    ],
     "variants": [
+      { "size": "XS", "inStock": true, "sku": "SILK-XS-001" },
       { "size": "S", "inStock": true, "sku": "LIN-S-005" },
       { "size": "M", "inStock": false, "sku": "LIN-M-005" },
-      { "size": "L", "inStock": true, "sku": "LIN-L-005" }
+      { "size": "L", "inStock": true, "sku": "LIN-L-005" },
+      { "size": "XL", "inStock": true, "sku": "SILK-XL-001" }
     ],
-    "colors": [{ "id": 7, "name": "Slate Grey", "value": "#708090", "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&auto=format&fit=crop" }],
+    "colors": [
+      {
+        "id": 17,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/d3/f2/3f/d3f23f1de30caecb0615408476929f0b.jpg"
+      },
+      {
+        "id": 18,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/7c/a0/54/7ca0541ce62c3af91c14946747934d46.jpg"
+      },
+      {
+        "id": 19,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/736x/f9/0c/3d/f90c3df81848e7309e0c66e7c662b4e9.jpg"
+      },
+      {
+        "id": 20,
+        "name": "Ruby Red",
+        "value": "#991b1b",
+        "image": "https://i.pinimg.com/1200x/92/df/e3/92dfe3e5d8a621882af5e9805cfe9582.jpg"
+      }
+    ],
     "details": {
       "fabric": "70% Linen, 30% Cotton",
       "care": "Machine wash delicate",
@@ -163,13 +332,48 @@
     "price": 7200,
     "originalPrice": 8500,
     "discount": 15,
+    "gender": "Women",
     "category": "Artisanal Embroidery",
-    "images": ["https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=800&auto=format&fit=crop"],
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/36/dd/05/36dd059a912b0e5320bd4f449ce9a83b.jpg",
+      "https://i.pinimg.com/736x/27/10/61/2710610fe4caf4619b26688b3cb26996.jpg",
+      "https://i.pinimg.com/1200x/58/20/6f/58206f0eaef9f9019e070565c8e2f5e8.jpg",
+      "https://i.pinimg.com/1200x/15/77/d1/1577d12fc06259814a9563c033a08488.jpg"
+    ],
     "variants": [
+      { "size": "XS", "inStock": true, "sku": "SILK-XS-001" },
+      { "size": "S", "inStock": true, "sku": "LIN-S-005" },
       { "size": "M", "inStock": true, "sku": "CHK-M-006" },
+      { "size": "L", "inStock": true, "sku": "LIN-L-005" },
       { "size": "XL", "inStock": true, "sku": "CHK-XL-006" }
     ],
-    "colors": [{ "id": 8, "name": "Peach Blossom", "value": "#ffdab9", "image": "../assets/collections/Noor-e-Chikankari.webp" }],
+    "colors": [
+      {
+        "id": 21,
+        "name": "Peach Blossom",
+        "value": "#ffdab9",
+        "image": "https://i.pinimg.com/1200x/36/dd/05/36dd059a912b0e5320bd4f449ce9a83b.jpg"
+      },
+      {
+        "id": 22,
+        "name": "Ruby Red",
+        "value": "#991b1b",
+        "image": "https://i.pinimg.com/736x/27/10/61/2710610fe4caf4619b26688b3cb26996.jpg"
+      },
+      {
+        "id": 23,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/1200x/58/20/6f/58206f0eaef9f9019e070565c8e2f5e8.jpg"
+      },
+      {
+        "id": 24,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/15/77/d1/1577d12fc06259814a9563c033a08488.jpg"
+      }
+    ],
     "details": {
       "fabric": "Fine Georgette",
       "care": "Gentle hand wash",
@@ -192,13 +396,45 @@
     "price": 3800,
     "originalPrice": 4200,
     "discount": 10,
+    "gender": "Women",
     "category": "Sustainable Loungewear",
-    "images": ["https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=800&auto=format&fit=crop"],
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/26/25/65/262565d5341540c7fd0e910317b56e1e.jpg",
+      "https://i.pinimg.com/1200x/98/a0/4d/98a04df806afd505ca9912f6677a4d96.jpg",
+      "https://i.pinimg.com/736x/7e/b1/3f/7eb13feddaff1d93e96e4519654588cf.jpg",
+      "https://i.pinimg.com/736x/49/52/4b/49524b2c77ff541027135174a799ec3a.jpg"
+    ],
     "variants": [
       { "size": "S", "inStock": true, "sku": "BAM-S-007" },
       { "size": "L", "inStock": true, "sku": "BAM-L-007" }
     ],
-    "colors": [{ "id": 9, "name": "Sage", "value": "#9c9f84", "image": "https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=800&auto=format&fit=crop" }],
+    "colors": [
+      {
+        "id": 25,
+        "name": "Sage",
+        "value": "#9c9f84",
+        "image": "https://i.pinimg.com/736x/26/25/65/262565d5341540c7fd0e910317b56e1e.jpg"
+      },
+      {
+        "id": 26,
+        "name": "Midnight Blue",
+        "value": "#1e3a8a",
+        "image": "https://i.pinimg.com/1200x/98/a0/4d/98a04df806afd505ca9912f6677a4d96.jpg"
+      },
+      {
+        "id": 27,
+        "name": "Ruby Red",
+        "value": "#991b1b",
+        "image": "https://i.pinimg.com/736x/7e/b1/3f/7eb13feddaff1d93e96e4519654588cf.jpg"
+      },
+      {
+        "id": 28,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/736x/49/52/4b/49524b2c77ff541027135174a799ec3a.jpg"
+      }
+    ],
     "details": {
       "fabric": "Bamboo Fiber",
       "care": "Tumble dry low",
@@ -221,10 +457,42 @@
     "price": 22000,
     "originalPrice": 28000,
     "discount": 21,
+    "gender": "Women",
     "category": "Heritage Sarees",
-    "images": ["https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop"],
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/f1/f3/9b/f1f39b2c6ca9833a5eb32c59b1820d04.jpg",
+      "https://i.pinimg.com/1200x/1d/8d/39/1d8d39429c5956693a05967cc24cf399.jpg",
+      "https://i.pinimg.com/1200x/4e/45/65/4e45656de2257996c9daf8201a5799ad.jpg",
+      "https://i.pinimg.com/1200x/99/dc/8a/99dc8adecb2c0c6ab553580f3fad0be3.jpg"
+    ],
     "variants": [{ "size": "Free", "inStock": true, "sku": "KAL-FS-008" }],
-    "colors": [{ "id": 10, "name": "Terracotta", "value": "#e2725b", "image": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop" }],
+    "colors": [
+      {
+        "id": 29,
+        "name": "Terracotta",
+        "value": "#e2725b",
+        "image": "https://i.pinimg.com/1200x/f1/f3/9b/f1f39b2c6ca9833a5eb32c59b1820d04.jpg"
+      },
+      {
+        "id": 30,
+        "name": "Midnight Blue",
+        "value": "#1e3a8a",
+        "image": "https://i.pinimg.com/1200x/1d/8d/39/1d8d39429c5956693a05967cc24cf399.jpg"
+      },
+      {
+        "id": 31,
+        "name": "Sage",
+        "value": "#9c9f84",
+        "image": "https://i.pinimg.com/1200x/4e/45/65/4e45656de2257996c9daf8201a5799ad.jpg"
+      },
+      {
+        "id": 32,
+        "name": "Peach Blossom",
+        "value": "#ffdab9",
+        "image": "https://i.pinimg.com/1200x/99/dc/8a/99dc8adecb2c0c6ab553580f3fad0be3.jpg"
+      }
+    ],
     "details": {
       "fabric": "Chanderi Silk",
       "care": "Dry clean only",
@@ -242,6 +510,7 @@
   },
   "9": {
     "id": 9,
+
     "title": "Modern Jute Tote Bag",
     "description": "Structured tote bag with leather accents for the conscious traveler.",
     "price": 2500,
@@ -251,6 +520,48 @@
     "images": ["https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&auto=format&fit=crop"],
     "variants": [{ "size": "OS", "inStock": true, "sku": "JUT-OS-009" }],
     "colors": [{ "id": 11, "name": "Natural Jute", "value": "#c2b280", "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&auto=format&fit=crop" }],
+
+    "title": "Organic Cotton Scarf",
+    "description": "Fair Trade, Made by Pragati CooperativeBright berry-pink batik block prints define this soft eco-friendly organic cotton/silk scarf.",
+    "price": 2500,
+    "originalPrice": 2500,
+    "discount": 0,
+    "gender": "Women",
+    "category": "Eco-Accessories",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/a2/0b/fe/a20bfefd7fb80ac0d4021e99a2d31113.jpg",
+      "https://i.pinimg.com/736x/69/12/95/691295bede8d2742994bd0d5b824eccd.jpg",
+      "https://i.pinimg.com/1200x/18/45/7f/18457f875083019c3d31d110e67310d2.jpg",
+      "https://i.pinimg.com/736x/e9/28/a1/e928a1147fc6aed4ec4391f1f24791ac.jpg"
+    ],
+    "variants": [{ "size": "OS", "inStock": true, "sku": "JUT-OS-009" }],
+    "colors": [
+      {
+        "id": 33,
+        "name": "Natural Jute",
+        "value": "#c2b280",
+        "image": "https://i.pinimg.com/1200x/a2/0b/fe/a20bfefd7fb80ac0d4021e99a2d31113.jpg"
+      },
+      {
+        "id": 34,
+        "name": "Terracotta",
+        "value": "#e2725b",
+        "image": "https://i.pinimg.com/736x/69/12/95/691295bede8d2742994bd0d5b824eccd.jpg"
+      },
+      {
+        "id": 35,
+        "name": "Sage",
+        "value": "#9c9f84",
+        "image": "https://i.pinimg.com/1200x/18/45/7f/18457f875083019c3d31d110e67310d2.jpg"
+      },
+      {
+        "id": 36,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/736x/e9/28/a1/e928a1147fc6aed4ec4391f1f24791ac.jpg"
+      }
+    ],
     "details": {
       "fabric": "Golden Jute & Vegan Leather",
       "care": "Wipe clean",
@@ -273,10 +584,42 @@
     "price": 6800,
     "originalPrice": 8000,
     "discount": 15,
+    "gender": "Women",
     "category": "Winter Wear",
-    "images": ["https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&auto=format&fit=crop"],
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/12/d5/d0/12d5d04e5b3c1264caf28204f0e34e3b.jpg",
+      "https://i.pinimg.com/736x/a6/02/ca/a602ca6f30e3d52e413728909232b91a.jpg",
+      "https://i.pinimg.com/1200x/62/a1/11/62a111d82e1be7f82a91a19518082c19.jpg",
+      "https://i.pinimg.com/736x/0f/50/33/0f50334c4dc59205e7c28ef75c6eb4f5.jpg"
+    ],
     "variants": [{ "size": "M", "inStock": true, "sku": "WOL-M-010" }],
-    "colors": [{ "id": 12, "name": "Cream", "value": "#fdf5e6", "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&auto=format&fit=crop" }],
+    "colors": [
+      {
+        "id": 37,
+        "name": "Cream",
+        "value": "#fdf5e6",
+        "image": "https://i.pinimg.com/736x/12/d5/d0/12d5d04e5b3c1264caf28204f0e34e3b.jpg"
+      },
+      {
+        "id": 38,
+        "name": "Terracotta",
+        "value": "#e2725b",
+        "image": "https://i.pinimg.com/736x/a6/02/ca/a602ca6f30e3d52e413728909232b91a.jpg"
+      },
+      {
+        "id": 39,
+        "name": "Ruby Red",
+        "value": "#991b1b",
+        "image": "https://i.pinimg.com/1200x/62/a1/11/62a111d82e1be7f82a91a19518082c19.jpg"
+      },
+      {
+        "id": 40,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/736x/0f/50/33/0f50334c4dc59205e7c28ef75c6eb4f5.jpg"
+      }
+    ],
     "details": {
       "fabric": "Sheep Wool",
       "care": "Hand wash only",
@@ -299,13 +642,45 @@
     "price": 4900,
     "originalPrice": 5800,
     "discount": 15,
+    "gender": "Women",
     "category": "Hemp Apparel",
-    "images": ["https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800&auto=format&fit=crop"],
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/fc/bd/f0/fcbdf0f4b8cb0c09723d02cb862a70b0.jpg",
+      "https://i.pinimg.com/736x/3f/4e/4f/3f4e4f9db21ad14f11ab1005bde84e1b.jpg",
+      "https://i.pinimg.com/1200x/82/a3/07/82a3076ae9b29f69ae1e41a73cf71c29.jpg",
+      "https://i.pinimg.com/1200x/82/a3/07/82a3076ae9b29f69ae1e41a73cf71c29.jpg"
+    ],
     "variants": [
       { "size": "S", "inStock": true, "sku": "HEMP-S-011" },
       { "size": "M", "inStock": true, "sku": "HEMP-M-011" }
     ],
-    "colors": [{ "id": 13, "name": "Olive", "value": "#556b2f", "image": "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800&auto=format&fit=crop" }],
+    "colors": [
+      {
+        "id": 41,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/fc/bd/f0/fcbdf0f4b8cb0c09723d02cb862a70b0.jpg"
+      },
+      {
+        "id": 42,
+        "name": "Cream",
+        "value": "#fdf5e6",
+        "image": "https://i.pinimg.com/736x/3f/4e/4f/3f4e4f9db21ad14f11ab1005bde84e1b.jpg"
+      },
+      {
+        "id": 43,
+        "name": "Midnight Blue",
+        "value": "#1e3a8a",
+        "image": "https://i.pinimg.com/1200x/82/a3/07/82a3076ae9b29f69ae1e41a73cf71c29.jpg"
+      },
+      {
+        "id": 44,
+        "name": "Forest Green",
+        "value": "#166534",
+        "image": "https://i.pinimg.com/1200x/82/a3/07/82a3076ae9b29f69ae1e41a73cf71c29.jpg"
+      }
+    ],
     "details": {
       "fabric": "100% Hemp",
       "care": "Machine wash cold",
@@ -328,13 +703,45 @@
     "price": 3200,
     "originalPrice": 3200,
     "discount": 0,
+    "gender": "Women",
     "category": "Sustainable Activewear",
-    "images": ["https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&auto=format&fit=crop"],
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/aa/35/40/aa35401268891afeeb185ab493a8e30e.jpg",
+      "https://i.pinimg.com/1200x/66/48/74/664874f8c7e9ae6a69cdea2307993e86.jpg",
+      "https://i.pinimg.com/1200x/b4/f2/ac/b4f2ac30a68ac57c311a5615b415327c.jpg",
+      "https://i.pinimg.com/736x/a2/fb/3f/a2fb3f834b7921a417192f8bccc35ba2.jpg"
+    ],
     "variants": [
       { "size": "M", "inStock": true, "sku": "REC-M-012" },
       { "size": "L", "inStock": true, "sku": "REC-L-012" }
     ],
-    "colors": [{ "id": 14, "name": "Onyx", "value": "#000000", "image": "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&auto=format&fit=crop" }],
+    "colors": [
+      {
+        "id": 45,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/aa/35/40/aa35401268891afeeb185ab493a8e30e.jpg"
+      },
+      {
+        "id": 46,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/66/48/74/664874f8c7e9ae6a69cdea2307993e86.jpg"
+      },
+      {
+        "id": 47,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/b4/f2/ac/b4f2ac30a68ac57c311a5615b415327c.jpg"
+      },
+      {
+        "id": 48,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/a2/fb/3f/a2fb3f834b7921a417192f8bccc35ba2.jpg"
+      }
+    ],
     "details": {
       "fabric": "80% Recycled PET, 20% Elastane",
       "care": "Cold wash",
@@ -353,100 +760,2920 @@
   "13": {
     "id": 13,
     "title": "Hand-Painted Kalamkari Saree",
-    "category": "HERITAGE SAREE",
+    "category": "Heritage Sarees",
     "description": "Traditional hand-painted Kalamkari saree",
     "price": 3500,
     "discount": 15,
-    "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop"],
-    "inStock": true
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/88/8f/94/888f94f193eee08d2461a396effb1bd6.jpg",
+      "https://i.pinimg.com/736x/3b/76/2b/3b762b91e0095f6d27ccd0732b597fe5.jpg",
+      "https://i.pinimg.com/736x/12/4e/ac/124eace74309cab7d922706e78e83cdb.jpg",
+      "https://i.pinimg.com/736x/7d/aa/c9/7daac9db1839463b3d575e0882185a27.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 49,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/88/8f/94/888f94f193eee08d2461a396effb1bd6.jpg"
+      },
+      {
+        "id": 50,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/3b/76/2b/3b762b91e0095f6d27ccd0732b597fe5.jpg"
+      },
+      {
+        "id": 51,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/12/4e/ac/124eace74309cab7d922706e78e83cdb.jpg"
+      },
+      {
+        "id": 52,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/7d/aa/c9/7daac9db1839463b3d575e0882185a27.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "80% Recycled PET, 20% Elastane",
+      "care": "Cold wash",
+      "origin": "Gujarat",
+      "delivery": "Standard",
+      "return": "30-day return",
+      "material": "Recycled Plastic",
+      "weight": "250g",
+      "dimensions": "High-waist"
+    },
+    "rating": 4.7,
+    "reviews": 210,
+    "sku": "GRP-REC-012",
+    "stock": 75
   },
   "14": {
     "id": 14,
     "title": "Linen Kurta Set",
-    "category": "LINEN COLLECTION",
+    "category": "Linen Collection",
     "description": "Premium linen kurta set",
     "price": 3200,
     "discount": 10,
-    "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w-800&auto=format&fit=crop"],
-    "inStock": true
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/6b/d6/a3/6bd6a36e003ff4bc1b5fd9d930d3ef65.jpg",
+      "https://i.pinimg.com/736x/28/f3/f6/28f3f610972c329bfefb89266fa52b5d.jpg",
+      "https://i.pinimg.com/736x/35/cf/83/35cf83e7bb4ce3720fdb319ade3dcb10.jpg",
+      "https://i.pinimg.com/736x/19/73/46/197346a101b65714922c0397ef9ba2f7.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 53,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/6b/d6/a3/6bd6a36e003ff4bc1b5fd9d930d3ef65.jpg"
+      },
+      {
+        "id": 54,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/28/f3/f6/28f3f610972c329bfefb89266fa52b5d.jpg"
+      },
+      {
+        "id": 55,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/35/cf/83/35cf83e7bb4ce3720fdb319ade3dcb10.jpg"
+      },
+      {
+        "id": 56,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/19/73/46/197346a101b65714922c0397ef9ba2f7.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Premium Linen",
+      "care": "Hand wash separately in cold water, do not bleach, dry in shade, iron on low heat",
+      "origin": "Made in India",
+      "delivery": "Standard",
+      "return": "30-day return",
+      "material": "100% Linen",
+      "weight": "250g",
+      "dimensions": "Kurti Length: 32-34 inches, Palazzo Length: 38-40 inches"
+    },
+    "rating": 4.7,
+    "reviews": 210,
+    "sku": "GRP-REC-009",
+    "stock": 75
   },
   "15": {
     "id": 15,
     "title": "Woolen Shawl",
-    "category": "LUXURY WOOLENS",
+    "category": "Luxury Woolens",
     "description": "Luxury woolen shawl",
     "price": 4200,
     "discount": 20,
-    "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1574201633182-8afb8b3a6e5a?w=800&auto=format&fit=crop"],
-    "inStock": true
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/b7/82/d8/b782d81dcfdc0ae317aa9ec79f781137.jpg",
+      "https://i.pinimg.com/736x/d8/43/d5/d843d5402bf7be596cbf3f5f3f724861.jpg",
+      "https://i.pinimg.com/736x/b7/e7/c2/b7e7c2bf869d2b8fc99706f18b69c8c5.jpg",
+      "https://i.pinimg.com/736x/52/d4/e1/52d4e12fb6b354e9a89e1f141f98ed7e.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 57,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/b7/82/d8/b782d81dcfdc0ae317aa9ec79f781137.jpg"
+      },
+      {
+        "id": 58,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/d8/43/d5/d843d5402bf7be596cbf3f5f3f724861.jpg"
+      },
+      {
+        "id": 59,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/b7/e7/c2/b7e7c2bf869d2b8fc99706f18b69c8c5.jpg"
+      },
+      {
+        "id": 60,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/52/d4/e1/52d4e12fb6b354e9a89e1f141f98ed7e.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Soft Wool Blend",
+      "care": "Dry clean recommended, gentle hand wash in cold water, do not bleach, dry flat in shade",
+      "origin": "Made in India",
+      "delivery": "Delivered within 5–7 working day",
+      "return": "30-day return",
+      "material": "Wool Blend with fine woven finish",
+      "weight": "180g",
+      "dimensions": "Length: 200 cm, Width: 70 cm"
+    },
+    "rating": 4.3,
+    "reviews": 128,
+    "sku": "GRP-REC-012",
+    "stock": 42
   },
   "16": {
     "id": 16,
     "title": "Cotton Lounge Set",
-    "category": "SUSTAINABLE LOUNGEWEAR",
+    "category": "Sustainable Loungewear",
     "description": "Sustainable cotton lounge set",
     "price": 2800,
     "discount": 12,
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/28/f3/f6/28f3f610972c329bfefb89266fa52b5d.jpg",
+      "https://i.pinimg.com/736x/a7/21/7d/a7217dc0bf6cf8be406bf334e877e3c2.jpg",
+      "https://i.pinimg.com/736x/31/0b/12/310b126a17282072cf192c3bfb8a6dfc.jpg",
+      "https://i.pinimg.com/1200x/7e/d2/55/7ed255e0fe02db8ca0b72b6c89d8121f.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 61,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/28/f3/f6/28f3f610972c329bfefb89266fa52b5d.jpg"
+      },
+      {
+        "id": 62,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/a7/21/7d/a7217dc0bf6cf8be406bf334e877e3c2.jpg"
+      },
+      {
+        "id": 63,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/31/0b/12/310b126a17282072cf192c3bfb8a6dfc.jpg"
+      },
+      {
+        "id": 64,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/7e/d2/55/7ed255e0fe02db8ca0b72b6c89d8121f.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Soft Linen Blend",
+      "care": "Hand wash separately in cold water, do not bleach, dry in shade, iron on low heat",
+      "origin": "Made in India",
+      "delivery": "Delivered within 5–7 working days",
+      "return": "30-day return",
+      "material": "Linen Blend with breathable weave",
+      "weight": "260g",
+      "dimensions": "Top Length: 30-32 inches, Pant Length: 38-40 inches"
+    },
     "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=800&auto=format&fit=crop"],
-    "inStock": true
+    "reviews": 94,
+    "sku": "GRP-CORD-021",
+    "stock": 36
   },
   "17": {
     "id": 17,
     "title": "Silk Banarasi Saree",
-    "category": "HERITAGE SAREE",
+    "category": "Heritage Sarees",
     "description": "Traditional silk Banarasi saree",
     "price": 8500,
     "discount": 18,
-    "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1565791380717-9d3a5d1c2435?w=800&auto=format&fit=crop"],
-    "inStock": true
+    "size": "S, M, XL, XXL, 3XL",
+    "gender": "Women",
+    "images": [
+      "https://i.pinimg.com/474x/75/6c/aa/756caa10bea98fa4a26cfbe5358e0f03.jpg",
+      "https://i.pinimg.com/1200x/0d/aa/9f/0daa9fd7358037e0698e0b26900710f6.jpg",
+      "https://i.pinimg.com/1200x/8c/4a/58/8c4a58435c0cf0b04cd9ad3359fcfb87.jpg",
+      "https://i.pinimg.com/1200x/d7/34/29/d73429e6fbe0885aa395b90846dcb0cc.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 65,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/474x/75/6c/aa/756caa10bea98fa4a26cfbe5358e0f03.jpg"
+      },
+      {
+        "id": 66,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/0d/aa/9f/0daa9fd7358037e0698e0b26900710f6.jpg"
+      },
+      {
+        "id": 67,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/8c/4a/58/8c4a58435c0cf0b04cd9ad3359fcfb87.jpg"
+      },
+      {
+        "id": 68,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/d7/34/29/d73429e6fbe0885aa395b90846dcb0cc.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Banarasi Silk Blend",
+      "care": "Dry clean only to maintain zari work and color",
+      "origin": "Varanasi, India",
+      "delivery": "Standard (5–7 working days)",
+      "return": "30-day return",
+      "material": "Silk Blend with zari weaving",
+      "weight": "750g",
+      "dimensions": "Length: 5.5 meters, Width: 44 inches"
+    },
+    "rating": 4.7,
+    "reviews": 210,
+    "sku": "GRP-BAN-012",
+    "stock": 75
   },
   "18": {
     "id": 18,
     "title": "Embroidered Linen Dress",
-    "category": "LINEN COLLECTION",
+    "category": "Linen Collection",
     "description": "Elegant embroidered linen dress",
     "price": 4500,
     "discount": 15,
-    "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&auto=format&fit=crop"],
-    "inStock": true
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/1f/a9/16/1fa916c24ff0a4eb4b0a3f0814a1432d.jpg",
+      "https://i.pinimg.com/1200x/53/3d/7b/533d7ba3cfec25228e8216c3eccffaa1.jpg",
+      "https://i.pinimg.com/1200x/a6/ac/67/a6ac67aa4876eeda25934aa187450943.jpg",
+      "https://i.pinimg.com/1200x/11/83/99/11839979cf308d3c5af637f43dd27219.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 69,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/1f/a9/16/1fa916c24ff0a4eb4b0a3f0814a1432d.jpg"
+      },
+      {
+        "id": 70,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/53/3d/7b/533d7ba3cfec25228e8216c3eccffaa1.jpg"
+      },
+      {
+        "id": 71,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/a6/ac/67/a6ac67aa4876eeda25934aa187450943.jpg"
+      },
+      {
+        "id": 72,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/11/83/99/11839979cf308d3c5af637f43dd27219.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Pure Cotton Slub",
+      "care": "Hand wash separately in cold water, do not bleach, dry in shade, iron on reverse",
+      "origin": "Rajasthan, India",
+      "delivery": "Standard delivery (5–7 working days)",
+      "return": "30-day return",
+      "material": "100% Cotton with hand embroidery",
+      "weight": "320g",
+      "dimensions": "Dress Length: 44-46 inches, Sleeve Length: 3/4th sleeves"
+    },
+    "rating": 4.6,
+    "reviews": 156,
+    "sku": "GRP-EMB-034",
+    "stock": 28
   },
   "19": {
     "id": 19,
     "title": "Cashmere Wool Sweater",
-    "category": "LUXURY WOOLENS",
+    "category": "Luxury Woolens",
     "description": "Premium cashmere wool sweater",
     "price": 5500,
     "discount": 25,
-    "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=800&auto=format&fit=crop"],
-    "inStock": true
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/bf/2c/5e/bf2c5e010e4c435fa4ad9cc2c1ae08cd.jpg",
+      "https://i.pinimg.com/736x/17/f4/9e/17f49e16b8334884f1573e5fc9def89c.jpg",
+      "https://i.pinimg.com/736x/f3/c6/9b/f3c69baa21e48af50b9a4984e30ad9e9.jpg",
+      "https://i.pinimg.com/736x/77/a2/30/77a230dcf165043d9726063b18045a59.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 73,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/bf/2c/5e/bf2c5e010e4c435fa4ad9cc2c1ae08cd.jpg"
+      },
+      {
+        "id": 74,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/17/f4/9e/17f49e16b8334884f1573e5fc9def89c.jpg"
+      },
+      {
+        "id": 75,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/f3/c6/9b/f3c69baa21e48af50b9a4984e30ad9e9.jpg"
+      },
+      {
+        "id": 76,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/77/a2/30/77a230dcf165043d9726063b18045a59.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Wool Blend Knit",
+      "care": "Gentle hand wash in cold water, do not bleach, dry flat, do not wring",
+      "origin": "India",
+      "delivery": "Standard (5–7 working days)",
+      "return": "30-day return",
+      "material": "Wool & Acrylic blend",
+      "weight": "420g",
+      "dimensions": "Regular fit, Full sleeves, Standard length"
+    },
+    "rating": 4.7,
+    "reviews": 210,
+    "sku": "GRP-KNT-012",
+    "stock": 75
   },
   "20": {
     "id": 20,
-    "title": "Bamboo Fiber Lounge",
-    "category": "SUSTAINABLE LOUNGEWEAR",
+    "title": "Retro Floral Bamboo Fiber Pajama Set",
+    "category": "Sustainable Loungewear",
     "description": "Eco-friendly bamboo fiber lounge wear",
     "price": 3800,
     "discount": 10,
-    "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=800&auto=format&fit=crop"],
-    "inStock": true
+    "gender": "Women",
+    "size": "S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/d2/18/1e/d2181ee02e62b7823c528d1ddd533f7a.jpg",
+      "https://i.pinimg.com/1200x/b5/23/a5/b523a5e9750974dcef459d0565982eca.jpg",
+      "https://i.pinimg.com/1200x/ce/49/77/ce497704c7d64a425e865a6af0418566.jpg",
+      "https://i.pinimg.com/1200x/16/d5/ca/16d5cae8a4bac2908bedca268efc85c1.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 77,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/d2/18/1e/d2181ee02e62b7823c528d1ddd533f7a.jpg"
+      },
+      {
+        "id": 78,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/b5/23/a5/b523a5e9750974dcef459d0565982eca.jpg"
+      },
+      {
+        "id": 79,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/ce/49/77/ce497704c7d64a425e865a6af0418566.jpg"
+      },
+      {
+        "id": 80,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/16/d5/ca/16d5cae8a4bac2908bedca268efc85c1.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Soft Cotton Blend",
+      "care": "Hand wash or gentle machine wash in cold water, do not bleach, dry in shade",
+      "origin": "India",
+      "delivery": "Standard (5–7 working days)",
+      "return": "30-day return",
+      "material": "Cotton blend with printed finish",
+      "weight": "300g",
+      "dimensions": "Top Length: 26–28 inches, Pant Length: 38–40 inches, Relaxed fit"
+    },
+    "rating": 4.7,
+    "reviews": 210,
+    "sku": "GRP-CORD-045",
+    "stock": 75
   },
   "21": {
     "id": 21,
     "title": "Chanderi Silk Saree",
-    "category": "HERITAGE SAREE",
+    "category": "Heritage Sarees",
     "description": "Lightweight Chanderi silk saree",
     "price": 6200,
     "discount": 12,
+    "gender": "Women",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/0b/a1/7c/0ba17c6aef28eede4c086af9cb1e95ac.jpg",
+      "https://i.pinimg.com/1200x/e8/5c/91/e85c91ca45ce79122ccde6d699419de5.jpg",
+      "https://i.pinimg.com/1200x/9c/0b/d8/9c0bd8cec1eb49b3851389dc61ba6584.jpg",
+      "https://i.pinimg.com/1200x/ad/b2/a0/adb2a0136c3799af9ecbcc88e0fe9b57.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 81,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/0b/a1/7c/0ba17c6aef28eede4c086af9cb1e95ac.jpg"
+      },
+      {
+        "id": 82,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/e8/5c/91/e85c91ca45ce79122ccde6d699419de5.jpg"
+      },
+      {
+        "id": 83,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/9c/0b/d8/9c0bd8cec1eb49b3851389dc61ba6584.jpg"
+      },
+      {
+        "id": 84,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/ad/b2/a0/adb2a0136c3799af9ecbcc88e0fe9b57.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Silk Blend",
+      "care": "Dry clean only to preserve zari and color",
+      "origin": "Tamil Nadu, India",
+      "delivery": "Standard (5–7 working days)",
+      "return": "30-day return",
+      "material": "Silk blend with gold zari weaving",
+      "weight": "650g",
+      "dimensions": "Length: 5.5 meters, Width: 44 inches"
+    },
+    "rating": 4.7,
+    "reviews": 210,
+    "sku": "GRP-SAR-012",
+    "stock": 75
+  },
+  "22": {
+    "id": 22,
+    "title": "Organic Cotton Classic Kurta",
+    "category": "Sustainable Cotton",
+    "description": "Breathable cotton kurta for daily wear",
+    "price": 2999,
+    "original price": 3499,
+    "discount": 14,
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/d6/3d/2a/d63d2a698c7448b7c45666a97d7a2aa7.jpg",
+      "https://i.pinimg.com/1200x/f6/09/16/f60916f520d7eb65d9487d739a8b83a5.jpg",
+      "https://i.pinimg.com/1200x/dd/5f/44/dd5f448dd2f6b868c82fc2465ab3b498.jpg",
+      "https://i.pinimg.com/1200x/0f/c2/90/0fc290bbc6bc4c26dfc2ad88435a3dd2.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 85,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/d6/3d/2a/d63d2a698c7448b7c45666a97d7a2aa7.jpg"
+      },
+      {
+        "id": 86,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/f6/09/16/f60916f520d7eb65d9487d739a8b83a5.jpg"
+      },
+      {
+        "id": 87,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/dd/5f/44/dd5f448dd2f6b868c82fc2465ab3b498.jpg"
+      },
+      {
+        "id": 88,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/0f/c2/90/0fc290bbc6bc4c26dfc2ad88435a3dd2.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Organic Cotton",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days return",
+      "material": "Cotton",
+      "weight": "650g",
+      "dimensions": "350g"
+    },
     "rating": 4.5,
-    "images": ["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop"],
-    "inStock": true
+    "reviews": 120,
+    "sku": "MEN-SC-001",
+    "stock": 40
+  },
+  "23": {
+    "id": 23,
+    "title": "Everyday Cotton Shirt",
+    "category": "Sustainable Cotton",
+    "description": "Casual cotton shirt with soft finish",
+    "price": 2499,
+    "original price": 2999,
+    "discount": 17,
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/cf/cf/32/cfcf3292078d87af45a9946429cbf192.jpg",
+      "https://i.pinimg.com/1200x/af/0f/21/af0f21cdc4d44a0356aa8f081fed93e4.jpg",
+      "https://i.pinimg.com/1200x/ff/28/51/ff285124090e314fb799205b93fb3445.jpg",
+      "https://i.pinimg.com/736x/c6/9a/64/c69a64a913466c7e1dca6d6e15932c51.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 89,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/cf/cf/32/cfcf3292078d87af45a9946429cbf192.jpg"
+      },
+      {
+        "id": 90,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/af/0f/21/af0f21cdc4d44a0356aa8f081fed93e4.jpg"
+      },
+      {
+        "id": 91,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/ff/28/51/ff285124090e314fb799205b93fb3445.jpg"
+      },
+      {
+        "id": 92,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/c6/9a/64/c69a64a913466c7e1dca6d6e15932c51.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days return",
+      "material": "Cotton",
+      "weight": "300g",
+      "dimensions": "Slim Fit"
+    },
+    "rating": 4.3,
+    "reviews": 95,
+    "sku": "MEN-SC-002",
+    "stock": 55
+  },
+  "24": {
+    "id": 24,
+    "title": "Linen Relaxed Fit Shirt",
+    "category": "Linen Collection",
+    "description": "Premium linen summer shirt",
+    "price": 3499,
+    "original price": 3999,
+    "discount": 12,
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/ed/fc/b8/edfcb80404f4e5e9789a2108db1e5ec3.jpg",
+      "https://i.pinimg.com/1200x/8c/3a/67/8c3a672d71e0c6c1369ec36d91145ca5.jpg",
+      "https://i.pinimg.com/1200x/a9/48/2c/a9482c871413b610bfded1cf418b0313.jpg",
+      "https://i.pinimg.com/1200x/6f/52/9f/6f529f55613560b6f2766f57f8a67aec.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 93,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/ed/fc/b8/edfcb80404f4e5e9789a2108db1e5ec3.jpg"
+      },
+      {
+        "id": 94,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/8c/3a/67/8c3a672d71e0c6c1369ec36d91145ca5.jpg"
+      },
+      {
+        "id": 95,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/a9/48/2c/a9482c871413b610bfded1cf418b0313.jpg"
+      },
+      {
+        "id": 96,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/6f/52/9f/6f529f55613560b6f2766f57f8a67aec.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Linen",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days return",
+      "material": "Linen",
+      "weight": "300g",
+      "dimensions": "Relaxed Fit"
+    },
+    "rating": 4.4,
+    "reviews": 98,
+    "sku": "MEN-LIN-003",
+    "stock": 35
+  },
+  "25": {
+    "id": 25,
+    "title": "Linen Casual Kurta",
+    "category": "Linen Collection",
+    "description": "Lightweight linen kurta",
+    "price": 3999,
+    "original price": 4499,
+    "discount": 11,
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/77/17/7a/77177a65a835383684a26e65b2edca6c.jpg",
+      "https://i.pinimg.com/1200x/7b/ab/c6/7babc6b73ee62ee76e16d311cc7a408b.jpg",
+      "https://i.pinimg.com/736x/ee/3a/32/ee3a329467a539d16af74cb784c9feb6.jpg",
+      "https://i.pinimg.com/736x/94/dd/6d/94dd6d7e779a62fe79f47046e740f884.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 97,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/77/17/7a/77177a65a835383684a26e65b2edca6c.jpg"
+      },
+      {
+        "id": 98,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/7b/ab/c6/7babc6b73ee62ee76e16d311cc7a408b.jpg"
+      },
+      {
+        "id": 99,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/ee/3a/32/ee3a329467a539d16af74cb784c9feb6.jpg"
+      },
+      {
+        "id": 100,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/94/dd/6d/94dd6d7e779a62fe79f47046e740f884.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Linen",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days return",
+      "material": "Linen",
+      "weight": "320g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.2,
+    "reviews": 80,
+    "sku": "MEN-LIN-004",
+    "stock": 30
+  },
+  "26": {
+    "id": 26,
+    "title": "Handcrafted Wool Jacket",
+    "description": "Artisanal wool outerwear jacket",
+    "price": 13999,
+    "originalPrice": 15999,
+    "discount": 13,
+    "category": "Artisanal Outerwear",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/ce/4f/ae/ce4fae9c7d003b58b435e6d77f31931b.jpg",
+      "https://i.pinimg.com/1200x/d3/49/74/d34974d63ee55a0f2b9c9b3504d10ca7.jpg",
+      "https://i.pinimg.com/1200x/4a/b0/80/4ab0800eb581dde4e2f79e233be02c5d.jpg",
+      "https://i.pinimg.com/1200x/8f/ee/e2/8feee244ae82e4ba65aba9c266d021e2.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 101,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/ce/4f/ae/ce4fae9c7d003b58b435e6d77f31931b.jpg"
+      },
+      {
+        "id": 102,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/d3/49/74/d34974d63ee55a0f2b9c9b3504d10ca7.jpg"
+      },
+      {
+        "id": 103,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/4a/b0/80/4ab0800eb581dde4e2f79e233be02c5d.jpg"
+      },
+      {
+        "id": 104,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/8f/ee/e2/8feee244ae82e4ba65aba9c266d021e2.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Wool Blend",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Wool",
+      "weight": "900g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.6,
+    "reviews": 145,
+    "sku": "MEN-WOL-026",
+    "stock": 22
+  },
+  "27": {
+    "id": 27,
+    "title": "Quilted Winter Jacket",
+    "description": "Warm quilted winter jacket",
+    "price": 8999,
+    "originalPrice": 10499,
+    "discount": 14,
+    "category": "Artisanal Outerwear",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/4d/90/9e/4d909ea55c3204b335c4c9ef40922640.jpg",
+      "https://i.pinimg.com/736x/32/ad/a8/32ada8efb754d41e257478f21e014af8.jpg",
+      "https://i.pinimg.com/736x/12/eb/70/12eb704d88b077edc21bf92706c3276e.jpg",
+      "https://i.pinimg.com/736x/3c/5d/93/3c5d932c5c80dc95748338cc14b9dc5d.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 105,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/4d/90/9e/4d909ea55c3204b335c4c9ef40922640.jpg"
+      },
+      {
+        "id": 106,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/32/ad/a8/32ada8efb754d41e257478f21e014af8.jpg"
+      },
+      {
+        "id": 107,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/12/eb/70/12eb704d88b077edc21bf92706c3276e.jpg"
+      },
+      {
+        "id": 108,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/3c/5d/93/3c5d932c5c80dc95748338cc14b9dc5d.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton Blend",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Polyester",
+      "weight": "850g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.4,
+    "reviews": 72,
+    "sku": "MEN-AO-006",
+    "stock": 25
+  },
+  "28": {
+    "id": 28,
+    "title": "Tailored Wool Blazer",
+    "description": "Premium wool formal blazer",
+    "price": 12999,
+    "originalPrice": 14999,
+    "discount": 13,
+    "category": "Luxury Woolens",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/4d/90/9e/4d909ea55c3204b335c4c9ef40922640.jpg",
+      "https://i.pinimg.com/736x/32/ad/a8/32ada8efb754d41e257478f21e014af8.jpg",
+      "https://i.pinimg.com/736x/12/eb/70/12eb704d88b077edc21bf92706c3276e.jpg",
+      "https://i.pinimg.com/736x/3c/5d/93/3c5d932c5c80dc95748338cc14b9dc5d.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 109,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/4d/90/9e/4d909ea55c3204b335c4c9ef40922640.jpg"
+      },
+      {
+        "id": 110,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/32/ad/a8/32ada8efb754d41e257478f21e014af8.jpg"
+      },
+      {
+        "id": 111,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/12/eb/70/12eb704d88b077edc21bf92706c3276e.jpg"
+      },
+      {
+        "id": 112,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/3c/5d/93/3c5d932c5c80dc95748338cc14b9dc5d.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Wool Blend",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Wool",
+      "weight": "950g",
+      "dimensions": "Tailored Fit"
+    },
+    "rating": 4.6,
+    "reviews": 50,
+    "sku": "MEN-LW-007",
+    "stock": 18
+  },
+  "29": {
+    "id": 29,
+    "title": "Luxury Wool Sweater",
+    "description": "Soft merino wool sweater",
+    "price": 7499,
+    "originalPrice": 8999,
+    "discount": 17,
+    "category": "Luxury Woolens",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/78/52/99/785299d0bc2395032c6e166ab1ccc4f6.jpg",
+      "https://i.pinimg.com/1200x/e7/2a/a7/e72aa74684137e3020669b51a8f6fa9a.jpg",
+      "https://i.pinimg.com/1200x/39/39/51/393951d31bb1a30e9c78b1a1e51281ec.jpg",
+      "https://i.pinimg.com/1200x/55/fa/3b/55fa3b172bd72528c5c8f8fe0fcc9ba5.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 113,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/78/52/99/785299d0bc2395032c6e166ab1ccc4f6.jpg"
+      },
+      {
+        "id": 114,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/e7/2a/a7/e72aa74684137e3020669b51a8f6fa9a.jpg"
+      },
+      {
+        "id": 115,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/39/39/51/393951d31bb1a30e9c78b1a1e51281ec.jpg"
+      },
+      {
+        "id": 116,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/55/fa/3b/55fa3b172bd72528c5c8f8fe0fcc9ba5.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Merino Wool",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Wool",
+      "weight": "500g",
+      "dimensions": "Slim Fit"
+    },
+    "rating": 4.5,
+    "reviews": 65,
+    "sku": "MEN-LW-008",
+    "stock": 30
+  },
+  "30": {
+    "id": 30,
+    "title": "Embroidered Festive Kurta",
+    "description": "Hand embroidery festive kurta",
+    "price": 7999,
+    "originalPrice": 9499,
+    "discount": 16,
+    "category": "Artisanal Embroidery",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/06/5a/35/065a3543b46c13f712ca9fcf7c02ec60.jpg",
+      "https://i.pinimg.com/736x/14/04/83/140483bee56e96f6d2c2c94e57cad60d.jpg",
+      "https://i.pinimg.com/1200x/7f/c6/a7/7fc6a709c66fbd4ed5dd7bc0e11fb2a4.jpg",
+      "https://i.pinimg.com/1200x/2e/36/e8/2e36e8bb969957301095dd149bc8df5e.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 117,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/06/5a/35/065a3543b46c13f712ca9fcf7c02ec60.jpg"
+      },
+      {
+        "id": 118,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/14/04/83/140483bee56e96f6d2c2c94e57cad60d.jpg"
+      },
+      {
+        "id": 119,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/7f/c6/a7/7fc6a709c66fbd4ed5dd7bc0e11fb2a4.jpg"
+      },
+      {
+        "id": 120,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/2e/36/e8/2e36e8bb969957301095dd149bc8df5e.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton Silk",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days",
+      "material": "Cotton Silk",
+      "weight": "400g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.7,
+    "reviews": 85,
+    "sku": "MEN-AE-009",
+    "stock": 28
+  },
+  "31": {
+    "id": 31,
+    "title": "Nehru Jacket with Handwork",
+    "description": "Festive embroidered Nehru jacket",
+    "price": 10999,
+    "originalPrice": 12499,
+    "discount": 12,
+    "category": "Artisanal Embroidery",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/1b/70/9e/1b709ee49286eac69802fc1be38b341a.jpg",
+      "https://i.pinimg.com/736x/75/6d/9e/756d9eeb05ae9313c126c9701d4b0f83.jpg",
+      "https://i.pinimg.com/1200x/21/1b/6e/211b6efefa6ffee4f928a482dfe4c6a2.jpg",
+      "https://i.pinimg.com/736x/42/10/bb/4210bb85f8c9c5ca11238e0410a3d176.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 121,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/1b/70/9e/1b709ee49286eac69802fc1be38b341a.jpg"
+      },
+      {
+        "id": 122,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/75/6d/9e/756d9eeb05ae9313c126c9701d4b0f83.jpg"
+      },
+      {
+        "id": 123,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/21/1b/6e/211b6efefa6ffee4f928a482dfe4c6a2.jpg"
+      },
+      {
+        "id": 124,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/42/10/bb/4210bb85f8c9c5ca11238e0410a3d176.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Silk Blend",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days",
+      "material": "Silk Blend",
+      "weight": "450g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.6,
+    "reviews": 58,
+    "sku": "MEN-AE-010",
+    "stock": 22
+  },
+  "32": {
+    "id": 32,
+    "title": "Cotton Lounge Set",
+    "description": "Comfortable homewear set",
+    "price": 3999,
+    "originalPrice": 4599,
+    "discount": 13,
+    "category": "Sustainable Loungewear",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/a5/d5/45/a5d5455e191fdfee494820c3111fe46f.jpg",
+      "https://i.pinimg.com/1200x/36/6d/1b/366d1b94e8e7f41a4593947f36c2bbd8.jpg",
+      "https://i.pinimg.com/1200x/21/3d/84/213d84768d2906a7e76295352c8a5e40.jpg",
+      "https://i.pinimg.com/736x/40/95/a7/4095a71d9cb59c5d8eb0eb5def2ebf21.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 125,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/a5/d5/45/a5d5455e191fdfee494820c3111fe46f.jpg"
+      },
+      {
+        "id": 126,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/36/6d/1b/366d1b94e8e7f41a4593947f36c2bbd8.jpg"
+      },
+      {
+        "id": 127,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/21/3d/84/213d84768d2906a7e76295352c8a5e40.jpg"
+      },
+      {
+        "id": 128,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/40/95/a7/4095a71d9cb59c5d8eb0eb5def2ebf21.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days",
+      "material": "Cotton",
+      "weight": "600g",
+      "dimensions": "Relaxed Fit"
+    },
+    "rating": 4.3,
+    "reviews": 70,
+    "sku": "MEN-SL-011",
+    "stock": 40
+  },
+  "33": {
+    "id": 33,
+    "title": "Relaxed Pajama Set",
+    "description": "Soft cotton pajama set",
+    "price": 3499,
+    "originalPrice": 3999,
+    "discount": 13,
+    "category": "Sustainable Loungewear",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/44/bf/87/44bf877a06dda8aa6c23438095ae94d4.jpg",
+      "https://i.pinimg.com/1200x/f3/20/e1/f320e182c83ae9691445737c86e6ac80.jpg",
+      "https://i.pinimg.com/736x/ac/91/29/ac912956400058bb02b374cdbfcc7f7c.jpg",
+      "https://i.pinimg.com/736x/12/61/d7/1261d7f69306f5837d4aad6d764ce872.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 129,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/44/bf/87/44bf877a06dda8aa6c23438095ae94d4.jpg"
+      },
+      {
+        "id": 130,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/f3/20/e1/f320e182c83ae9691445737c86e6ac80.jpg"
+      },
+      {
+        "id": 131,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/ac/91/29/ac912956400058bb02b374cdbfcc7f7c.jpg"
+      },
+      {
+        "id": 132,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/12/61/d7/1261d7f69306f5837d4aad6d764ce872.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days",
+      "material": "Cotton",
+      "weight": "550g",
+      "dimensions": "Relaxed Fit"
+    },
+    "rating": 4.2,
+    "reviews": 60,
+    "sku": "MEN-SL-012",
+    "stock": 45
+  },
+  "34": {
+    "id": 34,
+    "title": "Hooded Winter Jacket",
+    "description": "Insulated winter jacket",
+    "price": 7999,
+    "originalPrice": 9499,
+    "discount": 16,
+    "category": "Winter Wear",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/7b/69/34/7b6934ee7275d5855f86f10b911bc17e.jpg",
+      "https://i.pinimg.com/736x/21/d7/45/21d745638976576cd275921e1ebb00b7.jpg",
+      "https://i.pinimg.com/736x/77/ab/bb/77abbb5499e864e02acd4877892a343f.jpg",
+      "https://i.pinimg.com/1200x/6f/cd/10/6fcd10704dab9400c5a661f4c2fe761c.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 133,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/7b/69/34/7b6934ee7275d5855f86f10b911bc17e.jpg"
+      },
+      {
+        "id": 134,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/21/d7/45/21d745638976576cd275921e1ebb00b7.jpg"
+      },
+      {
+        "id": 135,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/77/ab/bb/77abbb5499e864e02acd4877892a343f.jpg"
+      },
+      {
+        "id": 136,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/6f/cd/10/6fcd10704dab9400c5a661f4c2fe761c.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Polyester",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Polyester",
+      "weight": "900g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.4,
+    "reviews": 78,
+    "sku": "MEN-WW-013",
+    "stock": 30
+  },
+  "35": {
+    "id": 35,
+    "title": "Woolen Winter Sweater",
+    "description": "Warm wool winter sweater",
+    "price": 4999,
+    "originalPrice": 5999,
+    "discount": 17,
+    "category": "Winter Wear",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/dd/10/cc/dd10ccf8ce33f0c6bef1d1c6b133848c.jpg",
+      "https://i.pinimg.com/736x/b6/03/e7/b603e7dc7363fe87be0eb744d57ee594.jpg",
+      "https://i.pinimg.com/736x/c3/49/94/c349946bf546e4b30a5845850d0a1cfe.jpg",
+      "https://i.pinimg.com/1200x/61/d8/18/61d818eb2168088b864d1d40f1de9850.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 137,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/dd/10/cc/dd10ccf8ce33f0c6bef1d1c6b133848c.jpg"
+      },
+      {
+        "id": 138,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/b6/03/e7/b603e7dc7363fe87be0eb744d57ee594.jpg"
+      },
+      {
+        "id": 139,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/c3/49/94/c349946bf546e4b30a5845850d0a1cfe.jpg"
+      },
+      {
+        "id": 140,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/61/d8/18/61d818eb2168088b864d1d40f1de9850.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Wool",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Wool",
+      "weight": "520g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.3,
+    "reviews": 66,
+    "sku": "MEN-WW-014",
+    "stock": 35
+  },
+  "36": {
+    "id": 36,
+    "title": "Hemp Casual Shirt",
+    "description": "Eco-friendly hemp shirt",
+    "price": 4499,
+    "originalPrice": 5299,
+    "discount": 15,
+    "category": "Hemp Apparel",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/75/f0/b0/75f0b0bc7d375c3f360a8a000a6bdef4.jpg",
+      "https://i.pinimg.com/1200x/e8/ba/d6/e8bad6369b405f55669fe522f5ebcb84.jpg",
+      "https://i.pinimg.com/1200x/53/80/e6/5380e6c2c4c31c3d9409d3f2c2682939.jpg",
+      "https://i.pinimg.com/736x/2c/b9/37/2cb93718fc80bda6b430e582b2631ed8.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 141,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/75/f0/b0/75f0b0bc7d375c3f360a8a000a6bdef4.jpg"
+      },
+      {
+        "id": 142,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/e8/ba/d6/e8bad6369b405f55669fe522f5ebcb84.jpg"
+      },
+      {
+        "id": 143,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/53/80/e6/5380e6c2c4c31c3d9409d3f2c2682939.jpg"
+      },
+      {
+        "id": 144,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/2c/b9/37/2cb93718fc80bda6b430e582b2631ed8.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Hemp",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days",
+      "material": "Hemp",
+      "weight": "320g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.2,
+    "reviews": 48,
+    "sku": "MEN-HA-015",
+    "stock": 25
+  },
+  "37": {
+    "id": 37,
+    "title": "Hemp Kurta",
+    "description": "Sustainable hemp kurta",
+    "price": 5999,
+    "originalPrice": 6999,
+    "discount": 14,
+    "category": "Hemp Apparel",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/30/2c/e5/302ce5327b46e82488f44e9c93ebee10.jpg",
+      "https://i.pinimg.com/1200x/0b/37/ab/0b37abc59c42bb48581c67ae1e25cb23.jpg",
+      "https://i.pinimg.com/1200x/52/96/cc/5296cc4437712f4361cf1695ca74b919.jpg",
+      "https://i.pinimg.com/1200x/eb/57/9f/eb579fb13cc888b41ea25c2d989d6664.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 145,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/30/2c/e5/302ce5327b46e82488f44e9c93ebee10.jpg"
+      },
+      {
+        "id": 146,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/0b/37/ab/0b37abc59c42bb48581c67ae1e25cb23.jpg"
+      },
+      {
+        "id": 147,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/52/96/cc/5296cc4437712f4361cf1695ca74b919.jpg"
+      },
+      {
+        "id": 148,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/eb/57/9f/eb579fb13cc888b41ea25c2d989d6664.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Hemp",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days",
+      "material": "Hemp",
+      "weight": "350g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.4,
+    "reviews": 52,
+    "sku": "MEN-HA-016",
+    "stock": 20
+  },
+  "38": {
+    "id": 38,
+    "title": "Gym Performance T-Shirt",
+    "description": "Breathable activewear tee",
+    "price": 2499,
+    "originalPrice": 2999,
+    "discount": 17,
+    "category": "Sustainable Activewear",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/ef/40/64/ef40646a039b411c7f90c254749f3ffa.jpg",
+      "https://i.pinimg.com/1200x/a5/5f/4f/a55f4f0baf24364b4491116a5008b576.jpg",
+      "https://i.pinimg.com/1200x/45/18/c9/4518c972d860df7c2b7f906d340907b0.jpg",
+      "https://i.pinimg.com/1200x/22/30/e3/2230e35e97d388cfcf60e9a9b3ca75ba.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 149,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/ef/40/64/ef40646a039b411c7f90c254749f3ffa.jpg"
+      },
+      {
+        "id": 150,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/a5/5f/4f/a55f4f0baf24364b4491116a5008b576.jpg"
+      },
+      {
+        "id": 151,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/45/18/c9/4518c972d860df7c2b7f906d340907b0.jpg"
+      },
+      {
+        "id": 152,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/22/30/e3/2230e35e97d388cfcf60e9a9b3ca75ba.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Recycled Polyester",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "3–5 Days",
+      "return": "7 Days",
+      "material": "Polyester",
+      "weight": "250g",
+      "dimensions": "Slim Fit"
+    },
+    "rating": 4.3,
+    "reviews": 90,
+    "sku": "MEN-SA-017",
+    "stock": 60
+  },
+  "39": {
+    "id": 39,
+    "title": "Training Joggers",
+    "description": "Stretchable sports joggers",
+    "price": 4499,
+    "originalPrice": 5299,
+    "discount": 15,
+    "category": "Sustainable Activewear",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/df/11/0b/df110b8f458acf0c538291d07b141dc6.jpg",
+      "https://i.pinimg.com/736x/86/b4/55/86b45545ffcbc18a5afc7e039f4cc08d.jpg",
+      "https://i.pinimg.com/1200x/31/e2/30/31e23066e0b7b482a6a4cefe04ddbf8b.jpg",
+      "https://i.pinimg.com/736x/a0/53/8d/a0538dcf1f905b629c42185c67a6fb63.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 153,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/df/11/0b/df110b8f458acf0c538291d07b141dc6.jpg"
+      },
+      {
+        "id": 154,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/86/b4/55/86b45545ffcbc18a5afc7e039f4cc08d.jpg"
+      },
+      {
+        "id": 155,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/31/e2/30/31e23066e0b7b482a6a4cefe04ddbf8b.jpg"
+      },
+      {
+        "id": 156,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/a0/53/8d/a0538dcf1f905b629c42185c67a6fb63.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton Blend",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "3–5 Days",
+      "return": "7 Days",
+      "material": "Cotton Blend",
+      "weight": "500g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.4,
+    "reviews": 74,
+    "sku": "MEN-SA-018",
+    "stock": 45
+  },
+  "40": {
+    "id": 40,
+    "title": "Silk Festive Kurta Set",
+    "description": "Premium silk festive kurta",
+    "price": 12999,
+    "originalPrice": 14999,
+    "discount": 13,
+    "category": "Ethically Sourced Silk",
+    "gender": "Men",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/ec/27/4b/ec274bb98cbba39f7d95b088f047a2f1.jpg",
+      "https://i.pinimg.com/736x/0a/1c/fb/0a1cfb1a03fa3a8c1600e19773c999cb.jpg",
+      "https://i.pinimg.com/736x/86/f0/69/86f0690f37353c14bfb06cb3a15e2af6.jpg",
+      "https://i.pinimg.com/736x/31/a5/09/31a5091ad6a112c246418709cc51c614.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 157,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/ec/27/4b/ec274bb98cbba39f7d95b088f047a2f1.jpg"
+      },
+      {
+        "id": 158,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/0a/1c/fb/0a1cfb1a03fa3a8c1600e19773c999cb.jpg"
+      },
+      {
+        "id": 159,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/86/f0/69/86f0690f37353c14bfb06cb3a15e2af6.jpg"
+      },
+      {
+        "id": 160,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/31/a5/09/31a5091ad6a112c246418709cc51c614.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Silk",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "4–6 Days",
+      "return": "7 Days",
+      "material": "Silk",
+      "weight": "600g",
+      "dimensions": "Regular Fit"
+    },
+    "rating": 4.6,
+    "reviews": 40,
+    "sku": "MEN-ESS-019",
+    "stock": 15
+  },
+  "41": {
+    "id": 41,
+    "title": "Boys Organic Cotton T-Shirt",
+    "description": "Soft breathable daily wear tee for boys",
+    "price": 799,
+    "originalPrice": 999,
+    "discount": 20,
+    "category": "Sustainable Cotton",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/68/4a/b9/684ab994be7243fcba5816a8f260839f.jpg",
+      "https://i.pinimg.com/1200x/e0/74/ea/e074eab7b43cfae8ae707d497c43310b.jpg",
+      "https://i.pinimg.com/1200x/db/00/66/db0066e7e8eed1d7319d8a31e80c60d5.jpg",
+      "https://i.pinimg.com/1200x/a5/bb/ae/a5bbaef53be7dc188c8d02f12120c9e1.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 161,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/68/4a/b9/684ab994be7243fcba5816a8f260839f.jpg"
+      },
+      {
+        "id": 162,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/e0/74/ea/e074eab7b43cfae8ae707d497c43310b.jpg"
+      },
+      {
+        "id": 163,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/db/00/66/db0066e7e8eed1d7319d8a31e80c60d5.jpg"
+      },
+      {
+        "id": 164,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/a5/bb/ae/a5bbaef53be7dc188c8d02f12120c9e1.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Organic Cotton",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Cotton",
+      "weight": "180g",
+      "dimensions": "30x22x2 cm"
+    },
+    "rating": 4.5,
+    "reviews": 120,
+    "sku": "KDB-CT-001",
+    "stock": 80
+  },
+  "42": {
+    "id": 42,
+    "title": "Boys Linen Summer Shirt",
+    "description": "Lightweight linen shirt for summer comfort",
+    "price": 1299,
+    "originalPrice": 1599,
+    "discount": 19,
+    "category": "Linen Collection",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/19/dd/dc/19dddc5242b38e278698769869fb04b8.jpg",
+      "https://i.pinimg.com/1200x/2e/ee/24/2eee24cfc4545c1659f19dd1e9c77483.jpg",
+      "https://i.pinimg.com/1200x/6b/d0/3f/6bd03f8f133e3b651abf43291fbdf12b.jpg",
+      "https://i.pinimg.com/1200x/a5/bb/ae/a5bbaef53be7dc188c8d02f12120c9e1.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 165,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/19/dd/dc/19dddc5242b38e278698769869fb04b8.jpg"
+      },
+      {
+        "id": 166,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/2e/ee/24/2eee24cfc4545c1659f19dd1e9c77483.jpg"
+      },
+      {
+        "id": 167,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/6b/d0/3f/6bd03f8f133e3b651abf43291fbdf12b.jpg"
+      },
+      {
+        "id": 168,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/a5/bb/ae/a5bbaef53be7dc188c8d02f12120c9e1.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Linen",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Linen",
+      "weight": "220g",
+      "dimensions": "32x24x3 cm"
+    },
+    "rating": 4.4,
+    "reviews": 98,
+    "sku": "KDB-LN-002",
+    "stock": 65
+  },
+  "43": {
+    "id": 43,
+    "title": "Boys Festive Kurta Set",
+    "description": "Ethnic kurta set with fine embroidery",
+    "price": 2499,
+    "originalPrice": 2999,
+    "discount": 17,
+    "category": "Artisanal Embroidery",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/736x/c3/4b/8a/c34b8a721a4e51f0ea3deab03e3d0807.jpg",
+      "https://i.pinimg.com/1200x/9c/18/72/9c1872a5c4c3a8f2cbc122d24ca46d73.jpg",
+      "https://i.pinimg.com/1200x/d4/91/e9/d491e9c17666ea3cc20fd0b309d70f4e.jpg",
+      "https://i.pinimg.com/736x/64/9e/53/649e53f93e712cd056c2b5a5fd1d9cfa.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 169,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/c3/4b/8a/c34b8a721a4e51f0ea3deab03e3d0807.jpg"
+      },
+      {
+        "id": 170,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/9c/18/72/9c1872a5c4c3a8f2cbc122d24ca46d73.jpg"
+      },
+      {
+        "id": 171,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/d4/91/e9/d491e9c17666ea3cc20fd0b309d70f4e.jpg"
+      },
+      {
+        "id": 172,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/64/9e/53/649e53f93e712cd056c2b5a5fd1d9cfa.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton Blend",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "6–8 Days",
+      "return": "7 Days",
+      "material": "Cotton Silk",
+      "weight": "450g",
+      "dimensions": "35x28x4 cm"
+    },
+    "rating": 4.6,
+    "reviews": 140,
+    "sku": "KDB-AE-003",
+    "stock": 50
+  },
+  "44": {
+    "id": 44,
+    "title": "Boys Winter Hoodie",
+    "description": "Warm fleece hoodie for winter days",
+    "price": 1899,
+    "originalPrice": 2299,
+    "discount": 17,
+    "category": "Winter Wear",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/d3/84/b4/d384b4597f339e3304cdc54ab9131d98.jpg",
+      "https://i.pinimg.com/1200x/eb/85/d5/eb85d5b6edb2826cd857a98047fae60b.jpg",
+      "https://i.pinimg.com/736x/8a/82/52/8a825220f1be92a47402f37f4dc3cf3c.jpg",
+      "https://i.pinimg.com/1200x/7f/c5/cf/7fc5cf267e66f24c61397ada4570dfb1.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 173,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/d3/84/b4/d384b4597f339e3304cdc54ab9131d98.jpg"
+      },
+      {
+        "id": 174,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/eb/85/d5/eb85d5b6edb2826cd857a98047fae60b.jpg"
+      },
+      {
+        "id": 175,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/8a/82/52/8a825220f1be92a47402f37f4dc3cf3c.jpg"
+      },
+      {
+        "id": 176,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/7f/c5/cf/7fc5cf267e66f24c61397ada4570dfb1.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Fleece",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Cotton Poly",
+      "weight": "520g",
+      "dimensions": "40x30x5 cm"
+    },
+    "rating": 4.5,
+    "reviews": 110,
+    "sku": "KDB-WW-004",
+    "stock": 70
+  },
+  "45": {
+    "id": 45,
+    "title": "Boys Active Track Pants",
+    "description": "Stretchable eco-friendly sports pants",
+    "price": 1199,
+    "originalPrice": 1499,
+    "discount": 20,
+    "category": "Sustainable Activewear",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/47/92/b2/4792b284b04860eda746cb1fcd5d6ce9.jpg",
+      "https://i.pinimg.com/1200x/eb/85/d5/eb85d5b6edb2826cd857a98047fae60b.jpg",
+      "https://i.pinimg.com/736x/28/7c/65/287c651e088c26fc451e9045174db229.jpg",
+      "https://i.pinimg.com/1200x/b3/bd/7d/b3bd7d1fa3720605ae707ecea4927771.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 177,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/47/92/b2/4792b284b04860eda746cb1fcd5d6ce9.jpg"
+      },
+      {
+        "id": 178,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/eb/85/d5/eb85d5b6edb2826cd857a98047fae60b.jpg"
+      },
+      {
+        "id": 179,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/28/7c/65/287c651e088c26fc451e9045174db229.jpg"
+      },
+      {
+        "id": 180,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/b3/bd/7d/b3bd7d1fa3720605ae707ecea4927771.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Recycled Poly",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Polyester",
+      "weight": "300g",
+      "dimensions": "34x26x3 cm"
+    },
+    "rating": 4.3,
+    "reviews": 90,
+    "sku": "KDB-SA-005",
+    "stock": 85
+  },
+  "46": {
+    "id": 46,
+    "title": "Boys Hemp Casual Shirt",
+    "description": "Sustainable hemp fabric casual shirt",
+    "price": 1699,
+    "originalPrice": 1999,
+    "discount": 15,
+    "category": "Hemp Apparel",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/be/1b/94/be1b94477ed8b689ac836c05fb07b6fd.jpg",
+      "https://i.pinimg.com/736x/cf/8d/52/cf8d52bad5e6bdb2fa2c2c26a9cf8b60.jpg",
+      "https://i.pinimg.com/1200x/e8/86/ad/e886ad5926a9622cef55fea3cc67ec28.jpg",
+      "https://i.pinimg.com/736x/ae/12/2c/ae122cbec54a640077789cf1a588fd94.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 181,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/be/1b/94/be1b94477ed8b689ac836c05fb07b6fd.jpg"
+      },
+      {
+        "id": 182,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/cf/8d/52/cf8d52bad5e6bdb2fa2c2c26a9cf8b60.jpg"
+      },
+      {
+        "id": 183,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/e8/86/ad/e886ad5926a9622cef55fea3cc67ec28.jpg"
+      },
+      {
+        "id": 184,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/ae/12/2c/ae122cbec54a640077789cf1a588fd94.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Hemp Cotton",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "6–8 Days",
+      "return": "7 Days",
+      "material": "Hemp Blend",
+      "weight": "260g",
+      "dimensions": "32x24x3 cm"
+    },
+    "rating": 4.4,
+    "reviews": 75,
+    "sku": "KDB-HA-006",
+    "stock": 40
+  },
+  "47": {
+    "id": 47,
+    "title": "Boys Wool Sweater",
+    "description": "Soft wool sweater for cold weather",
+    "price": 2199,
+    "originalPrice": 2699,
+    "discount": 18,
+    "category": "Luxury Woolens",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/fb/4b/4c/fb4b4c37fa956bf9a88a17a482cd5f10.jpg",
+      "https://i.pinimg.com/736x/23/54/a4/2354a4d97b3b9be13c9146357f736ba9.jpg",
+      "https://i.pinimg.com/1200x/38/74/d2/3874d2e9bd41b395aca161828271c9c5.jpg",
+      "https://i.pinimg.com/1200x/98/a9/5c/98a95c0572b33083569ed835f19587b9.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 185,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/fb/4b/4c/fb4b4c37fa956bf9a88a17a482cd5f10.jpg"
+      },
+      {
+        "id": 186,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/23/54/a4/2354a4d97b3b9be13c9146357f736ba9.jpg"
+      },
+      {
+        "id": 187,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/38/74/d2/3874d2e9bd41b395aca161828271c9c5.jpg"
+      },
+      {
+        "id": 188,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/98/a9/5c/98a95c0572b33083569ed835f19587b9.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Wool Blend",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "6–8 Days",
+      "return": "7 Days",
+      "material": "Wool",
+      "weight": "480g",
+      "dimensions": "38x28x4 cm"
+    },
+    "rating": 4.6,
+    "reviews": 130,
+    "sku": "KDB-LW-007",
+    "stock": 55
+  },
+  "48": {
+    "id": 48,
+    "title": "Boys Lounge Pajama Set",
+    "description": "Comfortable night & home wear set",
+    "price": 1499,
+    "originalPrice": 1799,
+    "discount": 17,
+    "category": "Sustainable Loungewear",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/86/e1/bd/86e1bd4cba6a7dbf1e8aed0a062eacb0.jpg",
+      "https://i.pinimg.com/1200x/21/bc/7d/21bc7d719b7055fa8cf7b213b610f493.jpg",
+      "https://i.pinimg.com/1200x/11/dc/3d/11dc3db454764c8374f8780a61139c7b.jpg",
+      "https://i.pinimg.com/736x/98/0d/56/980d56f6d3dcfe2e1e3554c113c13bca.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 189,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/86/e1/bd/86e1bd4cba6a7dbf1e8aed0a062eacb0.jpg"
+      },
+      {
+        "id": 190,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/21/bc/7d/21bc7d719b7055fa8cf7b213b610f493.jpg"
+      },
+      {
+        "id": 191,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/11/dc/3d/11dc3db454764c8374f8780a61139c7b.jpg"
+      },
+      {
+        "id": 192,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/98/0d/56/980d56f6d3dcfe2e1e3554c113c13bca.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Soft Cotton",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Cotton",
+      "weight": "350g",
+      "dimensions": "34x26x3 cm"
+    },
+    "rating": 4.4,
+    "reviews": 88,
+    "sku": "KDB-SL-008",
+    "stock": 90
+  },
+  "49": {
+    "id": 49,
+    "title": "Boys Quilted Jacket",
+    "description": "Light padded jacket for outdoor use",
+    "price": 2999,
+    "originalPrice": 3499,
+    "discount": 14,
+    "category": "Artisanal Outerwear",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/50/57/32/5057329e1978680785865b93d751d765.jpg",
+      "https://i.pinimg.com/736x/8d/89/7b/8d897b75d8d47ac23902a70d74f0fdb1.jpg",
+      "https://i.pinimg.com/736x/9e/8d/24/9e8d24171848c7c8a8fd68863e2b4a1c.jpg",
+      "https://i.pinimg.com/736x/bf/1f/09/bf1f0986be90c93186a5196dcd6379ec.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 193,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/50/57/32/5057329e1978680785865b93d751d765.jpg"
+      },
+      {
+        "id": 194,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/8d/89/7b/8d897b75d8d47ac23902a70d74f0fdb1.jpg"
+      },
+      {
+        "id": 195,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/9e/8d/24/9e8d24171848c7c8a8fd68863e2b4a1c.jpg"
+      },
+      {
+        "id": 196,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/bf/1f/09/bf1f0986be90c93186a5196dcd6379ec.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton Poly",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "6–8 Days",
+      "return": "7 Days",
+      "material": "Polyester",
+      "weight": "650g",
+      "dimensions": "42x32x6 cm"
+    },
+    "rating": 4.5,
+    "reviews": 95,
+    "sku": "KDB-AO-009",
+    "stock": 45
+  },
+  "50": {
+    "id": 50,
+    "title": "Boys Eco Sling Bag",
+    "description": "Eco-friendly fabric sling bag",
+    "price": 899,
+    "originalPrice": 1099,
+    "discount": 18,
+    "category": "Eco-Accessories",
+    "gender": "Kids Boys",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/61/9a/0f/619a0f6f0e43200145f4556554773153.jpg",
+      "https://i.pinimg.com/1200x/38/9a/e0/389ae0dcc38e28fb7d26e9b8b156a166.jpg",
+      "https://i.pinimg.com/1200x/2e/8e/fd/2e8efd90d5f5b356a33c90ac753de1e2.jpg",
+      "https://i.pinimg.com/1200x/94/0f/17/940f175b0b27634e75344c97a5a3ce01.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 197,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/61/9a/0f/619a0f6f0e43200145f4556554773153.jpg"
+      },
+      {
+        "id": 198,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/38/9a/e0/389ae0dcc38e28fb7d26e9b8b156a166.jpg"
+      },
+      {
+        "id": 199,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/9e/8d/24/9e8d24171848c7c8a8fd68863e2b4a1c.jpg"
+      },
+      {
+        "id": 200,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/94/0f/17/940f175b0b27634e75344c97a5a3ce01.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Recycled Fabric",
+      "care": "Wipe Clean",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Fabric",
+      "weight": "200g",
+      "dimensions": "25x18x4 cm"
+    },
+    "rating": 4.2,
+    "reviews": 70,
+    "sku": "KDB-EA-010",
+    "stock": 100
+  },
+  "51": {
+    "id": 51,
+    "title": "Girls Organic Cotton Dress",
+    "description": "Soft breathable cotton dress for everyday comfort",
+    "price": 1099,
+    "originalPrice": 1399,
+    "discount": 21,
+    "category": "Sustainable Cotton",
+    "gender": "Kids Girls",
+         "size":"S, M, XL, XXL, 3XL",
+    "images": [
+      "https://i.pinimg.com/1200x/3d/83/d5/3d83d54fd9dc130cd106dd2dc8d00193.jpg",
+      "https://i.pinimg.com/1200x/08/35/01/0835017463b5d6108d5a5da05ae10ac4.jpg",
+      "https://i.pinimg.com/1200x/31/b5/90/31b59082b5d8c29930c2cab0689aacb9.jpg",
+      "https://i.pinimg.com/1200x/5c/f7/ad/5cf7adddc478ea222c2f476640b4ac21.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 201,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/3d/83/d5/3d83d54fd9dc130cd106dd2dc8d00193.jpg"
+      },
+      {
+        "id": 202,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/08/35/01/0835017463b5d6108d5a5da05ae10ac4.jpg"
+      },
+      {
+        "id": 203,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/31/b5/90/31b59082b5d8c29930c2cab0689aacb9.jpg"
+      },
+      {
+        "id": 204,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/5c/f7/ad/5cf7adddc478ea222c2f476640b4ac21.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Organic Cotton",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Cotton",
+      "weight": "220g",
+      "dimensions": "32x24x3 cm"
+    },
+    "rating": 4.6,
+    "reviews": 140,
+    "sku": "KDG-SC-011",
+    "stock": 85
+  },
+  "52": {
+    "id": 52,
+    "title": "Girls Linen Summer Frock",
+    "description": "Lightweight linen frock for summer outings",
+    "price": 1499,
+    "originalPrice": 1799,
+    "discount": 17,
+    "category": "Linen Collection",
+    "gender": "Kids Girls",
+         "size":" M, L",
+    "images": [
+      "https://i.pinimg.com/1200x/8c/35/93/8c3593d229cd6df4d78b7c9e61dd8633.jpg",
+      "https://i.pinimg.com/736x/da/55/8a/da558a33facac7de65de6ee7cc909cd4.jpg",
+      "https://i.pinimg.com/736x/c2/36/ee/c236ee5965773d6e7d18e8b0cbfeca18.jpg",
+      "https://i.pinimg.com/1200x/f9/c9/33/f9c933b3474f968e9bf9d8c23af99d22.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 205,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/8c/35/93/8c3593d229cd6df4d78b7c9e61dd8633.jpg"
+      },
+      {
+        "id": 206,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/da/55/8a/da558a33facac7de65de6ee7cc909cd4.jpg"
+      },
+      {
+        "id": 207,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/c2/36/ee/c236ee5965773d6e7d18e8b0cbfeca18.jpg"
+      },
+      {
+        "id": 208,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/f9/c9/33/f9c933b3474f968e9bf9d8c23af99d22.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Linen",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Linen",
+      "weight": "240g",
+      "dimensions": "34x26x3 cm"
+    },
+    "rating": 4.5,
+    "reviews": 110,
+    "sku": "KDG-LN-012",
+    "stock": 60
+  },
+  "53": {
+    "id": 53,
+    "title": "Girls Festive Embroidered Kurti",
+    "description": "Traditional kurti with fine artisanal embroidery",
+    "price": 2299,
+    "originalPrice": 2799,
+    "discount": 18,
+    "category": "Artisanal Embroidery",
+    "gender": "Kids Girls",
+         "size":" M, l",
+    "images": [
+      "https://i.pinimg.com/736x/39/44/e1/3944e16410473ba1ec46546a971f489a.jpg",
+      "https://i.pinimg.com/736x/bf/89/89/bf8989844f8aeca0373b348c45b1f8b3.jpg",
+      "https://i.pinimg.com/736x/84/06/be/8406be0e6fe45e9477adc14f1065108c.jpg",
+      "https://i.pinimg.com/1200x/3e/04/92/3e0492f76af48f9259ad5ab20cba5497.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 209,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/39/44/e1/3944e16410473ba1ec46546a971f489a.jpg"
+      },
+      {
+        "id": 210,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/bf/89/89/bf8989844f8aeca0373b348c45b1f8b3.jpg"
+      },
+      {
+        "id": 211,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/84/06/be/8406be0e6fe45e9477adc14f1065108c.jpg"
+      },
+      {
+        "id": 212,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/3e/04/92/3e0492f76af48f9259ad5ab20cba5497.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton Silk",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "6–8 Days",
+      "return": "7 Days",
+      "material": "Cotton Blend",
+      "weight": "420g",
+      "dimensions": "36x28x4 cm"
+    },
+    "rating": 4.7,
+    "reviews": 155,
+    "sku": "KDG-AE-013",
+    "stock": 50
+  },
+  "54": {
+    "id": 54,
+    "title": "Girls Winter Sweatshirt",
+    "description": "Warm fleece sweatshirt for winter days",
+    "price": 1799,
+    "originalPrice": 2199,
+    "discount": 18,
+    "category": "Winter Wear",
+    "gender": "Kids Girls",
+         "size":" M, l",
+    "images": [
+      "https://i.pinimg.com/736x/59/af/a0/59afa022709ea9db5a5e22912d739a9b.jpg",
+      "https://i.pinimg.com/1200x/e7/e0/4c/e7e04c5f1da904aa8f11b00380d46648.jpg",
+      "https://i.pinimg.com/1200x/62/04/31/620431b29f1676adccf50420372da319.jpg",
+      "https://i.pinimg.com/1200x/62/fa/0d/62fa0d4d9bbcf777e5cf04577ddb50da.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 213,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/59/af/a0/59afa022709ea9db5a5e22912d739a9b.jpg"
+      },
+      {
+        "id": 214,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/e7/e0/4c/e7e04c5f1da904aa8f11b00380d46648.jpg"
+      },
+      {
+        "id": 215,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/62/04/31/620431b29f1676adccf50420372da319.jpg"
+      },
+      {
+        "id": 216,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/62/fa/0d/62fa0d4d9bbcf777e5cf04577ddb50da.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Fleece",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Cotton Poly",
+      "weight": "480g",
+      "dimensions": "40x30x5 cm"
+    },
+    "rating": 4.4,
+    "reviews": 92,
+    "sku": "KDG-WW-014",
+    "stock": 70
+  },
+  "55": {
+    "id": 55,
+    "title": "Girls Active Jogger Set",
+    "description": "Comfortable jogger set for sports and play",
+    "price": 1399,
+    "originalPrice": 1699,
+    "discount": 18,
+    "category": "Sustainable Activewear",
+    "gender": "Kids Girls",
+         "size":"M, L",
+    "images": [
+      "https://i.pinimg.com/736x/d6/8e/f5/d68ef5aa03ff94ae1de0b61b8001e685.jpg",
+      "https://i.pinimg.com/1200x/6d/c8/2c/6dc82c709d19df5319a5d8285955f8d0.jpg",
+      "https://i.pinimg.com/1200x/5b/eb/4a/5beb4a3bd2ff750a14e5a945c1d34393.jpg",
+      "https://i.pinimg.com/1200x/ea/cb/36/eacb3672ca9b2cc55c1ef183669cd71f.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 217,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/d6/8e/f5/d68ef5aa03ff94ae1de0b61b8001e685.jpg"
+      },
+      {
+        "id": 218,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/6d/c8/2c/6dc82c709d19df5319a5d8285955f8d0.jpg"
+      },
+      {
+        "id": 219,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/5b/eb/4a/5beb4a3bd2ff750a14e5a945c1d34393.jpg"
+      },
+      {
+        "id": 220,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/ea/cb/36/eacb3672ca9b2cc55c1ef183669cd71f.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Recycled Polyester",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Polyester",
+      "weight": "320g",
+      "dimensions": "34x26x3 cm"
+    },
+    "rating": 4.5,
+    "reviews": 105,
+    "sku": "KDG-SA-015",
+    "stock": 80
+  },
+  "56": {
+    "id": 56,
+    "title": "Girls Hemp Casual Top",
+    "description": "Eco-friendly hemp fabric casual top",
+    "price": 1299,
+    "originalPrice": 1599,
+    "discount": 19,
+    "category": "Hemp Apparel",
+    "gender": "Kids Girls",
+         "size":" M, L",
+    "images": [
+      "https://i.pinimg.com/736x/d3/37/94/d33794327e727fd20c0236e0f3945d50.jpg",
+      "https://i.pinimg.com/736x/98/9f/4a/989f4af8a428579b4c80f3b74dc0f8c2.jpg",
+      "https://i.pinimg.com/1200x/9a/05/55/9a05557a2289f2d8def3ee31604e9d2e.jpg",
+      "https://i.pinimg.com/736x/15/62/47/156247b5360342c6b03818b8ba5dcf7c.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 221,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/d3/37/94/d33794327e727fd20c0236e0f3945d50.jpg"
+      },
+      {
+        "id": 222,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/98/9f/4a/989f4af8a428579b4c80f3b74dc0f8c2.jpg"
+      },
+      {
+        "id": 223,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/9a/05/55/9a05557a2289f2d8def3ee31604e9d2e.jpg"
+      },
+      {
+        "id": 224,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/15/62/47/156247b5360342c6b03818b8ba5dcf7c.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Hemp Cotton",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "6–8 Days",
+      "return": "7 Days",
+      "material": "Hemp Blend",
+      "weight": "210g",
+      "dimensions": "30x22x3 cm"
+    },
+    "rating": 4.3,
+    "reviews": 68,
+    "sku": "KDG-HA-016",
+    "stock": 45
+  },
+  "57": {
+    "id": 57,
+    "title": "Girls Woolen Cardigan",
+    "description": "Soft wool cardigan for cold weather",
+    "price": 2099,
+    "originalPrice": 2599,
+    "discount": 19,
+    "category": "Luxury Woolens",
+    "gender": "Kids Girls",
+         "size":"M,L",
+    "images": [
+      "https://i.pinimg.com/736x/1f/a9/4c/1fa94c6511cca576086e1b36164364c2.jpg",
+      "https://i.pinimg.com/736x/ae/23/5b/ae235b76bf68844f9f0e68c1aac0decc.jpg",
+      "https://i.pinimg.com/1200x/23/cd/76/23cd769cd3bdbb5f672e0c4d0ae8f535.jpg",
+      "https://i.pinimg.com/736x/5d/45/c4/5d45c476685ef1982a989d1cae1124e4.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 225,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/736x/1f/a9/4c/1fa94c6511cca576086e1b36164364c2.jpg"
+      },
+      {
+        "id": 226,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/ae/23/5b/ae235b76bf68844f9f0e68c1aac0decc.jpg"
+      },
+      {
+        "id": 227,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/23/cd/76/23cd769cd3bdbb5f672e0c4d0ae8f535.jpg"
+      },
+      {
+        "id": 228,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/5d/45/c4/5d45c476685ef1982a989d1cae1124e4.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Wool Blend",
+      "care": "Hand Wash",
+      "origin": "India",
+      "delivery": "6–8 Days",
+      "return": "7 Days",
+      "material": "Wool",
+      "weight": "460g",
+      "dimensions": "38x28x4 cm"
+    },
+    "rating": 4.6,
+    "reviews": 128,
+    "sku": "KDG-LW-017",
+    "stock": 55
+  },
+  "58": {
+    "id": 58,
+    "title": "Girls Lounge Night Suit",
+    "description": "Comfortable nightwear set for home use",
+    "price": 1599,
+    "originalPrice": 1899,
+    "discount": 16,
+    "category": "Sustainable Loungewear",
+    "gender": "Kids Girls",
+    "size":"M,L",
+    "images": [
+      "https://i.pinimg.com/1200x/65/29/1f/65291fcf2747901e00b2197d6c73d862.jpg",
+      "https://i.pinimg.com/1200x/b2/22/b3/b222b3f9887ab921fb2617f8cb943d15.jpg",
+      "https://i.pinimg.com/1200x/97/83/56/9783561ed86f6b0a47ab5a9b3dae7127.jpg",
+      "https://i.pinimg.com/1200x/ff/b7/93/ffb7930782f6481e34c3a39defdaae99.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 229,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/65/29/1f/65291fcf2747901e00b2197d6c73d862.jpg"
+      },
+      {
+        "id": 230,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/b2/22/b3/b222b3f9887ab921fb2617f8cb943d15.jpg"
+      },
+      {
+        "id": 231,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/97/83/56/9783561ed86f6b0a47ab5a9b3dae7127.jpg"
+      },
+      {
+        "id": 232,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/ff/b7/93/ffb7930782f6481e34c3a39defdaae99.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Soft Cotton",
+      "care": "Machine Wash",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Cotton",
+      "weight": "360g",
+      "dimensions": "34x26x3 cm"
+    },
+    "rating": 4.4,
+    "reviews": 97,
+    "sku": "KDG-SL-018",
+    "stock": 90
+  },
+  "59": {
+    "id": 59,
+    "title": "Girls Handcrafted Jacket",
+    "description": "Stylish handcrafted jacket with fine stitching",
+    "price": 2899,
+    "originalPrice": 3399,
+    "discount": 15,
+    "category": "Artisanal Outerwear",
+    "gender": "Kids Girls",
+    "size":"M,L",
+    "images": [
+      "https://i.pinimg.com/1200x/bf/c1/f4/bfc1f4a5eea156215073d0e496ce3ea3.jpg",
+      "https://i.pinimg.com/1200x/27/e5/84/27e584297e22544d0d7629567fea1bac.jpg",
+      "https://i.pinimg.com/1200x/6f/b5/63/6fb563b094effa77833e038539cdd595.jpg",
+      "https://i.pinimg.com/1200x/17/3e/86/173e86f0c3c835555a0d4702f97758d0.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 233,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/bf/c1/f4/bfc1f4a5eea156215073d0e496ce3ea3.jpg"
+      },
+      {
+        "id": 234,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/1200x/27/e5/84/27e584297e22544d0d7629567fea1bac.jpg"
+      },
+      {
+        "id": 235,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/1200x/6f/b5/63/6fb563b094effa77833e038539cdd595.jpg"
+      },
+      {
+        "id": 236,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/1200x/17/3e/86/173e86f0c3c835555a0d4702f97758d0.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Cotton Blend",
+      "care": "Dry Clean",
+      "origin": "India",
+      "delivery": "6–8 Days",
+      "return": "7 Days",
+      "material": "Poly Cotton",
+      "weight": "620g",
+      "dimensions": "42x32x6 cm"
+    },
+    "rating": 4.5,
+    "reviews": 88,
+    "sku": "KDG-AO-019",
+    "stock": 40
+  },
+  "60": {
+    "id": 60,
+    "title": "Girls Eco Hair Accessories Set",
+    "description": "Eco-friendly handmade hair accessories",
+    "price": 699,
+    "originalPrice": 899,
+    "discount": 22,
+    "category": "Eco-Accessories",
+    "gender": "Kids Girls",
+    "size":"M,L",
+    "images": [
+      "https://i.pinimg.com/1200x/a1/80/28/a18028e8ce47ae22c3bd2387142fc078.jpg",
+      "https://i.pinimg.com/736x/6b/bd/af/6bbdafb8c28a94d50a8c77984f288a44.jpg",
+      "https://i.pinimg.com/736x/2e/f2/b5/2ef2b504902a8319beeb354b19108751.jpg",
+      "https://i.pinimg.com/736x/17/f8/c4/17f8c4d98e65b47006cba1f248f4fa15.jpg"
+    ],
+    "variants": [
+      { "size": "M", "inStock": true, "sku": "REC-M-012" },
+      { "size": "L", "inStock": true, "sku": "REC-L-012" }
+    ],
+    "colors": [
+      {
+        "id": 237,
+        "name": "Onyx",
+        "value": "#000000",
+        "image": "https://i.pinimg.com/1200x/a1/80/28/a18028e8ce47ae22c3bd2387142fc078.jpg"
+      },
+      {
+        "id": 238,
+        "name": "Olive",
+        "value": "#556b2f",
+        "image": "https://i.pinimg.com/736x/6b/bd/af/6bbdafb8c28a94d50a8c77984f288a44.jpg"
+      },
+      {
+        "id": 239,
+        "name": "Slate Grey",
+        "value": "#708090",
+        "image": "https://i.pinimg.com/736x/2e/f2/b5/2ef2b504902a8319beeb354b19108751.jpg"
+      },
+      {
+        "id": 240,
+        "name": "Camel",
+        "value": "#c19a6b",
+        "image": "https://i.pinimg.com/736x/17/f8/c4/17f8c4d98e65b47006cba1f248f4fa15.jpg"
+      }
+    ],
+    "details": {
+      "fabric": "Natural Fabric",
+      "care": "Wipe Clean",
+      "origin": "India",
+      "delivery": "5–7 Days",
+      "return": "7 Days",
+      "material": "Fabric",
+      "weight": "120g",
+      "dimensions": "20x15x3 cm"
+    },
+    "rating": 4.3,
+    "reviews": 75,
+    "sku": "KDG-EA-020",
+    "stock": 120
   }
 }

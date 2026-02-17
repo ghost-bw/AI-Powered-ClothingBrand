@@ -2,6 +2,8 @@ import Product from "../models/product.model.js";
 import mongoose from "mongoose";
 import Collection from "../models/collection.model.js";
 import slugify from "slugify";
+import { notifySubscribersNewProduct } from "../utils/email.js";
+
 
 /* ================================
    ADD PRODUCT (ADMIN ONLY)
@@ -92,6 +94,7 @@ export const addProduct = async (req, res) => {
     });
 
     await product.save();
+    await notifySubscribersNewProduct(product);
 
     res.json(product);
 

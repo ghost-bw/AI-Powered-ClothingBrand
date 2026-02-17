@@ -1,5 +1,4 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 import {
   LayoutDashboard,
   Package,
@@ -7,41 +6,46 @@ import {
   Users,
   BarChart2,
   Settings,
-  LogOut,
-  User,
-  Menu,
   X,
 } from "lucide-react";
-
-import { logoutUser } from "../../api/axios";
+import graphuraLogo from "../../assets/graphuralogo/graphura.webp";
+import { useState,useEffect } from "react";
 import API from "../../api/axios";
-import logo from "../../assets/logo/logo.webp";
-
 export default function Sidebar() {
   const navigate = useNavigate();
-
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [admin, setAdmin] = useState({});
 
-  /* LOAD ADMIN PROFILE */
-  useEffect(() => {
+   useEffect(() => {
     fetchAdmin();
   }, []);
 
-  useEffect(() => {
-  document.body.style.overflow = sidebarOpen ? "hidden" : "auto";
-}, [sidebarOpen]);
+useEffect(() => {
+  document.body.style.overflow = open ? "hidden" : "auto";
 
-
-  const fetchAdmin = async () => {
-    try {
-      const res = await API.get("/admin/profile");
-      setAdmin(res.data);
-    } catch (err) {
-      console.log("Admin fetch error", err);
-    }
+  return () => {
+    document.body.style.overflow = "auto";
   };
+}, [open]);
+
+
+
+
+const fetchAdmin = async () => {
+  try {
+    const token = localStorage.getItem("admin_token");
+    console.log("ADMIN TOKEN:", token);
+
+    const res = await API.get("/admin/profile", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    setAdmin(res.data);
+  } catch (err) {
+    console.log("ADMIN ERROR:", err.response?.data);
+  }
+};
+
 
   const menu = [
     { name: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
@@ -55,36 +59,78 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* MOBILE HAMBURGER BUTTON */}
+      {/* Mobile Toggle Button */}
       <button
-        onClick={() => setSidebarOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 bg-black text-white p-2 rounded-lg shadow"
+        onClick={() => setOpen(true)}
+        className="
+          lg:hidden
+          fixed top-3 left-3 sm:top-4 sm:left-4
+          z-50
+          bg-white
+          p-2 sm:p-2.5
+          rounded-xl
+          shadow-md
+        "
       >
-        <Menu size={20} />
+        ☰
       </button>
 
-      {/* SIDEBAR */}
-      <aside
-        className={`fixed lg:sticky top-0 left-0 z-40 h-screen w-72 bg-white shadow-sm
-        flex flex-col px-6 py-6 transform transition-transform duration-300
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0`}
-      >
-        {/* MOBILE CLOSE BUTTON */}
-        <button
-          onClick={() => setSidebarOpen(false)}
-          className="lg:hidden absolute top-4 right-4 text-gray-600"
-        >
-          <X size={22} />
-        </button>
+      {/* Mobile Overlay */}
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+        />
+      )}
 
-        {/* LOGO */}
-        <div className="flex justify-center mb-6">
-          <img src={logo} alt="Graphura" className="h-14 w-auto" />
+      <aside
+        className={`
+          fixed lg:sticky
+          top-0 left-0
+          z-50
+          h-screen
+          w-64 sm:w-60
+          bg-white
+          border-r
+          flex flex-col
+          px-4 sm:px-6
+          py-4 sm:py-6
+          transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
+        {/* Mobile Header */}
+        <div className="flex items-center justify-between mb-6 lg:hidden">
+          <img
+            src={graphuraLogo}
+            alt="Graphura"
+            className="h-9 sm:h-10 cursor-pointer"
+            onClick={() => {
+              navigate("/admin/dashboard");
+              setOpen(false);
+            }}
+          />
+          <X
+            className="cursor-pointer"
+            size={20}
+            onClick={() => setOpen(false)}
+          />
         </div>
 
-        {/* NAVIGATION */}
-        <nav className="flex flex-col gap-2 flex-1">
+        {/* Desktop Logo */}
+        <div
+          onClick={() => navigate("/admin/dashboard")}
+          className="hidden lg:flex justify-center mb-6 cursor-pointer"
+        >
+          <img
+            src={graphuraLogo}
+            alt="Graphura"
+            className="h-14 object-contain"
+          />
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex flex-col gap-1 sm:gap-2 flex-1 mt-2">
           {menu.map((item) => {
             const Icon = item.icon;
 
@@ -92,14 +138,22 @@ export default function Sidebar() {
               <NavLink
                 key={item.name}
                 to={item.path}
-                onClick={() => setSidebarOpen(false)}
+                onClick={() => setOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition
-                  ${
-                    isActive
-                      ? "bg-black text-white shadow-md"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`
+                  `
+                    flex items-center gap-3
+                    px-3 sm:px-4
+                    py-2.5 sm:py-3
+                    rounded-xl
+                    font-semibold
+                    text-sm sm:text-base
+                    transition-all
+                    ${
+                      isActive
+                        ? "bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-md"
+                        : "text-gray-600 hover:bg-gray-100"
+                    }
+                  `
                 }
               >
                 <Icon size={18} />
@@ -109,85 +163,86 @@ export default function Sidebar() {
           })}
         </nav>
 
+        {/* Divider */}
         <div className="border-t my-4" />
 
-        {/* SETTINGS */}
+        {/* Settings */}
         <NavLink
           to="/admin/settings"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() => setOpen(false)}
           className={({ isActive }) =>
-            `flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition
-            ${
-              isActive
-                ? "bg-black text-white"
-                : "text-gray-600 hover:bg-gray-100"
-            }`
+            `
+              flex items-center gap-3
+              px-3 sm:px-4
+              py-2.5 sm:py-3
+              rounded-xl
+              font-semibold
+              text-sm sm:text-base
+              transition-all
+              ${
+                isActive
+                  ? "bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-md"
+                  : "text-gray-600 hover:bg-gray-100"
+              }
+            `
           }
         >
           <Settings size={18} />
           Settings
         </NavLink>
-
-        {/* ADMIN PROFILE */}
-        <div className="relative mt-4">
-          <button
-            onClick={() => setProfileOpen(!profileOpen)}
-            className="w-full flex items-center gap-3 bg-gray-50 p-3 rounded-xl hover:bg-gray-100 transition"
-          >
-            {admin.avatar ? (
-              <img
-                src={admin.avatar}
-                className="w-10 h-10 rounded-full object-cover shadow border"
-              />
-            ) : (
-              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold">
-                {admin.email?.[0]?.toUpperCase()}
-              </div>
-            )}
-
-            <div className="text-left">
-              <p className="text-sm font-semibold">
-                {admin.email || "Admin"}
-              </p>
-              <p className="text-xs text-gray-500">
-                {admin.role || "Admin"}
-              </p>
-            </div>
-          </button>
-
-          {profileOpen && (
-            <div className="absolute bottom-16 left-0 w-full bg-white border rounded-xl shadow-lg overflow-hidden">
-              <button
-                onClick={() => {
-                  setProfileOpen(false);
-                  setSidebarOpen(false);
-                  navigate("/admin/settings");
-                }}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 w-full text-sm"
-              >
-                <User size={16} />
-                Profile / Settings
-              </button>
-
-              <button
-                onClick={logoutUser}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-red-600 w-full text-sm"
-              >
-                <LogOut size={16} />
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
       </aside>
 
-      {/* BACKDROP */}
-      {sidebarOpen && (
-        <div
-          onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-black/40 z-30 lg:hidden"
-        />
-      )}
+      {/* ================= MEDIA QUERY ================= */}
+      <style>
+        {`
+       @media (max-width: 640px) {
+
+  aside {
+    width: 230px !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    padding: 16px !important;
+  }
+
+  aside nav {
+    overflow-y: auto !important;
+  }
+
+  aside nav a {
+    font-size: 14px !important;
+    padding: 10px 12px !important;
+  }
+
+  aside img {
+    height: 36px !important;
+  }
+
+  button {
+    top: 12px !important;
+    left: 12px !important;
+  }
+}
+
+        /* TABLET */
+        @media (min-width: 641px) and (max-width: 1024px) {
+          aside {
+            width: 220px !important;
+            padding: 20px !important;
+          }
+
+          aside nav a {
+            font-size: 15px !important;
+            padding: 12px 14px !important;
+          }
+
+          aside img {
+            height: 48px !important;
+          }
+        }
+        `}
+      </style>
     </>
   );
 }

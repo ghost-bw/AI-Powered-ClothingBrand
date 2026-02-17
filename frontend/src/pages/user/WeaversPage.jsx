@@ -767,9 +767,11 @@ const WeaversPage = () => {
                   Every purchase supports artisan livelihoods and helps preserve
                   India's rich textile heritage for future generations.
                 </p>
-                <button className="w-full py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-black transition-colors">
-                  Support Artisan Livelihoods
-                </button>
+                <a href="/collections" className="inline-block w-full">
+                  <button className="w-full py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-black transition-colors">
+                    Support Artisan Livelihoods
+                  </button>
+                </a>
               </div>
             </div>
           </motion.div>
@@ -798,20 +800,20 @@ const WeaversPage = () => {
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <a
-                  
+                  href="/collections"
                   className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#ECD1A8] text-gray-900 font-bold rounded-full hover:bg-[#D4B483] transition-colors"
                 >
                   <ShoppingBag className="w-5 h-5" />
                   Shop Artisan Collection
                 </a>
 
-                <a
-                  
+                {/* <a
+                  href="/about/partnerships"
                   className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-100 transition-colors"
                 >
                   <Handshake className="w-5 h-5" />
                   Become a Partner
-                </a>
+                </a> */}
               </div>
 
               <div className="mt-8 pt-8 border-t border-white/20">

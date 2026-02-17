@@ -1,14 +1,17 @@
 import { X, TicketPercent, Sparkles } from "lucide-react";
 import { useState } from "react";
+
 import API from "../../api/axios";
 
 export default function CreateCouponModal({ open, onClose, refresh }) {
+
   if (!open) return null;
 
   const [discountType, setDiscountType] = useState("percentage");
   const [couponCode, setCouponCode] = useState("LUXE2024");
   const [discountValue, setDiscountValue] = useState(15);
   const [minSpend, setMinSpend] = useState(true);
+
 
   const handlePublish = async () => {
     try {
@@ -29,15 +32,12 @@ export default function CreateCouponModal({ open, onClose, refresh }) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-3 sm:px-6">
-      
-      {/* MODAL */}
-      <div className="bg-white w-full max-w-6xl rounded-2xl shadow-xl
-      max-h-[90vh] overflow-hidden flex flex-col">
 
-        {/* HEADER (sticky) */}
-        <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b sticky top-0 bg-white z-10">
+  return (
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-3 sm:p-4">
+      <div className="bg-white w-full max-w-6xl rounded-2xl shadow-xl overflow-hidden max-h-[95vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex justify-between items-start sm:items-center px-4 sm:px-6 py-4 border-b gap-3">
           <div>
             <h2 className="text-base sm:text-lg font-semibold">
               Create New Coupon
@@ -46,10 +46,12 @@ export default function CreateCouponModal({ open, onClose, refresh }) {
               Configure exclusive offers and redemption rules
             </p>
           </div>
-          <button onClick={onClose}>
+
+          <button onClick={onClose} className="shrink-0">
             <X />
           </button>
         </div>
+
 
         {/* CONTENT */}
         <div className="flex-1 overflow-y-auto">
@@ -162,9 +164,11 @@ export default function CreateCouponModal({ open, onClose, refresh }) {
                   className="px-4 py-2 bg-black text-white rounded-xl"
                 >
                   Publish Coupon
+
                 </button>
               </div>
             </div>
+
 
             {/* RIGHT PREVIEW */}
             <div className="bg-gray-50 p-4 sm:p-6 border-t lg:border-t-0 lg:border-l space-y-4">
@@ -194,9 +198,14 @@ export default function CreateCouponModal({ open, onClose, refresh }) {
               </div>
             </div>
 
+
+           
+              <p className="text-sm text-gray-500">Projected Cost: ₹1.2L</p>
+            </div>
+
           </div>
         </div>
       </div>
-    </div>
+    
   );
 }

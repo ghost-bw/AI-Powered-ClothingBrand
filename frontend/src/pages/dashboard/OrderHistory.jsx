@@ -8,24 +8,43 @@ export default function OrderHistory() {
   const token = localStorage.getItem("token");
 
   const [orders, setOrders] = useState([]);
+useEffect(() => {
+  if (!token) return navigate("/user/login");
 
-  useEffect(() => {
-    if (!token) return navigate("/user/login");
-
+  const fetchOrders = () => {
     axios
       .get("http://localhost:4000/api/user/dashboard/orders/my", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => {
-        setOrders(res.data || []);
-      })
-      .catch((err) => {
-        console.error("ORDERS ERROR:", err.response?.data || err);
-        setOrders([]);
-      });
-  }, []);
+      .then((res) => setOrders(res.data || []))
+      .catch(() => setOrders([]));
+  };
+
+  fetchOrders();
+
+  const interval = setInterval(fetchOrders, 5000); // refresh every 5 sec
+
+  return () => clearInterval(interval);
+}, []);
+
+
+  // useEffect(() => {
+  //   if (!token) return navigate("/user/login");
+
+  //   axios
+  //     .get("http://localhost:4000/api/user/dashboard/orders/my", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       setOrders(res.data || []);
+  //     })
+  //     .catch((err) => {
+  //       console.error("ORDERS ERROR:", err.response?.data || err);
+  //       setOrders([]);
+  //     });
+  // }, []);
 
   const statusStyle = {
     Delivered: "bg-green-50 text-green-700 border border-green-200",

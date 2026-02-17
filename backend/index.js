@@ -9,6 +9,9 @@ dotenv.config();
 import productRoutes from "./routes/admin.product.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import subscriptionRoutes from "./routes/subscription.routes.js";
+import "./scripts/earlyOffer.js";
+
 // import productRoutes from "./routes/admin.product.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
@@ -36,12 +39,11 @@ const PORT = process.env.PORT || 4000;
 app.use(express.json());               // 🔥 REQUIRED for req.body
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
+
 
 //* ================= ROUTES ================= */
 
@@ -67,6 +69,7 @@ app.use("/api/admin/whatsapp", whatsappRoutes);
 
 // 🔥 ADMIN ROOT – ALWAYS LAST
 app.use("/api/admin", adminRoutes);
+app.use("/api", subscriptionRoutes);
 
 
 

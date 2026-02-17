@@ -87,4 +87,6 @@ const StickyCategoryBar = ({ activeGender, setActiveGender }) => {
   );
 };
 
+
 export default StickyCategoryBar;
+

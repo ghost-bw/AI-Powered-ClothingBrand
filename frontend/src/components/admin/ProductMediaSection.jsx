@@ -6,6 +6,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 
+
 /* ===== IMAGE RULES ===== */
 const IMAGE_RULES = {
   hero: {
@@ -25,6 +26,7 @@ const IMAGE_RULES = {
 /* ======================================================
    IMAGE CARD (✅ OUTSIDE COMPONENT – FIXED)
 ====================================================== */
+
 function ImageCard({
   label,
   type,
@@ -33,11 +35,14 @@ function ImageCard({
   setImages,
   handleUpload,
 }) {
+
   return (
     <div
       className={`relative border-2 border-dashed rounded-xl
       flex items-center justify-center text-center
-      ${large ? "h-[360px]" : "h-[170px]"}
+
+      ${large ? "h-[220px] sm:h-[280px] lg:h-[360px]" : "h-[140px] sm:h-[170px]"}
+
       bg-white hover:shadow-lg transition`}
     >
       {images[type] ? (
@@ -54,25 +59,28 @@ function ImageCard({
                 [type]: null,
               }))
             }
-            className="absolute top-3 right-3
-            bg-black/70 text-white p-2 rounded-full"
+
+            className="absolute top-2 right-2 sm:top-3 sm:right-3
+            bg-black/70 text-white p-1.5 sm:p-2 rounded-full"
           >
-            <Trash2 size={16} />
+            <Trash2 size={14} className="sm:hidden" />
+            <Trash2 size={16} className="hidden sm:block" />
           </button>
         </>
       ) : (
-        <label className="cursor-pointer text-gray-500">
+        <label className="cursor-pointer text-gray-500 px-3">
+
           <input
             type="file"
             accept="image/*"
             hidden
             onChange={(e) => handleUpload(e, type)}
           />
-          <ImagePlus className="mx-auto mb-2" />
-          <p className="font-semibold">{label}</p>
-          <p className="text-xs text-gray-400 mt-1">
-            Min 1000×1000 (1:1)
-          </p>
+
+          <ImagePlus className="mx-auto mb-2 w-5 h-5 sm:w-6 sm:h-6" />
+          <p className="font-semibold text-sm sm:text-base">{label}</p>
+          <p className="text-xs text-gray-400 mt-1">Min 1000×1000 (1:1)</p>
+
         </label>
       )}
     </div>
@@ -103,28 +111,25 @@ export default function ProductMediaSection() {
       img.onload = () => {
         URL.revokeObjectURL(url);
 
-        const rule =
-          type === "hero"
-            ? IMAGE_RULES.hero
-            : IMAGE_RULES.square;
+
+        const rule = type === "hero" ? IMAGE_RULES.hero : IMAGE_RULES.square;
 
         const ratio = img.width / img.height;
         const ratioDiff = Math.abs(ratio - rule.ratio);
 
-        if (
-          img.width < rule.minWidth ||
-          img.height < rule.minHeight
-        ) {
+
+        if (img.width < rule.minWidth || img.height < rule.minHeight) {
           reject(
-            `${rule.label} must be at least ${rule.minWidth}×${rule.minHeight}px`
+            `${rule.label} must be at least ${rule.minWidth}×${rule.minHeight}px`,
+
           );
           return;
         }
 
         if (ratioDiff > 0.15) {
-          reject(
-            `${rule.label} aspect ratio should be 1:1`
-          );
+
+          reject(`${rule.label} aspect ratio should be 1:1`);
+
           return;
         }
 
@@ -155,24 +160,25 @@ export default function ProductMediaSection() {
   };
 
   return (
-    <section className="mt-12">
-      <h2 className="text-2xl font-bold mb-3">
-        Product Media
-      </h2>
+
+    <section className="mt-8 sm:mt-12">
+      <h2 className="text-xl sm:text-2xl font-bold mb-3">Product Media</h2>
 
       {/* ERROR */}
       {error && (
         <div
-          className="flex items-center gap-2
+
+          className="flex items-start sm:items-center gap-2
           bg-red-50 text-red-600 p-3
-          rounded-lg mb-4"
+          rounded-lg mb-4 text-sm"
         >
           <AlertCircle size={18} />
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
         {/* HERO */}
         <div className="lg:col-span-2">
           <ImageCard
@@ -186,7 +192,8 @@ export default function ProductMediaSection() {
         </div>
 
         {/* SIDE GRID */}
-        <div className="grid grid-cols-2 gap-4">
+
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <ImageCard
             label="Detail Shot"
             type="detail"
@@ -212,13 +219,17 @@ export default function ProductMediaSection() {
           {/* ADD VIEW (next step) */}
           <div
             className="border-2 border-dashed rounded-xl
-            flex items-center justify-center text-gray-400"
+
+            flex items-center justify-center text-gray-400
+            text-sm sm:text-base"
           >
-            <UploadCloud />
+            <UploadCloud className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="ml-2">Add View</span>
           </div>
         </div>
       </div>
     </section>
   );
+
 }
+

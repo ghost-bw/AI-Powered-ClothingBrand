@@ -45,7 +45,7 @@ export default function UserLogin() {
           >
             <div className="relative z-10 h-full w-full flex flex-col justify-between px-8 py-8 text-white">
               <div className="font-semibold tracking-wide">
-                <img src={logo} alt="Graphura Logo" className="h-15 w-auto" />
+                <img src={logo} alt="Graphura Logo" className="h-15 w-auto cursor-pointer" onClick={() => navigate("/")} />
               </div>
 
               <div>
@@ -142,15 +142,14 @@ export default function UserLogin() {
               <p className="text-sm text-center mt-4 text-gray-600">
                 Don’t have an account?{" "}
                 <span
-                  onClick={() => navigate("/user/signup")}
-                  className="font-medium text-[#2E2B7B] cursor-pointer"
+                  onClick={() => navigate("/signup")}
+                  className="font-medium text-[#2E2B7B] cursor-pointer" 
                 >
                   Sign Up
                 </span>
               </p>
             </div>
           </div>
-
         </div>
       </div>
     </div>

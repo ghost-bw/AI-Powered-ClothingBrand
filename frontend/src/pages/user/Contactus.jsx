@@ -385,7 +385,7 @@ const Contactus = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-50 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-black transition-all hover:shadow-xl flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed text-sm"
+                    className="w-40 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-black transition-all hover:shadow-xl flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed text-sm"
                   >
                     {isLoading ? (
                       <>
@@ -614,10 +614,12 @@ const Contactus = () => {
                   >
                     {faq.icon}
                   </div>
-                  <h3 className="font-bold text-gray-900 text-sm mb-2">
+                  <h3 className="font-bold text-gray-900 text-base md:text-lg mb-2">
                     {faq.question}
                   </h3>
-                  <p className="text-gray-600 text-xs">{faq.answer}</p>
+                  <p className="text-gray-600 text-sm md:text-base">
+                    {faq.answer}
+                  </p>
                 </div>
               ))}
             </div>

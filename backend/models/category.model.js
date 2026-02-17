@@ -16,9 +16,10 @@ const categorySchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true
-    },collection:{
- type:mongoose.Schema.Types.ObjectId,
- ref:"Collection"
+    },
+collectionRef: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Collection"
 },
 
 gender:{

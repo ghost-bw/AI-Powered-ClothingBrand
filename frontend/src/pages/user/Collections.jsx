@@ -4,7 +4,6 @@ import { Filter, Grid, List, Search } from "lucide-react";
 import API from "../../api/axios";
 import Navbar from "../../components/Home/Navbar";
 import ProductCard from "../../components/Home/ProductCard";
-import Footer from "../../components/Home/Footer";
 import { useShop } from "../../context/ShopContext";
 
 /* HERO IMAGE */
@@ -12,30 +11,46 @@ const HERO_IMAGE =
   "https://res.cloudinary.com/dttjgnypq/image/upload/v1770274090/ALL_Collection_Hero-3_sdcysc.jpg";
 
 /* HERO TEXT */
-const TITLE_TEXT = "All Collections";
-const SUB_TEXT =
-  "Discover our complete range of thoughtfully designed outfits, crafted to elevate every style and every moment.";
+
 
 const CollectionsPage = () => {
   const navigate = useNavigate();
 
-  const [viewMode, setViewMode] = useState("grid");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedGender, setSelectedGender] = useState("All");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedCollections, setSelectedCollections] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 50000]);
-  const [products, setProducts] = useState([]);
-  const [collections, setCollections] = useState([]);
-  const [gender, setGender] = useState("");
 
-  /* ❤️ WISHLIST FROM CONTEXT (GLOBAL) */
-  // const { wishlist, toggleWishlist } = useShop();
+  const [tempGender, setTempGender] = useState("All");
+  const [tempCategory, setTempCategory] = useState("All");
+
+  const [showFilter, setShowFilter] = useState(false);
+  const [products, setProducts] = useState([]);
+const [collections, setCollections] = useState([]);
+
+const [selectedCollections, setSelectedCollections] = useState([]);
+
+const [gender, setGender] = useState("");
+
+const [searchTerm, setSearchTerm] = useState("");
+
+const [viewMode, setViewMode] = useState("grid");
+
+
+  useEffect(() => {
+    if (showFilter) {
+      setTempGender(selectedGender);
+      setTempCategory(selectedCategory);
+    }
+  }, [showFilter, selectedGender, selectedCategory]);
 
   /* HERO TYPEWRITER */
+  const TITLE_TEXT = "All Collections";
+  const SUB_TEXT =
+    "Discover our complete range of thoughtfully designed outfits, crafted to elevate every style and every moment.";
+
   const [typedText, setTypedText] = useState("");
   const [done, setDone] = useState(false);
 
-  /* TYPEWRITER EFFECT */
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
@@ -352,26 +367,36 @@ const CollectionsPage = () => {
         </div>
       </div>
 
-      {/* HERO ANIMATIONS */}
-      <style>{`
-        @keyframes zoomOnce {
-          0% { transform: scale(0.96); }
-          60% { transform: scale(1.05); }
-          100% { transform: scale(1); }
-        }
-        .animate-zoomOnce {
-          animation: zoomOnce 1.2s ease forwards;
-        }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeUp {
-          animation: fadeUp 0.8s ease forwards;
-        }
-      `}</style>
+      {/* MOBILE DRAWER */}
+      {showFilter && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+          onClick={() => setShowFilter(false)}
+        >
+          <div
+            className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-white p-6 overflow-y-auto no-scrollbar shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="cinzel text-lg font-bold">
+                Filters
+              </h2>
+              <button
+                onClick={() => setShowFilter(false)}
+                className="p-2 rounded-full hover:bg-gray-100"
+              >
+                <X />
+              </button>
+            </div>
 
-      <Footer />
+            <div className="space-y-6">
+              <FilterContent />
+            </div>
+          </div>
+        </div>
+      )}
+      
+
     </div>
   );
 };

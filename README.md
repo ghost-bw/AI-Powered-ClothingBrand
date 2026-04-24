@@ -15,18 +15,18 @@
 ## Technology Stack
 - **Frontend:** React, Redux, CSS, HTML
 - **Backend:** Node.js, Express.js, MongoDB
-- **Deployment:** Heroku, GitHub Actions for CI/CD
+- **Deployment:**  GitHub Actions for CI/CD
 
 ## Setup Instructions
 1. Clone the repository: `git clone https://github.com/ghost-bw/AI-Powered-ClothingBrand`
 2. Navigate into the project directory: `cd AI-Powered-ClothingBrand`
 3. Install dependencies:
-   - For frontend: `cd client && npm install`
+   - For frontend: `cd frontend && npm install`
    - For backend: `cd server && npm install`
 4. Set up environment variables in a `.env` file as per the `.env.example` file.
 5. Run the application:
-   - For frontend: `cd client && npm start`
-   - For backend: `cd server && npm start`
+   - For frontend: `cd client && npm run dev`
+   - For backend: `cd server && node server.js`
 
 ## API Endpoints
 - `GET /api/products` - Retrieve all products
